@@ -55,9 +55,10 @@ local function minuteTick(player)
         local part = parts:get(i)
         if EM_Wound_Has(player, part, "CrudeStitched") then
             -- crude stitching: every wound on the part hurts +20% while
-            -- the state lasts (floor = the wound-generated pain x 0.2)
+            -- the state lasts (floor = the wound-generated pain x the
+            -- "CrudeStitchPainBoost" sandbox multiplier; 0 disables)
             local woundPain = part:getPain() - part:getAdditionalPain(true)
-            local floor = woundPain * 0.2
+            local floor = woundPain * EM_Sandbox_Get("CrudeStitchPainBoost")
             if floor > 0 and part:getAdditionalPain() < floor then
                 part:setAdditionalPain(floor)
             end

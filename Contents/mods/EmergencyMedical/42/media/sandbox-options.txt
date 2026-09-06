@@ -130,6 +130,76 @@ option EmergencyMedical.DigBulletInfection
     translation = EmergencyMedical_DigBulletInfection,
 }
 
+option EmergencyMedical.CrudeStitchedDurationDays
+{
+    type = integer,
+    default = 120,
+    min = 1,
+    max = 3650,
+    page = EmergencyMedical,
+    translation = EmergencyMedical_CrudeStitchedDurationDays,
+}
+
+option EmergencyMedical.CrudeStitchPainBoost
+{
+    type = double,
+    default = 0.2,
+    min = 0.0,
+    max = 2.0,
+    page = EmergencyMedical,
+    translation = EmergencyMedical_CrudeStitchPainBoost,
+}
+
+option EmergencyMedical.RemoveCrudeStitchPain
+{
+    type = integer,
+    default = 10,
+    min = 0,
+    max = 100,
+    page = EmergencyMedical,
+    translation = EmergencyMedical_RemoveCrudeStitchPain,
+}
+
+option EmergencyMedical.CrudeStitchReopenSevere
+{
+    type = integer,
+    default = 18,
+    min = 5,
+    max = 30,
+    page = EmergencyMedical,
+    translation = EmergencyMedical_CrudeStitchReopenSevere,
+}
+
+option EmergencyMedical.CrudeStitchReopenModerate
+{
+    type = integer,
+    default = 15,
+    min = 5,
+    max = 30,
+    page = EmergencyMedical,
+    translation = EmergencyMedical_CrudeStitchReopenModerate,
+}
+
+option EmergencyMedical.CrudeStitchReopenLight
+{
+    type = integer,
+    default = 8,
+    min = 1,
+    max = 20,
+    page = EmergencyMedical,
+    translation = EmergencyMedical_CrudeStitchReopenLight,
+}
+
+option EmergencyMedical.CrudeStitchReopenOld
+{
+    type = integer,
+    default = 3,
+    min = 0,
+    max = 15,
+    page = EmergencyMedical,
+    translation = EmergencyMedical_CrudeStitchReopenOld,
+}
+
 option EmergencyMedical.MorphineAddictionGain
 {
     type = double,

@@ -212,9 +212,9 @@ end
 
 -- scalpel excision of the crude stitching: the wound REOPENS as a deep
 -- wound whose severity follows the stitching's age (default quartiles,
--- 4 = freshest) -- a fresh repair reopens severely, an old one barely.
--- panel deep-wound severity: > 10 severe, > 8 moderate.
-local CRUDE_STITCH_DEEP_WOUND = { [4] = 18.0, [3] = 15.0, [2] = 8.0, [1] = 3.0 }
+-- 4 = freshest). panel deep-wound severity: > 10 severe, > 8 moderate.
+-- sandbox option names per age level (resolved at removal time).
+local CRUDE_STITCH_REOPEN_OPTION = { [4] = "CrudeStitchReopenSevere", [3] = "CrudeStitchReopenModerate", [2] = "CrudeStitchReopenLight", [1] = "CrudeStitchReopenOld" }
 
 function EMRemoveCrudeStitch_IsEligiblePart(patient, part)
     if patient == nil or part == nil then
@@ -228,9 +228,10 @@ function EMTreatment_RemoveCrudeStitch(patient, part)
     local level = EM_Wound_GetLevel(patient, part, "CrudeStitched")
     EM_Wound_Remove(patient, part, "CrudeStitched")
     -- reopen: deep wound by age, moderate bleeding, a painful sting
-    part:setDeepWoundTime(CRUDE_STITCH_DEEP_WOUND[level] or 8.0)
+    -- ("RemoveCrudeStitchPain" sandbox option)
+    part:setDeepWoundTime(EM_Sandbox_Get(CRUDE_STITCH_REOPEN_OPTION[level] or "CrudeStitchReopenModerate"))
     part:setBleeding(true)
     part:setBleedingTime(10.0)
-    part:setAdditionalPain(math.min(part:getAdditionalPain() + 10.0, 100.0))
+    part:setAdditionalPain(math.min(part:getAdditionalPain() + EM_Sandbox_Get("RemoveCrudeStitchPain"), 100.0))
     syncBodyPart(part, EM_BODYWOUND_SYNC_FLAGS)
 end

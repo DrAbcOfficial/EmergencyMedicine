@@ -27,6 +27,10 @@ EM_Wound_Register("CrudeStitched", {
     -- every wound on the part hurts +20% while the crude stitching lasts
     -- (pain floor in BodyWoundSimulation.lua). The default age-quartile
     -- levels drive the reopened wound severity on scalpel excision.
-    durationDays = 120,
+    -- ("CrudeStitchedDurationDays" sandbox option, resolved when the
+    -- state is added)
+    durationDays = function()
+        return EM_Sandbox_Get("CrudeStitchedDurationDays")
+    end,
     panelLabelKey = "IGUI_health_CrudeStitched",
 })
