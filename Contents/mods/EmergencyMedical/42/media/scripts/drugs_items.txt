@@ -84,4 +84,46 @@ module EmergencyMedical
         UseWhileEquipped = false,
         Tags = base:consumable,
     }
+    item tranexamicacid
+    {
+        DisplayCategory = FirstAid,
+        ItemType = base:drainable,
+        Weight = 0.2,
+        Icon = tranexamicacid,
+        Medical = true,
+        Tooltip = Tooltip_tranexamicacid,
+        StaticModel = TranexamicAcidBox,
+        WorldStaticModel = TranexamicAcidBox,
+        UseDelta = 1.0,
+        UseWhileEquipped = false,
+        Tags = base:consumable,
+    }
+    item sulfadimidine
+    {
+        DisplayCategory = FirstAid,
+        ItemType = base:drainable,
+        Weight = 0.2,
+        Icon = sulfadimidine,
+        Medical = true,
+        Tooltip = Tooltip_sulfadimidine,
+        StaticModel = SulfadimidineBox,
+        WorldStaticModel = SulfadimidineBox,
+        UseDelta = 1.0,
+        UseWhileEquipped = false,
+        Tags = base:consumable,
+    }
+    item dexmedetomidine
+    {
+        DisplayCategory = FirstAid,
+        ItemType = base:drainable,
+        Weight = 0.1,
+        Icon = dexmedetomidine,
+        Medical = true,
+        Tooltip = Tooltip_dexmedetomidine,
+        StaticModel = DexmedetomidineAmpoule,
+        WorldStaticModel = DexmedetomidineAmpoule,
+        UseDelta = 1.0,
+        UseWhileEquipped = false,
+        Tags = base:consumable,
+    }
 }

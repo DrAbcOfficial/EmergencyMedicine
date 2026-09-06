@@ -33,7 +33,7 @@ local function addItem(listName, fullType, weight)
 end
 
 local function onPreDistributionMerge()
-    -- hospital medical containers: all five drugs
+    -- hospital medical containers: all five opioids + tranexamic acid
     local hospitalLists = { "MedicalStorageDrugs", "HospitalLockers", "HospitalRoomCounter", "HospitalRoomShelves" }
     for i = 1, #hospitalLists do
         for j = 1, #OPIOIDS do
@@ -41,11 +41,13 @@ local function onPreDistributionMerge()
         end
         addItem(hospitalLists[i], "EmergencyMedical.oxycontin", 15)
         addItem(hospitalLists[i], "EmergencyMedical.naloxone", 12)
+        addItem(hospitalLists[i], "EmergencyMedical.tranexamicacid", 10)
     end
 
     -- pharmacy counter list (shared with medical clinic counters):
-    -- oxycontin only
+    -- oxycontin + tranexamic acid
     addItem("MedicalClinicDrugs", "EmergencyMedical.oxycontin", 15)
+    addItem("MedicalClinicDrugs", "EmergencyMedical.tranexamicacid", 12)
 
     -- pharmacy shelves: a dedicated list, appended to the pharmacy room's
     -- shelf procList below (onPostDistributionMerge) -- deliberately not
@@ -54,12 +56,21 @@ local function onPreDistributionMerge()
         rolls = 1,
         items = {
             "EmergencyMedical.oxycontin", 15,
+            "EmergencyMedical.tranexamicacid", 12,
         },
         junk = {
             rolls = 1,
             items = {},
         },
     }
+
+    -- ranches and farms: livestock drugs (sulfadimidine antibiotic,
+    -- dexmedetomidine veterinary sedative)
+    local farmLists = { "BarnTools", "FarmerTools", "CrateFarming" }
+    for i = 1, #farmLists do
+        addItem(farmLists[i], "EmergencyMedical.sulfadimidine", 8)
+        addItem(farmLists[i], "EmergencyMedical.dexmedetomidine", 8)
+    end
 
     -- police evidence: all five drugs, contraband rarity
     for j = 1, #OPIOIDS do

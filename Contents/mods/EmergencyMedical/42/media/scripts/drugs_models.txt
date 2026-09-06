@@ -32,4 +32,19 @@
 	        texture = WorldItems/MethamphetamineBottle,
 	        scale = 0.01,
 	    }
+	    model TranexamicAcidBox
+	    {
+	        mesh = WorldItems/MedicineBox,
+	        texture = WorldItems/TranexamicAcidBox,
+	    }
+	    model SulfadimidineBox
+	    {
+	        mesh = WorldItems/MedicineBox,
+	        texture = WorldItems/SulfadimidineBox,
+	    }
+	    model DexmedetomidineAmpoule
+	    {
+	        mesh = WorldItems/Ampoule,
+	        texture = WorldItems/DexmedetomidineAmpoule,
+	    }
 	}

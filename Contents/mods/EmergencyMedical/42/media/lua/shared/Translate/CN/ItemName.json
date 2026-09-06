@@ -4,5 +4,8 @@
     "EmergencyMedical.fentanyl": "芬太尼",
     "EmergencyMedical.oxycontin": "奥施康定",
     "EmergencyMedical.sufentanil": "舒芬太尼",
-    "EmergencyMedical.methamphetamine": "甲基苯丙胺"
+    "EmergencyMedical.methamphetamine": "甲基苯丙胺",
+    "EmergencyMedical.tranexamicacid": "氨甲环酸",
+    "EmergencyMedical.sulfadimidine": "磺胺二甲嘧啶",
+    "EmergencyMedical.dexmedetomidine": "盐酸右美托咪定"
 }

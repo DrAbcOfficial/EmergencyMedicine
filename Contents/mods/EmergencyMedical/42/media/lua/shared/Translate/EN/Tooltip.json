@@ -4,5 +4,8 @@
     "Tooltip_fentanyl": "A potent synthetic opioid. Instantly restores health, soothes all wounds, kills all pain and clears the mind. Extremely addictive.",
     "Tooltip_oxycontin": "A mild opioid painkiller. Restores some health and takes the edge off. Somewhat addictive.",
     "Tooltip_sufentanil": "A potent patch applied to the right upper arm. While it lasts it steadily eases pain and withdrawal and keeps you calm, but the addiction quietly deepens. Lasts for days; peel it off to stop.",
-    "Tooltip_methamphetamine": "A powerful central nervous system stimulant. Instantly wide awake, but it won't be long before the addiction swallows you whole."
+    "Tooltip_methamphetamine": "A powerful central nervous system stimulant. Instantly wide awake, but it won't be long before the addiction swallows you whole.",
+    "Tooltip_tranexamicacid": "An antifibrinolytic. Instantly stops bleeding from every part of the body. Side effect: moderate head pain.",
+    "Tooltip_sulfadimidine": "A sulfonamide antibiotic. Clears the infection from all wounds, but does nothing against the zombie virus. Side effects: severe head pain and a moderate fever.",
+    "Tooltip_dexmedetomidine": "A potent veterinary sedative. Instantly wipes away panic and stress, but leaves you noticeably drowsy. Side effect: severe head pain."
 }

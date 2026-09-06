@@ -22,9 +22,12 @@ local DRUG_EFFECTS = {
     ["EmergencyMedical.fentanyl"] = InjectFentanyl,
     ["EmergencyMedical.methamphetamine"] = TakeMethamphetamine,
     ["EmergencyMedical.oxycontin"] = TakeOxyContin,
+    ["EmergencyMedical.dexmedetomidine"] = TakeDexmedetomidine,
     -- DrugSufentanil.lua sorts AFTER this file (S > P), so its global
     -- does not exist yet at load time: resolve lazily at dispatch.
     ["EmergencyMedical.sufentanil"] = function(player) return TakeSufentanil(player) end,
+    ["EmergencyMedical.sulfadimidine"] = function(player) return TakeSulfadimidine(player) end,
+    ["EmergencyMedical.tranexamicacid"] = function(player) return TakeTranexamicAcid(player) end,
 }
 
 -- One dispatch entry point so SP (direct call) and MP (server command

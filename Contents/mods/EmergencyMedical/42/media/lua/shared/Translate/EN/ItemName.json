@@ -4,5 +4,8 @@
     "EmergencyMedical.fentanyl": "Fentanyl",
     "EmergencyMedical.oxycontin": "OxyContin",
     "EmergencyMedical.sufentanil": "Sufentanil",
-    "EmergencyMedical.methamphetamine": "Methamphetamine"
+    "EmergencyMedical.methamphetamine": "Methamphetamine",
+    "EmergencyMedical.tranexamicacid": "Tranexamic Acid",
+    "EmergencyMedical.sulfadimidine": "Sulfadimidine",
+    "EmergencyMedical.dexmedetomidine": "Dexmedetomidine Hydrochloride"
 }

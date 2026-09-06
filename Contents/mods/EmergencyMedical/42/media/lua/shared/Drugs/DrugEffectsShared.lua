@@ -56,3 +56,35 @@ function EMDrug_ChangeAddiction(player, amount)
         player:transmitModData()
     end
 end
+
+-- head part helper (head pain is the shared side effect of three drugs)
+function EMDrug_GetHeadPart(player)
+    return player:getBodyDamage():getBodyParts():get(BodyPartType.ToIndex(BodyPartType.Head))
+end
+
+-- stop every part's bleeding (tranexamic acid). Glass shards keep the
+-- vanilla floor trickling (DamageUpdate re-raises bleedingTime to 3
+-- while haveGlass) -- shards still in, still oozing.
+function EMDrug_StopAllBleeding(player)
+    local parts = player:getBodyDamage():getBodyParts()
+    for i = 0, parts:size() - 1 do
+        local part = parts:get(i)
+        if part:bleeding() or part:getBleedingTime() > 0.0 then
+            part:setBleeding(false)
+            part:setBleedingTime(0.0)
+        end
+    end
+end
+
+-- clear the LOCAL wound infection on every part (sulfadimidine) -- NOT
+-- the Knox virus (IsInfected is deliberately not touched)
+function EMDrug_ClearWoundInfection(player)
+    local parts = player:getBodyDamage():getBodyParts()
+    for i = 0, parts:size() - 1 do
+        local part = parts:get(i)
+        if part:isInfectedWound() or part:getWoundInfectionLevel() > 0.0 then
+            part:setInfectedWound(false)
+            part:setWoundInfectionLevel(0.0)
+        end
+    end
+end
