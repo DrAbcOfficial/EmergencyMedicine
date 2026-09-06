@@ -31,7 +31,7 @@
     "Sandbox_EmergencyMedical_CrudeStitchPainBoost": "Crude stitch pain boost",
     "Sandbox_EmergencyMedical_CrudeStitchPainBoost_tooltip": "While crude stitched, every wound on the part adds this fraction of extra pain (0.2 = one fifth extra, 0 disables).",
     "Sandbox_EmergencyMedical_RemoveCrudeStitchPain": "Excise crude stitch pain",
-    "Sandbox_EmergencyMedical_RemoveCrudeStitchPain_tooltip": "Additional pain from excising a crude stitch with a scalpel.",
+    "Sandbox_EmergencyMedical_RemoveCrudeStitchPain_tooltip": "Excising a crude stitch with a scalpel pushes the part's pain up to this value (default 100 = max).",
     "Sandbox_EmergencyMedical_CrudeStitchReopenSevere": "Fresh stitch reopen severity",
     "Sandbox_EmergencyMedical_CrudeStitchReopenSevere_tooltip": "Deep wound recovery time from excising a fresh crude stitch (first quarter); above 10 shows as severe.",
     "Sandbox_EmergencyMedical_CrudeStitchReopenModerate": "Stitch reopen severity - moderate",

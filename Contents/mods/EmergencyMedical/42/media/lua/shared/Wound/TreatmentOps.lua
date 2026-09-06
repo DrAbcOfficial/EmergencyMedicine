@@ -188,10 +188,12 @@ function EMTreatment_InfectWound(patient, part)
     syncBodyPart(part, EM_INFECT_SYNC_FLAGS)
 end
 
--- glue / stapler field repair of a deep wound: the wound itself stays,
--- the part gains the "CrudeStitched" state for 120 days (per-minute
--- pain boost in BodyWoundSimulation.lua). Eligibility: an open deep
--- wound, not bandaged up, not properly stitched, no crude stitching yet.
+-- glue / stapler field repair of a deep wound: the crude repair CLOSES
+-- the wound -- deep wound and bleeding are removed (the reopen happens
+-- on scalpel excision, by age) and the part gains the "CrudeStitched"
+-- state for "CrudeStitchedDurationDays" (per-minute pain boost in
+-- BodyWoundSimulation.lua). Eligibility: an open deep wound, not
+-- bandaged up, not properly stitched, no crude stitching yet.
 function EMCrudeStitch_IsEligiblePart(patient, part)
     if part == nil or not part:deepWounded() or part:getDeepWoundTime() <= 0.0 then
         return false
@@ -206,7 +208,14 @@ function EMCrudeStitch_IsEligiblePart(patient, part)
 end
 
 function EMTreatment_CrudeStitch(patient, part)
-    -- duration comes from the CrudeStitched def (120 days)
+    -- close the wound: deep wound and bleeding are gone (the reopen
+    -- happens on scalpel excision, by age)
+    part:setDeepWoundTime(0.0)
+    part:setDeepWounded(false)
+    part:setBleeding(false)
+    part:setBleedingTime(0.0)
+    syncBodyPart(part, EM_BODYWOUND_SYNC_FLAGS)
+    -- duration comes from the CrudeStitched def ("CrudeStitchedDurationDays")
     return EM_Wound_Add(patient, part, "CrudeStitched")
 end
 
@@ -227,11 +236,12 @@ function EMTreatment_RemoveCrudeStitch(patient, part)
     -- read the stitching age BEFORE taking the state off
     local level = EM_Wound_GetLevel(patient, part, "CrudeStitched")
     EM_Wound_Remove(patient, part, "CrudeStitched")
-    -- reopen: deep wound by age, moderate bleeding, a painful sting
-    -- ("RemoveCrudeStitchPain" sandbox option)
+    -- reopen: deep wound by age, moderate bleeding, pain pushed to the
+    -- "RemoveCrudeStitchPain" sandbox value (default 100 = max)
+    part:setDeepWounded(true)
     part:setDeepWoundTime(EM_Sandbox_Get(CRUDE_STITCH_REOPEN_OPTION[level] or "CrudeStitchReopenModerate"))
     part:setBleeding(true)
     part:setBleedingTime(10.0)
-    part:setAdditionalPain(math.min(part:getAdditionalPain() + EM_Sandbox_Get("RemoveCrudeStitchPain"), 100.0))
+    part:setAdditionalPain(math.max(part:getAdditionalPain(), EM_Sandbox_Get("RemoveCrudeStitchPain")))
     syncBodyPart(part, EM_BODYWOUND_SYNC_FLAGS)
 end

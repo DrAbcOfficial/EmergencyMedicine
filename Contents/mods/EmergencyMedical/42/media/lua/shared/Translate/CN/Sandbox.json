@@ -31,7 +31,7 @@
     "Sandbox_EmergencyMedical_CrudeStitchPainBoost": "粗糙缝合疼痛增幅",
     "Sandbox_EmergencyMedical_CrudeStitchPainBoost_tooltip": "粗糙缝合期间，部位每个伤口额外增加该比例的疼痛（0.2 即加两成疼痛，0 为关闭）",
     "Sandbox_EmergencyMedical_RemoveCrudeStitchPain": "切除粗糙缝合疼痛",
-    "Sandbox_EmergencyMedical_RemoveCrudeStitchPain_tooltip": "用手术刀切除粗糙缝合时附加的疼痛",
+    "Sandbox_EmergencyMedical_RemoveCrudeStitchPain_tooltip": "用手术刀切除粗糙缝合时，部位疼痛会被拉到该值（默认 100 即最大）",
     "Sandbox_EmergencyMedical_CrudeStitchReopenSevere": "新鲜缝合重开严重度",
     "Sandbox_EmergencyMedical_CrudeStitchReopenSevere_tooltip": "切除新鲜粗糙缝合（前四分之一时期）得到的深伤口恢复时间，大于 10 显示为严重",
     "Sandbox_EmergencyMedical_CrudeStitchReopenModerate": "缝合重开严重度-中",
