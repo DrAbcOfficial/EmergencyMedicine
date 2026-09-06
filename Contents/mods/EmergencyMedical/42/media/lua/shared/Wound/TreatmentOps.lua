@@ -22,6 +22,16 @@ EM_BODYWOUND_SYNC_FLAGS = 1 + 2 + 8 + 16 + 32 + 256 + 131072 + 262144 + 4194304
     + 4 + 64 + 4096 + 8192 + 32768 + 65536
     + 274877906944 + 549755813888 + 1073741824
 
+-- the cut-bite op also touches the embedded-glass flag
+-- (BodyPartSyncPacket BD_haveGlass = 524288)
+EM_CUTBITE_SYNC_FLAGS = EM_BODYWOUND_SYNC_FLAGS + 524288
+
+-- a bite's biteTime starts at 50-80 (Fast Healer 30-50, Slow Healer
+-- 80-150) and ONLY decays from there -- the bite is considered
+-- established (the Knox virus has had time to transfer) once it decayed
+-- below this threshold; cutting must happen while the bite is fresh
+EM_CUTBITE_FRESH_BITETIME = 30
+
 -- scratch / laceration / bite, without deep wound; bandages must come
 -- off first; parts already carrying the vanilla cauterized flag are done
 function EMCauterize_IsEligiblePart(part)
@@ -105,4 +115,59 @@ end
 -- state removal transmits itself
 function EMTreatment_RemovePatch(patient, part)
     EM_Wound_Remove(patient, part, "FentanylPatch")
+end
+
+-- a FRESH bite can be cut out with a blade (sharp knife / broken glass):
+-- the bite and the part-level Knox flag it carries are excised before
+-- the virus establishes itself. Eligibility: the bite is fresh
+-- (EM_CUTBITE_FRESH_BITETIME), not bandaged up (wound access), and the
+-- part has no other open deep wound.
+function EMCutBite_IsEligiblePart(part)
+    if part == nil or not part:bitten() or part:bandaged() or part:deepWounded() then
+        return false
+    end
+    return part:getBiteTime() >= EM_CUTBITE_FRESH_BITETIME
+end
+
+-- the excision itself: the bite becomes a deep wound (vanilla severity
+-- roll, already "severe" on the panel) at MAX bleeding and MAX pain;
+-- broken glass leaves shards embedded (vanilla haveGlass, removable
+-- through the vanilla health panel). The overall Knox state is only
+-- reset when no OTHER part carries the infection -- cutting must never
+-- cure an infection that already established itself elsewhere.
+function EMTreatment_CutBite(patient, part, useGlass)
+    -- SetBitten(false, *) does NOT clear isInfected -- set explicitly
+    part:SetBitten(false, false)
+    part:setBiteTime(0.0)
+    part:SetInfected(false)
+    part:SetFakeInfected(false)
+
+    part:generateDeepWound()
+    part:setBleeding(true)
+    part:setBleedingTime(100.0)
+    part:setAdditionalPain(100.0)
+    if useGlass then
+        part:setHaveGlass(true)
+    end
+    syncBodyPart(part, EM_CUTBITE_SYNC_FLAGS)
+
+    local bodyDamage = patient:getBodyDamage()
+    if bodyDamage:isInfected() then
+        local infectedElsewhere = false
+        local parts = bodyDamage:getBodyParts()
+        for i = 0, parts:size() - 1 do
+            if i ~= part:getIndex() and parts:get(i):IsInfected() then
+                infectedElsewhere = true
+                break
+            end
+        end
+        if not infectedElsewhere then
+            bodyDamage:setInfected(false)
+            bodyDamage:setInfectionTime(-1.0)
+            bodyDamage:setInfectionMortalityDuration(-1.0)
+            local stats = patient:getStats()
+            stats:set(CharacterStat.ZOMBIE_INFECTION, 0.0)
+            stats:set(CharacterStat.ZOMBIE_FEVER, 0.0)
+        end
+    end
 end

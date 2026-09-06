@@ -58,6 +58,12 @@ local function onClientCommand(module, command, player, args)
                 EMTreatment_RemovePatch(patient, part)
             end
         end)
+    elseif command == "CutBite" then
+        handleTreatment(player, args, function(patient, part)
+            if EMCutBite_IsEligiblePart(part) then
+                EMTreatment_CutBite(patient, part, args.glass == true)
+            end
+        end)
     elseif command == "TakeDrug" then
         -- self-use drug effect: the taker is the sender (consumption of
         -- the pill itself is vanilla client-side via JustTookPill ->
