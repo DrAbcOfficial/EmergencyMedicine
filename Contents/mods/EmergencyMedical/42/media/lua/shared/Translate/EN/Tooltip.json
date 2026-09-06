@@ -1,3 +1,6 @@
 {
-    "Tooltip_morphine": "Restores health up to 75%% but does not heal wounds."
+    "Tooltip_morphine": "Instantly restores health, kills all pain and clears the mind, but does not heal wounds. Highly addictive.",
+    "Tooltip_naloxone": "An opioid antagonist. Eases addiction, but leaves you hungry and parched.",
+    "Tooltip_fentanyl": "A potent synthetic opioid. Instantly restores health, soothes all wounds, kills all pain and clears the mind. Extremely addictive.",
+    "Tooltip_oxycontin": "A mild opioid painkiller. Restores some health and takes the edge off. Somewhat addictive."
 }

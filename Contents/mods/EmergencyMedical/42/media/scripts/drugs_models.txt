@@ -1,0 +1,23 @@
+	module EmergencyMedical
+	{
+	    model MorphineAmpoule
+	    {
+	        mesh = WorldItems/Ampoule,
+	        texture = WorldItems/MorphineAmpoule,
+	    }
+	    model NaloxoneAmpoule
+	    {
+	        mesh = WorldItems/Ampoule,
+	        texture = WorldItems/NaloxoneAmpoule,
+	    }
+	    model FentanylAmpoule
+	    {
+	        mesh = WorldItems/Ampoule,
+	        texture = WorldItems/FentanylAmpoule,
+	    }
+	    model OxyContinBottle
+	    {
+	        mesh = WorldItems/PillsBottle,
+	        texture = WorldItems/OxyContinBottle,
+	    }
+	}

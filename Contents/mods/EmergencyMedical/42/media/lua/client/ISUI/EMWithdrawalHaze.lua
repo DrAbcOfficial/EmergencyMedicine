@@ -1,5 +1,5 @@
 -- Client-only: withdrawal screen haze (the status values themselves live
--- in shared/AddictionCommon.lua). Purely local-player, no server side.
+-- in shared/Opioid/). Purely local-player, no server side.
 --
 -- A fullscreen dark vignette (media/ui/EMWithdrawalBlur.png) fades in
 -- with the raw withdrawal value, up to 0.87 alpha at full withdrawal --
