@@ -1,8 +1,8 @@
-module EmergencyMedical
-{
-    model MorphineAmpoule
-    {
-        mesh = WorldItems/MorphineAmpoule,
-        texture = WorldItems/MorphineAmpoule,
-    }
-}
+	module EmergencyMedical
+	{
+	    model MorphineAmpoule
+	    {
+	        mesh = WorldItems/Ampoule,
+	        texture = WorldItems/MorphineAmpoule,
+	    }
+	}
