@@ -26,6 +26,10 @@ EM_BODYWOUND_SYNC_FLAGS = 1 + 2 + 8 + 16 + 32 + 256 + 131072 + 262144 + 4194304
 -- (BodyPartSyncPacket BD_haveGlass = 524288)
 EM_CUTBITE_SYNC_FLAGS = EM_BODYWOUND_SYNC_FLAGS + 524288
 
+-- the grass-bandage op only touches the local wound infection flags
+-- (BodyPartSyncPacket BD_woundInfectionLevel = 32768, BD_infectedWound = 65536)
+EM_INFECT_SYNC_FLAGS = 32768 + 65536
+
 -- a bite's biteTime starts at 50-80 (Fast Healer 30-50, Slow Healer
 -- 80-150) and ONLY decays from there -- the bite is considered
 -- established (the Knox virus has had time to transfer) once it decayed
@@ -170,4 +174,16 @@ function EMTreatment_CutBite(patient, part, useGlass)
             stats:set(CharacterStat.ZOMBIE_FEVER, 0.0)
         end
     end
+end
+
+-- crude grass bandage: GUARANTEES a local wound infection on the treated
+-- part (dirty grass on an open wound -- NOT the Knox virus). The level
+-- starts minimal and grows per the vanilla wound-infection rules; an
+-- already-infected part keeps its existing level.
+function EMTreatment_InfectWound(patient, part)
+    if not part:isInfectedWound() then
+        part:setInfectedWound(true)
+        part:setWoundInfectionLevel(1.0)
+    end
+    syncBodyPart(part, EM_INFECT_SYNC_FLAGS)
 end

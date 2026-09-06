@@ -1,0 +1,16 @@
+module EmergencyMedical
+{
+    item GrassBandage
+    {
+        DisplayCategory = FirstAid,
+        ItemType = base:normal,
+        Weight = 0.1,
+        Icon = grassbandages,
+        Medical = true,
+        BandagePower = 1.0,
+        CanBandage = true,
+        Tooltip = Tooltip_GrassBandage,
+        WorldStaticModel = GrassBandage,
+        Tags = base:nopour,
+    }
+}

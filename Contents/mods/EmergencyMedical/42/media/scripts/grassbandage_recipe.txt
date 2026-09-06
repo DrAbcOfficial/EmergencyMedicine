@@ -1,0 +1,18 @@
+module EmergencyMedical
+{
+    craftRecipe MakeGrassBandage
+    {
+        timedAction = RipClothing,
+        time = 100,
+        Tags = InHandCraft;Health;CanBeDoneFromFloor,
+        category = Medical,
+        inputs
+        {
+            item 10 [Base.GrassTuft;Base.HayTuft] flags[ItemCount],
+        }
+        outputs
+        {
+            item 1 EmergencyMedical.GrassBandage,
+        }
+    }
+}

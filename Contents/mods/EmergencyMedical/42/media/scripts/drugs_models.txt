@@ -47,4 +47,10 @@
 	        mesh = WorldItems/Ampoule,
 	        texture = WorldItems/DexmedetomidineAmpoule,
 	    }
+	    model GrassBandage
+	    {
+	        mesh = WorldItems/Bandage,
+	        texture = WorldItems/GrassBandages,
+	        scale = 0.15,
+	    }
 	}
