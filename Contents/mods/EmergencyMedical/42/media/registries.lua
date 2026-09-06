@@ -6,3 +6,4 @@
 EM = EM or {}
 EM.MoodleTypes = {}
 EM.MoodleTypes.OpioidAddiction = MoodleType.register("EmergencyMedical:OpioidAddiction")
+EM.MoodleTypes.OpioidWithdrawal = MoodleType.register("EmergencyMedical:OpioidWithdrawal")
