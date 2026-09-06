@@ -14,9 +14,9 @@ require "TimedActions/ISBaseTimedAction"
 
 ISRemoveScabAction = ISBaseTimedAction:derive("ISRemoveScabAction")
 
-local REMOVE_SCAB_PAIN = 10
--- scratchTime per scab age level (see EM_Wound_GetLevel default)
-local SCAB_SCRATCH_TIME = { [4] = 18, [3] = 15, [2] = 8, [1] = 3 }
+local REMOVE_SCAB_PAIN_OPTION = "RemoveScabPain"
+-- scratchTime sandbox option per scab age level (see EM_Wound_GetLevel default)
+local SCAB_SCRATCH_OPTION = { [4] = "ScabScratchSevere", [3] = "ScabScratchModerate", [2] = "ScabScratchLight", [1] = "ScabScratchOld" }
 
 function EMRemoveScab_IsEligiblePart(patient, part)
     if patient == nil or part == nil then
@@ -96,8 +96,8 @@ function ISRemoveScabAction:complete()
     part:SetCauterized(false)
     -- forceNoInfection = true: picking a scab must never roll the Knox virus
     part:setScratched(true, true)
-    part:setScratchTime(SCAB_SCRATCH_TIME[level] or 15)
-    part:setAdditionalPain(math.min(part:getAdditionalPain() + REMOVE_SCAB_PAIN, 100.0))
+    part:setScratchTime(EM_Sandbox_Get(SCAB_SCRATCH_OPTION[level] or "ScabScratchModerate"))
+    part:setAdditionalPain(math.min(part:getAdditionalPain() + EM_Sandbox_Get(REMOVE_SCAB_PAIN_OPTION), 100.0))
     syncBodyPart(part, EM_BODYWOUND_SYNC_FLAGS)
     return true
 end

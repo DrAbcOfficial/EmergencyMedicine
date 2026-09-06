@@ -2,8 +2,9 @@
 -- in shared/Opioid/). Purely local-player, no server side.
 --
 -- A fullscreen dark vignette (media/ui/EMWithdrawalBlur.png) fades in
--- with the raw withdrawal value, up to 0.87 alpha at full withdrawal --
--- deliberately dark enough to hamper play. B42 has no Lua-reachable
+-- with the raw withdrawal value, up to the "HazeMaxAlpha" sandbox option
+-- (default 0.87) at full withdrawal -- deliberately dark enough to
+-- hamper play; 0 disables the haze. B42 has no Lua-reachable
 -- true-blur postprocess: the vanilla drunk shader runs off the
 -- INTOXICATION stat (drunk moodle / stagger / fall-down side effects we
 -- do not want) and the glasses blurFactor has no setter, so the vignette
@@ -62,7 +63,7 @@ function EMWithdrawalOverlayPanel:render()
     if value <= 0.15 then
         return
     end
-    local alpha = (value - 0.15) / 0.85 * 0.87
+    local alpha = (value - 0.15) / 0.85 * EM_Sandbox_Get("HazeMaxAlpha")
     local tex = getTexture(BLUR_TEXTURE)
     if tex == nil then
         return

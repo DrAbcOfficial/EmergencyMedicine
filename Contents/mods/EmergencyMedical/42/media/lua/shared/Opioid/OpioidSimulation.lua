@@ -22,9 +22,11 @@
 -- partial cold turkey from baseline p in (0.5, 0.83) floors at
 -- 1.25 - 1.5*p and needs another high before the next grind.
 
-local DECAY_PER_MINUTE = 0.0005
-local WITHDRAWAL_RISE = 1 / 180
-local WITHDRAWAL_FALL = 0.0002
+-- The rates are sandbox-configurable, read every tick so option changes
+-- apply from the next game minute on. "WithdrawalFallRate" and
+-- "AddictionDecayRate" are fractions of the full value PER GAME DAY
+-- (defaults 0.288 / 0.72); they are converted to the per-minute decimals
+-- by dividing by 1440 (0.0002 / 0.0005 per minute as before).
 
 local function minuteTick(player)
     if player == nil then
@@ -38,19 +40,21 @@ local function minuteTick(player)
     end
     local withdrawal = EM_Withdrawal_Get(player)
     -- Withdrawal chases the baseline: climbs fast while below it (the
-    -- whole gap closes within 3 game hours), wears off slowly above it.
+    -- whole gap closes within the configured climb time), wears off
+    -- slowly above it.
     local newWithdrawal = withdrawal
     if withdrawal < addiction then
-        newWithdrawal = math.min(addiction, withdrawal + addiction * WITHDRAWAL_RISE)
+        local climbMinutes = EM_Sandbox_Get("WithdrawalClimbMinutes")
+        newWithdrawal = math.min(addiction, withdrawal + addiction / math.max(climbMinutes, 1))
     elseif withdrawal > addiction then
-        newWithdrawal = math.max(addiction, withdrawal - WITHDRAWAL_FALL)
+        newWithdrawal = math.max(addiction, withdrawal - EM_Sandbox_Get("WithdrawalFallRate") / 1440)
     end
     if newWithdrawal ~= withdrawal then
         EM_Withdrawal_Set(player, newWithdrawal)
     end
     -- Only severe withdrawal (cold turkey) grinds the baseline down.
     if newWithdrawal >= EM_Withdrawal_GetSevereLevel() then
-        EM_Addiction_Set(player, addiction - DECAY_PER_MINUTE)
+        EM_Addiction_Set(player, addiction - EM_Sandbox_Get("AddictionDecayRate") / 1440)
         if EM_Addiction_Get(player) <= 0 then
             EM_Withdrawal_Set(player, 0)
         end

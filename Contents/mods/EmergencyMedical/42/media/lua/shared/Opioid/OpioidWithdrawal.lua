@@ -4,12 +4,9 @@
 -- OpioidSimulation.lua; the addiction baseline in OpioidAddiction.lua.
 
 local WITHDRAWAL_KEY = "EM_OpioidWithdrawal"
--- tier 3 ("severe") entry: the addiction decay gate and the limp tier in
--- the original design -- exactly where the display flips to the severe
--- description
+-- tier 3 ("severe") entry: the addiction decay gate and the display flip
+-- to the severe description -- exactly where the levels are aligned
 local SEVERE_LEVEL = 0.5
--- how much one opioid shot knocks off the sickness
-local WITHDRAWAL_RELIEF = 0.35
 
 local function ModData(player)
     local data = player and player:getModData()
@@ -69,11 +66,12 @@ function EM_Withdrawal_GetSevereLevel()
     return SEVERE_LEVEL
 end
 
--- One opioid shot knocks the sickness down by the standard relief;
--- drugs with a different strength pass their own amount.
+-- One opioid shot knocks the sickness down by the "InjectionRelief"
+-- sandbox amount (default 0.35); drugs with a different strength pass
+-- their own amount.
 function EM_Withdrawal_Relieve(player, amount)
     if amount == nil then
-        amount = WITHDRAWAL_RELIEF
+        amount = EM_Sandbox_Get("InjectionRelief")
     end
     EM_Withdrawal_Set(player, EM_Withdrawal_Get(player) - amount)
 end

@@ -1,7 +1,8 @@
 -- Fentanyl: instant full heal, every wound severity knocked down to its
 -- minimum of 1 (still present, just barely -- not removed), the vanilla
 -- painkiller state at full strength, boredom/unhappiness/panic wiped,
--- withdrawal cleared outright, +100% addiction (straight to the cap).
+-- withdrawal cut by the "FentanylRelief" fraction (1.0 = cleared
+-- outright), + "FentanylAddiction" addiction (default 1.0 = the cap).
 function InjectFentanyl(player)
     EMDrug_HealToFull(player)
     local parts = player:getBodyDamage():getBodyParts()
@@ -31,6 +32,6 @@ function InjectFentanyl(player)
     end
     EMDrug_FullPainkiller(player)
     EMDrug_ClearMind(player)
-    EM_Withdrawal_Set(player, 0)
-    EMDrug_ChangeAddiction(player, 1.0)
+    EM_Withdrawal_Set(player, EM_Withdrawal_Get(player) * (1 - EM_Sandbox_Get("FentanylRelief")))
+    EMDrug_ChangeAddiction(player, EM_Sandbox_Get("FentanylAddiction"))
 end

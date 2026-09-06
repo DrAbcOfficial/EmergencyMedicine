@@ -9,7 +9,8 @@
 -- own client and sent up with transmitModData() so the server saves it.
 
 local MOD_KEY = "EM_OpioidAddiction"
-local ADDICTION_PER_INJECTION = 0.5
+-- per-injection gain is the "MorphineAddictionGain" sandbox option
+-- (default 0.5), read at injection time
 
 local function ModData(player)
     local data = player and player:getModData()
@@ -82,7 +83,7 @@ function EM_Addiction_UseInjection(player)
     if data == nil then
         return
     end
-    EM_Addiction_Set(player, EM_Addiction_Get(player) + ADDICTION_PER_INJECTION)
+    EM_Addiction_Set(player, EM_Addiction_Get(player) + EM_Sandbox_Get("MorphineAddictionGain"))
     EM_Withdrawal_Relieve(player)
     if isClient() and player:isLocalPlayer() then
         player:transmitModData()

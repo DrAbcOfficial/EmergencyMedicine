@@ -12,16 +12,16 @@
 --     persists + syncs over MP for free (BodyDamageSync BD_IsCauterized).
 --     A NEW wound on the part clears the flag again (vanilla behaviour).
 --   - pain spike + small burn damage on the part
---   - EM_Wound_Add(..., "Cauterized"): the 365-day scab state (custom
---     manager, see shared/Wound/).
+--   - EM_Wound_Add(..., "Cauterized"): the long-lived scab state
+--     (default 90 days, sandbox option; custom manager, shared/Wound/).
 -- The eligibility predicate is shared with the health-panel hook (both
 -- resolve it at runtime).
 require "TimedActions/ISBaseTimedAction"
 
 ISCauterizeAction = ISBaseTimedAction:derive("ISCauterizeAction")
 
-local CAUTERIZE_PAIN = 35
-local CAUTERIZE_BURN_DAMAGE = 5
+-- Pain spike and burn damage are sandbox-configurable
+-- (EM_Sandbox_Get "CauterizePain" / "CauterizeDamage")
 -- BodyPartSyncPacket bits (sum): Health|bandaged|bleeding|IsBleedingStemmed|
 -- IsCauterized|deepWounded|bleedingTime|deepWoundTime|additionalPain|
 -- bitten|scratched|scratchTime|biteTime|woundInfectionLevel|infectedWound|
@@ -122,8 +122,8 @@ function ISCauterizeAction:complete()
     part:setWoundInfectionLevel(0.0)
     part:SetCauterized(true)
     part:setBleedingTime(0.0)
-    part:setAdditionalPain(math.min(part:getAdditionalPain() + CAUTERIZE_PAIN, 100.0))
-    part:ReduceHealth(CAUTERIZE_BURN_DAMAGE)
+    part:setAdditionalPain(math.min(part:getAdditionalPain() + EM_Sandbox_Get("CauterizePain"), 100.0))
+    part:ReduceHealth(EM_Sandbox_Get("CauterizeDamage"))
     syncBodyPart(part, EM_BODYWOUND_SYNC_FLAGS)
     EM_Wound_Add(self.patient, part, "Cauterized")
     return true

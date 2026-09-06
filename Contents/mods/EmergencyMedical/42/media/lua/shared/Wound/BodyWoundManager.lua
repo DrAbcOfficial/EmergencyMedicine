@@ -16,7 +16,7 @@
 -- from wherever the feature applies.
 
 local DATA_KEY = "EM_BodyWounds"
-local DEFAULT_DURATION_DAYS = 365
+local DEFAULT_DURATION_DAYS = 90
 
 local types = {}
 
@@ -69,7 +69,9 @@ local function transmit(player)
 end
 
 -- def = {
---   durationDays = number            -- default 365
+--   durationDays = number | function  -- default 90; a function is
+--                                     -- resolved when the state is added
+--                                     -- (sandbox-configurable durations)
 --   panelLabelKey = "IGUI_..."       -- health panel wound line label
 --                                    -- (rendered by client/Wound/BodyPartPanel.lua)
 --   getLevel = function(state, player, partKey)  -- optional, default: age quartiles 4..1
@@ -107,7 +109,14 @@ function EM_Wound_Add(player, part, id, durationDays)
         data[partKey] = states
     end
     local t = player:getHoursSurvived()
-    local state = { applied = t, expire = t + (durationDays or def.durationDays) * 24 }
+    local days = durationDays ~= nil and durationDays or def.durationDays
+    if type(days) == "function" then
+        days = days()
+    end
+    if days == nil then
+        days = DEFAULT_DURATION_DAYS
+    end
+    local state = { applied = t, expire = t + days * 24 }
     states[id] = state
     if def.onAdd then
         def.onAdd(player, part)
