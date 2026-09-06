@@ -1,12 +1,5 @@
 module EmergencyMedical
 {
-    imports {
-        Base
-    }
-
-    // Mirror of the vanilla painkiller pattern (Base.Pills):
-    // base:drainable + Tags base:consumable => vanilla "Take" pills context menu,
-    // ISTakePillAction cast/progress, custom effect via ISTakePillAction.complete hook.
     item morphine
     {
         DisplayCategory = FirstAid,
@@ -14,8 +7,8 @@ module EmergencyMedical
         Weight = 0.1,
         Icon = morphine,
         Medical = true,
-        StaticModel = EmergencyMedical.MorphineAmpoule,
-        WorldStaticModel = EmergencyMedical.MorphineAmpoule,
+        StaticModel = MorphineAmpoule,
+        WorldStaticModel = MorphineAmpoule,
         Tooltip = Tooltip_morphine,
         UseDelta = 1.0,
         UseWhileEquipped = false,
