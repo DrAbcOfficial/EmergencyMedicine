@@ -87,6 +87,20 @@ function EM_Addiction_GetLevel(player)
     return 0
 end
 
+-- Display tier for flavour text: 1 = mild (level 1), 2 = moderate
+-- (levels 2-3), 3 = severe (level 4). 0 = no addiction.
+function EM_Addiction_GetTier(player)
+    local level = EM_Addiction_GetLevel(player)
+    if level <= 0 then
+        return 0
+    elseif level == 1 then
+        return 1
+    elseif level >= 4 then
+        return 3
+    end
+    return 2
+end
+
 function EM_Addiction_IsSevere(player)
     return EM_Addiction_Get(player) >= SEVERE_LEVEL
 end

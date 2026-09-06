@@ -28,6 +28,12 @@ local function player(playerObj)
     return playerObj
 end
 
+local tierDescKeys = {
+    [1] = "IGUI_health_AddictionDescMild",
+    [2] = "IGUI_health_AddictionDescModerate",
+    [3] = "IGUI_health_AddictionDescSevere",
+}
+
 EMStatusIcons.RegisterStatus("OpioidAddiction", {
     moodleType = EM_Addiction_GetMoodleType(),
     icon = "media/ui/Moodles/OpioidAddictionIcon.png",
@@ -39,15 +45,13 @@ EMStatusIcons.RegisterStatus("OpioidAddiction", {
         return EM_Addiction_GetLevel(playerObj)
     end,
     getName = function(playerObj)
-        if playerObj ~= nil and EM_Addiction_IsSevere(playerObj) then
-            return getText("IGUI_health_AddictionSevere")
-        end
         return getText("IGUI_health_Addiction")
     end,
     getDesc = function(playerObj)
-        if playerObj ~= nil and EM_Addiction_IsSevere(playerObj) then
-            return getText("IGUI_health_AddictionDescSevere")
+        local key = tierDescKeys[EM_Addiction_GetTier(playerObj)]
+        if playerObj == nil or key == nil then
+            return ""
         end
-        return getText("IGUI_health_AddictionDesc")
+        return getText(key)
     end,
 })

@@ -2,7 +2,7 @@
     "IGUI_Morphine_Success": "Injection complete",
     "IGUI_Morphine_Failed": "(Adverse reaction)",
     "IGUI_health_Addiction": "Opioid addiction",
-    "IGUI_health_AddictionSevere": "Severe opioid addiction, vision and perception impaired",
-    "IGUI_health_AddictionDesc": "Dependence on morphine; mild dependence has little effect.",
-    "IGUI_health_AddictionDescSevere": "Reduced vision range, weakened perception (hearing, attention)."
+    "IGUI_health_AddictionDescMild": "You're starting to like this feeling.",
+    "IGUI_health_AddictionDescModerate": "One more time wouldn't hurt.",
+    "IGUI_health_AddictionDescSevere": "I need it I need it I need it I need it I need it"
 }
