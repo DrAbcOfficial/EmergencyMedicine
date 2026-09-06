@@ -1,5 +1,4 @@
 {
-    "IGUI_Morphine_Success": "注射完毕",
     "IGUI_health_Addiction": "阿片成瘾",
     "IGUI_health_AddictionDescMild": "有点喜欢上这种感觉了",
     "IGUI_health_AddictionDescModerate": "再来一次不会怎么样的",
@@ -8,5 +7,8 @@
     "IGUI_health_WithdrawalDescMild": "有点难受",
     "IGUI_health_WithdrawalDescModerate": "好难受，没法不想它",
     "IGUI_health_WithdrawalDescSevere": "我感觉浑身都在燃烧",
-    "IGUI_health_WithdrawalDescExtreme": "它在哪它在哪它在哪"
+    "IGUI_health_WithdrawalDescExtreme": "它在哪它在哪它在哪",
+    "IGUI_health_Cauterize": "灼烧伤口",
+    "IGUI_health_RemoveScab": "移除结痂",
+    "IGUI_health_CauterizedWound": "灼烧结痂"
 }

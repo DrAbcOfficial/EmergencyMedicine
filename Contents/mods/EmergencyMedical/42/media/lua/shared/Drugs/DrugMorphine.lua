@@ -6,6 +6,5 @@ function InjectMorphine(player)
     EMDrug_HealToFull(player)
     EMDrug_FullPainkiller(player)
     EMDrug_ClearMind(player)
-    player:Say(getText("IGUI_Morphine_Success"))
     EM_Addiction_UseInjection(player)
 end

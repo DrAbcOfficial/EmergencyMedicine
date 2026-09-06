@@ -1,5 +1,4 @@
 {
-    "IGUI_Morphine_Success": "Injection complete",
     "IGUI_health_Addiction": "Opioid addiction",
     "IGUI_health_AddictionDescMild": "You're starting to like this feeling.",
     "IGUI_health_AddictionDescModerate": "One more time wouldn't hurt.",
@@ -8,5 +7,8 @@
     "IGUI_health_WithdrawalDescMild": "You're feeling a bit rough.",
     "IGUI_health_WithdrawalDescModerate": "It hurts so much you just can't stop thinking about it.",
     "IGUI_health_WithdrawalDescSevere": "I feel like I'm burning up all over.",
-    "IGUI_health_WithdrawalDescExtreme": "Where is it where is it where is it"
+    "IGUI_health_WithdrawalDescExtreme": "Where is it where is it where is it",
+    "IGUI_health_Cauterize": "Cauterize wound",
+    "IGUI_health_RemoveScab": "Remove scab",
+    "IGUI_health_CauterizedWound": "Cauterized wound"
 }
