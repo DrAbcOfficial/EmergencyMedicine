@@ -1,6 +1,6 @@
--- Ampoule drugs (morphine / naloxone / fentanyl) play the bandage
--- animation for the head/neck instead of the pill-taking animation: the
--- vanilla self-bandage flow (ISApplyBandage.lua:start) does
+-- Ampoule drugs (morphine / naloxone / fentanyl / dexmedetomidine) play
+-- the bandage animation for the head/neck instead of the pill-taking
+-- animation: the vanilla self-bandage flow (ISApplyBandage.lua:start) does
 --   setActionAnim(CharacterActionAnims.Bandage)
 --   setAnimVariable("BandageType", ISHealthPanel.getBandageType(part))
 --   reportEvent("EventBandage")
@@ -17,6 +17,7 @@ local PILL_BANDAGE_ANIM = {
     ["EmergencyMedical.morphine"] = "Head",
     ["EmergencyMedical.naloxone"] = "Head",
     ["EmergencyMedical.fentanyl"] = "Head",
+    ["EmergencyMedical.dexmedetomidine"] = "Head",
     ["EmergencyMedical.sufentanil"] = "RightArm",
 }
 
