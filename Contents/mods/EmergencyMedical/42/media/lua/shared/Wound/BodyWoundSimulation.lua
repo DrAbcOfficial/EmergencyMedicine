@@ -4,6 +4,9 @@
 -- handles the local player.
 --
 -- Rules, every game minute:
+-- * a part carrying the "CrudeStitched" state (glue/stapler field
+--   repair) hurts +20% more from its wounds: additionalPain floors at
+--   the wound-generated pain x 0.2 while the state lasts
 -- * a part carrying the "Cauterized" scab keeps a fixed pain floor:
 --   additionalPain never drops below the "ScabPainFloor" sandbox value
 --   while the scab lasts. Pain would otherwise decay away within a day;
@@ -46,14 +49,21 @@ local function minuteTick(player)
         return
     end
     tickFentanylPatch(player)
-    local painFloor = EM_Sandbox_Get("ScabPainFloor")
-    if painFloor == nil or painFloor <= 0 then
-        return
-    end
     local parts = player:getBodyDamage():getBodyParts()
+    local painFloor = EM_Sandbox_Get("ScabPainFloor")
     for i = 0, parts:size() - 1 do
         local part = parts:get(i)
-        if EM_Wound_Has(player, part, "Cauterized") and part:getAdditionalPain() < painFloor then
+        if EM_Wound_Has(player, part, "CrudeStitched") then
+            -- crude stitching: every wound on the part hurts +20% while
+            -- the state lasts (floor = the wound-generated pain x 0.2)
+            local woundPain = part:getPain() - part:getAdditionalPain(true)
+            local floor = woundPain * 0.2
+            if floor > 0 and part:getAdditionalPain() < floor then
+                part:setAdditionalPain(floor)
+            end
+        end
+        if painFloor ~= nil and painFloor > 0
+            and EM_Wound_Has(player, part, "Cauterized") and part:getAdditionalPain() < painFloor then
             part:setAdditionalPain(painFloor)
         end
     end

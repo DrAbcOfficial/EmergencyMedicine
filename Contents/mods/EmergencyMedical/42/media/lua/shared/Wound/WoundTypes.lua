@@ -21,3 +21,12 @@ EM_Wound_Register("FentanylPatch", {
     end,
     panelLabelKey = "IGUI_health_FentanylPatch",
 })
+
+EM_Wound_Register("CrudeStitched", {
+    -- glue / stapler field repair of a deep wound: the wound stays, but
+    -- every wound on the part hurts +20% while the crude stitching lasts
+    -- (pain floor in BodyWoundSimulation.lua). The default age-quartile
+    -- levels drive the reopened wound severity on scalpel excision.
+    durationDays = 120,
+    panelLabelKey = "IGUI_health_CrudeStitched",
+})

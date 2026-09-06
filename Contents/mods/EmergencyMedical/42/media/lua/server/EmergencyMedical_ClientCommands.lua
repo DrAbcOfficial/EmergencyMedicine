@@ -64,6 +64,18 @@ local function onClientCommand(module, command, player, args)
                 EMTreatment_CutBite(patient, part, args.glass == true)
             end
         end)
+    elseif command == "CrudeStitch" then
+        handleTreatment(player, args, function(patient, part)
+            if EMCrudeStitch_IsEligiblePart(patient, part) then
+                EMTreatment_CrudeStitch(patient, part)
+            end
+        end)
+    elseif command == "RemoveCrudeStitch" then
+        handleTreatment(player, args, function(patient, part)
+            if EMRemoveCrudeStitch_IsEligiblePart(patient, part) then
+                EMTreatment_RemoveCrudeStitch(patient, part)
+            end
+        end)
     elseif command == "InfectWound" then
         handleTreatment(player, args, function(patient, part)
             EMTreatment_InfectWound(patient, part)

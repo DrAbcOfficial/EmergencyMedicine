@@ -187,3 +187,50 @@ function EMTreatment_InfectWound(patient, part)
     end
     syncBodyPart(part, EM_INFECT_SYNC_FLAGS)
 end
+
+-- glue / stapler field repair of a deep wound: the wound itself stays,
+-- the part gains the "CrudeStitched" state for 120 days (per-minute
+-- pain boost in BodyWoundSimulation.lua). Eligibility: an open deep
+-- wound, not bandaged up, not properly stitched, no crude stitching yet.
+function EMCrudeStitch_IsEligiblePart(patient, part)
+    if part == nil or not part:deepWounded() or part:getDeepWoundTime() <= 0.0 then
+        return false
+    end
+    if part:bandaged() or part:stitched() then
+        return false
+    end
+    if patient ~= nil and EM_Wound_Has(patient, part, "CrudeStitched") then
+        return false
+    end
+    return true
+end
+
+function EMTreatment_CrudeStitch(patient, part)
+    -- duration comes from the CrudeStitched def (120 days)
+    return EM_Wound_Add(patient, part, "CrudeStitched")
+end
+
+-- scalpel excision of the crude stitching: the wound REOPENS as a deep
+-- wound whose severity follows the stitching's age (default quartiles,
+-- 4 = freshest) -- a fresh repair reopens severely, an old one barely.
+-- panel deep-wound severity: > 10 severe, > 8 moderate.
+local CRUDE_STITCH_DEEP_WOUND = { [4] = 18.0, [3] = 15.0, [2] = 8.0, [1] = 3.0 }
+
+function EMRemoveCrudeStitch_IsEligiblePart(patient, part)
+    if patient == nil or part == nil then
+        return false
+    end
+    return EM_Wound_Has(patient, part, "CrudeStitched")
+end
+
+function EMTreatment_RemoveCrudeStitch(patient, part)
+    -- read the stitching age BEFORE taking the state off
+    local level = EM_Wound_GetLevel(patient, part, "CrudeStitched")
+    EM_Wound_Remove(patient, part, "CrudeStitched")
+    -- reopen: deep wound by age, moderate bleeding, a painful sting
+    part:setDeepWoundTime(CRUDE_STITCH_DEEP_WOUND[level] or 8.0)
+    part:setBleeding(true)
+    part:setBleedingTime(10.0)
+    part:setAdditionalPain(math.min(part:getAdditionalPain() + 10.0, 100.0))
+    syncBodyPart(part, EM_BODYWOUND_SYNC_FLAGS)
+end
