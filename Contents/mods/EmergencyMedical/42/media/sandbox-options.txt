@@ -110,36 +110,6 @@ option EmergencyMedical.InjectionRelief
     translation = EmergencyMedical_InjectionRelief,
 }
 
-option EmergencyMedical.WithdrawalClimbMinutes
-{
-    type = integer,
-    default = 180,
-    min = 30,
-    max = 720,
-    page = EmergencyMedical,
-    translation = EmergencyMedical_WithdrawalClimbMinutes,
-}
-
-option EmergencyMedical.WithdrawalFallRate
-{
-    type = double,
-    default = 0.288,
-    min = 0.0,
-    max = 1.0,
-    page = EmergencyMedical,
-    translation = EmergencyMedical_WithdrawalFallRate,
-}
-
-option EmergencyMedical.AddictionDecayRate
-{
-    type = double,
-    default = 0.72,
-    min = 0.0,
-    max = 1.0,
-    page = EmergencyMedical,
-    translation = EmergencyMedical_AddictionDecayRate,
-}
-
 option EmergencyMedical.FentanylAddiction
 {
     type = double,
@@ -198,6 +168,84 @@ option EmergencyMedical.NaloxoneHungerThirst
     max = 1.0,
     page = EmergencyMedical,
     translation = EmergencyMedical_NaloxoneHungerThirst,
+}
+
+option EmergencyMedical.WithdrawalClimbMinutes
+{
+    type = integer,
+    default = 180,
+    min = 30,
+    max = 720,
+    page = EmergencyMedical,
+    translation = EmergencyMedical_WithdrawalClimbMinutes,
+}
+
+option EmergencyMedical.WithdrawalFallRate
+{
+    type = double,
+    default = 0.288,
+    min = 0.0,
+    max = 1.0,
+    page = EmergencyMedical,
+    translation = EmergencyMedical_WithdrawalFallRate,
+}
+
+option EmergencyMedical.AddictionDecayRate
+{
+    type = double,
+    default = 0.72,
+    min = 0.0,
+    max = 1.0,
+    page = EmergencyMedical,
+    translation = EmergencyMedical_AddictionDecayRate,
+}
+
+option EmergencyMedical.SufentanilPatchDays
+{
+    type = integer,
+    default = 3,
+    min = 1,
+    max = 30,
+    page = EmergencyMedical,
+    translation = EmergencyMedical_SufentanilPatchDays,
+}
+
+option EmergencyMedical.SufentanilPainkillerPerMinute
+{
+    type = double,
+    default = 0.05,
+    min = 0.0,
+    max = 1.0,
+    page = EmergencyMedical,
+    translation = EmergencyMedical_SufentanilPainkillerPerMinute,
+}
+
+option EmergencyMedical.SufentanilWithdrawalRelief
+{
+    type = double,
+    default = 0.05,
+    min = 0.0,
+    max = 1.0,
+    page = EmergencyMedical,
+    translation = EmergencyMedical_SufentanilWithdrawalRelief,
+}
+
+option EmergencyMedical.SufentanilAddictionPerMinute
+{
+    type = double,
+    default = 0.01,
+    min = 0.0,
+    max = 1.0,
+    page = EmergencyMedical,
+    translation = EmergencyMedical_SufentanilAddictionPerMinute,
+}
+
+option EmergencyMedical.SufentanilClearMind
+{
+    type = boolean,
+    default = true,
+    page = EmergencyMedical,
+    translation = EmergencyMedical_SufentanilClearMind,
 }
 
 option EmergencyMedical.HazeMaxAlpha

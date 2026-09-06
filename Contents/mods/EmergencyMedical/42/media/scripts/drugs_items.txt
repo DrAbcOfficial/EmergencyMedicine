@@ -56,4 +56,18 @@ module EmergencyMedical
         UseWhileEquipped = false,
         Tags = base:consumable,
     }
+    item sufentanil
+    {
+        DisplayCategory = FirstAid,
+        ItemType = base:drainable,
+        Weight = 0.2,
+        Icon = sufentanil,
+        Medical = true,
+        Tooltip = Tooltip_sufentanil,
+        StaticModel = SufentanilBox,
+        WorldStaticModel = SufentanilBox,
+        UseDelta = 1.0,
+        UseWhileEquipped = false,
+        Tags = base:consumable,
+    }
 }

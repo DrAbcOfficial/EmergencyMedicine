@@ -41,5 +41,15 @@
     "Sandbox_EmergencyMedical_NaloxoneHungerThirst": "纳洛酮饥渴增加",
     "Sandbox_EmergencyMedical_NaloxoneHungerThirst_tooltip": "每支纳洛酮增加的饥饿与口渴值（0-1）",
     "Sandbox_EmergencyMedical_HazeMaxAlpha": "戒断暗雾最大不透明度",
-    "Sandbox_EmergencyMedical_HazeMaxAlpha_tooltip": "戒断满值时全屏暗雾的最大不透明度（0-1，0 为关闭暗雾）"
+    "Sandbox_EmergencyMedical_HazeMaxAlpha_tooltip": "戒断满值时全屏暗雾的最大不透明度（0-1，0 为关闭暗雾）",
+    "Sandbox_EmergencyMedical_SufentanilPatchDays": "贴剂持续天数",
+    "Sandbox_EmergencyMedical_SufentanilPatchDays_tooltip": "舒芬太尼贴剂在右上臂保留的天数，到期自动脱落",
+    "Sandbox_EmergencyMedical_SufentanilPainkillerPerMinute": "贴剂止疼药剂量",
+    "Sandbox_EmergencyMedical_SufentanilPainkillerPerMinute_tooltip": "贴用期间每游戏分钟增加的止疼药剂量（0-1，上限 1）",
+    "Sandbox_EmergencyMedical_SufentanilWithdrawalRelief": "贴剂戒断缓解",
+    "Sandbox_EmergencyMedical_SufentanilWithdrawalRelief_tooltip": "贴用期间每游戏分钟降低的戒断值（0-1）",
+    "Sandbox_EmergencyMedical_SufentanilAddictionPerMinute": "贴剂成瘾增量",
+    "Sandbox_EmergencyMedical_SufentanilAddictionPerMinute_tooltip": "贴用期间每游戏分钟增加的成瘾值（0-1）",
+    "Sandbox_EmergencyMedical_SufentanilClearMind": "贴剂稳定情绪",
+    "Sandbox_EmergencyMedical_SufentanilClearMind_tooltip": "开启时，贴用期间疼痛、惊恐、不开心、无聊恒为 0"
 }

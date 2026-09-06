@@ -35,6 +35,11 @@ local DEFAULTS = {
 	NaloxoneAddictionReduce = 0.25,
 	NaloxoneHungerThirst = 0.25,
 	HazeMaxAlpha = 0.87,
+	SufentanilPatchDays = 3,
+	SufentanilPainkillerPerMinute = 0.05,
+	SufentanilWithdrawalRelief = 0.05,
+	SufentanilAddictionPerMinute = 0.01,
+	SufentanilClearMind = true,
 }
 
 function EM_Sandbox_Get(name)

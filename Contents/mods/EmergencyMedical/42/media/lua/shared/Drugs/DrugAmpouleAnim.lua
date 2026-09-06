@@ -6,16 +6,18 @@
 --   reportEvent("EventBandage")
 -- and getBandageType maps both Head and Neck body parts to "Head", so
 -- BandageType "Head" IS the neck-wrapping animation. OxyContin (pills)
--- keeps the normal pill animation.
+-- keeps the normal pill animation. Sufentanil plays the RIGHT UPPER ARM
+-- bandage animation (the patch is applied there).
 --
 -- ISTakePillAction re-asserts its own action animation from update()
 -- every frame (TakePills/Eat), so the override has to happen there too;
 -- the EventBandage event fires once from start(). Vanilla keeps holding
 -- the item in the off-hand (setOverrideHandModels in start) -- kept.
-local AMPOULE_DRUGS = {
-    ["EmergencyMedical.morphine"] = true,
-    ["EmergencyMedical.naloxone"] = true,
-    ["EmergencyMedical.fentanyl"] = true,
+local PILL_BANDAGE_ANIM = {
+    ["EmergencyMedical.morphine"] = "Head",
+    ["EmergencyMedical.naloxone"] = "Head",
+    ["EmergencyMedical.fentanyl"] = "Head",
+    ["EmergencyMedical.sufentanil"] = "RightArm",
 }
 
 if ISTakePillAction then
@@ -24,18 +26,20 @@ if ISTakePillAction then
 
     function ISTakePillAction:start()
         ISTakePillAction_start(self)
-        if self.item and AMPOULE_DRUGS[self.item:getFullType()] then
+        local bandageType = self.item and PILL_BANDAGE_ANIM[self.item:getFullType()]
+        if bandageType then
             self:setActionAnim(CharacterActionAnims.Bandage)
-            self:setAnimVariable("BandageType", "Head")
+            self:setAnimVariable("BandageType", bandageType)
             self.character:reportEvent("EventBandage")
         end
     end
 
     function ISTakePillAction:update()
         ISTakePillAction_update(self)
-        if self.item and AMPOULE_DRUGS[self.item:getFullType()] then
+        local bandageType = self.item and PILL_BANDAGE_ANIM[self.item:getFullType()]
+        if bandageType then
             self:setActionAnim(CharacterActionAnims.Bandage)
-            self:setAnimVariable("BandageType", "Head")
+            self:setAnimVariable("BandageType", bandageType)
         end
     end
 end

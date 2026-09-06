@@ -9,11 +9,43 @@
 --   while the scab lasts. Pain would otherwise decay away within a day;
 --   the scab aches for as long as it exists (painkillers buy relief
 --   until the next tick tops the part back up). 0 disables the floor.
+-- * the "FentanylPatch" state (sufentanil, right upper arm) feeds a
+--   painkiller dose, relieves withdrawal, grows addiction and pins
+--   pain/panic/unhappiness/boredom at zero -- rates via sandbox options.
+
+local function tickFentanylPatch(player)
+    if not EM_Wound_Has(player, "UpperArm_R", "FentanylPatch") then
+        return
+    end
+    local painkiller = EM_Sandbox_Get("SufentanilPainkillerPerMinute")
+    if painkiller > 0 then
+        -- PainMeds ACCUMULATES painDelta (and restarts its 5400s timer);
+        -- cap the stored dose at 1.0 without stopping the refresh
+        local painDelta = player:getPainDelta()
+        player:PainMeds(math.min(painkiller, math.max(0.0, 1.0 - painDelta)))
+    end
+    local relief = EM_Sandbox_Get("SufentanilWithdrawalRelief")
+    if relief > 0 then
+        EM_Withdrawal_Set(player, EM_Withdrawal_Get(player) - relief)
+    end
+    local addictionGain = EM_Sandbox_Get("SufentanilAddictionPerMinute")
+    if addictionGain > 0 then
+        EM_Addiction_Set(player, EM_Addiction_Get(player) + addictionGain)
+    end
+    if EM_Sandbox_Get("SufentanilClearMind") then
+        local stats = player:getStats()
+        stats:set(CharacterStat.PAIN, 0.0)
+        stats:set(CharacterStat.PANIC, 0.0)
+        stats:set(CharacterStat.UNHAPPINESS, 0.0)
+        stats:set(CharacterStat.BOREDOM, 0.0)
+    end
+end
 
 local function minuteTick(player)
     if player == nil then
         return
     end
+    tickFentanylPatch(player)
     local painFloor = EM_Sandbox_Get("ScabPainFloor")
     if painFloor == nil or painFloor <= 0 then
         return

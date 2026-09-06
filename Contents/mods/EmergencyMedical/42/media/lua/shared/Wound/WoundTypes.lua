@@ -11,3 +11,13 @@ EM_Wound_Register("Cauterized", {
     -- shown as its own wound line on the health panel body part row
     panelLabelKey = "IGUI_health_CauterizedWound",
 })
+
+EM_Wound_Register("FentanylPatch", {
+    -- the sufentanil patch sits on the right upper arm for 3 days by
+    -- default ("SufentanilPatchDays" sandbox option); per-minute upkeep
+    -- in BodyWoundSimulation.lua
+    durationDays = function()
+        return EM_Sandbox_Get("SufentanilPatchDays")
+    end,
+    panelLabelKey = "IGUI_health_FentanylPatch",
+})

@@ -21,4 +21,9 @@
 	        texture = WorldItems/OxyContinBottle,
 	        scale = 0.01,
 	    }
+	    model SufentanilBox
+	    {
+	        mesh = WorldItems/MedicineBox,
+	        texture = WorldItems/SufentanilBox,
+	    }
 	}

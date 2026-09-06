@@ -13,6 +13,9 @@ local DRUG_EFFECTS = {
     ["EmergencyMedical.naloxone"] = InjectNaloxone,
     ["EmergencyMedical.fentanyl"] = InjectFentanyl,
     ["EmergencyMedical.oxycontin"] = TakeOxyContin,
+    -- DrugSufentanil.lua sorts AFTER this file (S > P), so its global
+    -- does not exist yet at load time: resolve lazily at dispatch.
+    ["EmergencyMedical.sufentanil"] = function(player) return TakeSufentanil(player) end,
 }
 
 if ISTakePillAction then

@@ -10,5 +10,7 @@
     "IGUI_health_WithdrawalDescExtreme": "它在哪它在哪它在哪",
     "IGUI_health_Cauterize": "灼烧伤口",
     "IGUI_health_RemoveScab": "移除结痂",
-    "IGUI_health_CauterizedWound": "灼烧结痂"
+    "IGUI_health_RemovePatch": "撕下贴剂",
+    "IGUI_health_CauterizedWound": "灼烧结痂",
+    "IGUI_health_FentanylPatch": "芬太尼贴"
 }

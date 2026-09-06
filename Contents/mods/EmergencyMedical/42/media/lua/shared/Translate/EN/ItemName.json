@@ -2,5 +2,6 @@
     "EmergencyMedical.morphine": "Morphine",
     "EmergencyMedical.naloxone": "Naloxone Hydrochloride",
     "EmergencyMedical.fentanyl": "Fentanyl",
-    "EmergencyMedical.oxycontin": "OxyContin"
+    "EmergencyMedical.oxycontin": "OxyContin",
+    "EmergencyMedical.sufentanil": "Sufentanil"
 }

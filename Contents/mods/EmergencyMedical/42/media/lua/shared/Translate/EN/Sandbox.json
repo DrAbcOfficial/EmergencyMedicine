@@ -41,5 +41,15 @@
     "Sandbox_EmergencyMedical_NaloxoneHungerThirst": "Naloxone hunger/thirst increase",
     "Sandbox_EmergencyMedical_NaloxoneHungerThirst_tooltip": "Hunger and thirst added per naloxone injection (0-1).",
     "Sandbox_EmergencyMedical_HazeMaxAlpha": "Withdrawal haze max opacity",
-    "Sandbox_EmergencyMedical_HazeMaxAlpha_tooltip": "Maximum opacity of the fullscreen withdrawal haze at full withdrawal (0-1, 0 disables the haze)."
+    "Sandbox_EmergencyMedical_HazeMaxAlpha_tooltip": "Maximum opacity of the fullscreen withdrawal haze at full withdrawal (0-1, 0 disables the haze).",
+    "Sandbox_EmergencyMedical_SufentanilPatchDays": "Patch duration (days)",
+    "Sandbox_EmergencyMedical_SufentanilPatchDays_tooltip": "How many days the sufentanil patch stays on the right upper arm before falling off.",
+    "Sandbox_EmergencyMedical_SufentanilPainkillerPerMinute": "Patch painkiller dose",
+    "Sandbox_EmergencyMedical_SufentanilPainkillerPerMinute_tooltip": "Painkiller dose added per game minute while the patch is on (0-1, capped at 1).",
+    "Sandbox_EmergencyMedical_SufentanilWithdrawalRelief": "Patch withdrawal relief",
+    "Sandbox_EmergencyMedical_SufentanilWithdrawalRelief_tooltip": "Withdrawal value removed per game minute while the patch is on (0-1).",
+    "Sandbox_EmergencyMedical_SufentanilAddictionPerMinute": "Patch addiction gain",
+    "Sandbox_EmergencyMedical_SufentanilAddictionPerMinute_tooltip": "Addiction value added per game minute while the patch is on (0-1).",
+    "Sandbox_EmergencyMedical_SufentanilClearMind": "Patch steadies the mind",
+    "Sandbox_EmergencyMedical_SufentanilClearMind_tooltip": "While the patch is on, pain, panic, unhappiness and boredom are pinned at zero."
 }
