@@ -49,20 +49,18 @@ local function getCurrentMoodleSize()
     return getMoodleSize(getCore() and getCore():getOptionMoodleSize())
 end
 
-local vanillaMoodleTypes = {
-    MoodleType.ENDURANCE, MoodleType.ANGRY, MoodleType.TIRED, MoodleType.HUNGRY,
-    MoodleType.PANIC, MoodleType.SICK, MoodleType.BORED, MoodleType.UNHAPPY,
-    MoodleType.STRESS, MoodleType.THIRST, MoodleType.PAIN, MoodleType.WET,
-    MoodleType.HAS_A_COLD, MoodleType.INJURED, MoodleType.DRUNK,
-    MoodleType.UNCOMFORTABLE, MoodleType.NOXIOUS_SMELL, MoodleType.HYPOTHERMIA,
-    MoodleType.HYPERTHERMIA, MoodleType.WINDCHILL, MoodleType.HEAVY_LOAD,
-}
-
+-- Mirror the vanilla MoodlesUI slot allocation exactly: iterate every
+-- registered MoodleType (base + any mod-registered) and count those the
+-- vanilla column would render. Vanilla hides FOOD_EATEN below level 3
+-- (MoodlesUI.update: level < MoodleLevel.HighMoodleLevel.ordinal()).
 local function countVanillaMoodles(player)
     local count = 0
-    for i = 1, #vanillaMoodleTypes do
-        local moodleType = vanillaMoodleTypes[i]
-        if moodleType ~= nil and player:getMoodles():getMoodleLevel(moodleType) > 0 then
+    local moodles = player:getMoodles()
+    local allTypes = Registries.MOODLE_TYPE:values()
+    for i = 0, allTypes:size() - 1 do
+        local moodleType = allTypes:get(i)
+        local level = moodles:getMoodleLevel(moodleType)
+        if level > 0 and not (moodleType == MoodleType.FOOD_EATEN and level < 3) then
             count = count + 1
         end
     end
