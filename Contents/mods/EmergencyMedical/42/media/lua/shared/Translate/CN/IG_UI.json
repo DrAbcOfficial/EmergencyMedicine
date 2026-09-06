@@ -1,4 +1,8 @@
 {
     "IGUI_Morphine_Success": "注射完毕",
-    "IGUI_Morphine_Failed": "(产生了不良反应)"
+    "IGUI_Morphine_Failed": "(产生了不良反应)",
+    "IGUI_health_Addiction": "阿片成瘾",
+    "IGUI_health_AddictionSevere": "重度阿片成瘾，视野与感知受损",
+    "IGUI_health_AddictionDesc": "对吗啡产生的依赖；轻度并无大碍。",
+    "IGUI_health_AddictionDescSevere": "视野范围缩小，感知（听觉、注意力）下降。"
 }

@@ -14,4 +14,5 @@ function InjectMorphine(player)
         pPart:setAdditionalPain(flPain + 33)
         player:Say(getText("IGUI_Morphine_Failed"))
     end
+    EM_Addiction_UseInjection(player)
 end
