@@ -90,6 +90,46 @@ option EmergencyMedical.ScabScratchOld
     translation = EmergencyMedical_ScabScratchOld,
 }
 
+option EmergencyMedical.DigBulletPain
+{
+    type = integer,
+    default = 20,
+    min = 0,
+    max = 100,
+    page = EmergencyMedical,
+    translation = EmergencyMedical_DigBulletPain,
+}
+
+option EmergencyMedical.DigBulletSeverity
+{
+    type = integer,
+    default = 10,
+    min = 0,
+    max = 50,
+    page = EmergencyMedical,
+    translation = EmergencyMedical_DigBulletSeverity,
+}
+
+option EmergencyMedical.DigBulletBleeding
+{
+    type = integer,
+    default = 5,
+    min = 0,
+    max = 50,
+    page = EmergencyMedical,
+    translation = EmergencyMedical_DigBulletBleeding,
+}
+
+option EmergencyMedical.DigBulletInfection
+{
+    type = integer,
+    default = 3,
+    min = 0,
+    max = 10,
+    page = EmergencyMedical,
+    translation = EmergencyMedical_DigBulletInfection,
+}
+
 option EmergencyMedical.MorphineAddictionGain
 {
     type = double,

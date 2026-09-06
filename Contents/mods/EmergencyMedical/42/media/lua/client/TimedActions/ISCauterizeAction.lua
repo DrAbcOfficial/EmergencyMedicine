@@ -25,11 +25,11 @@ ISCauterizeAction = ISBaseTimedAction:derive("ISCauterizeAction")
 -- BodyPartSyncPacket bits (sum): Health|bandaged|bleeding|IsBleedingStemmed|
 -- IsCauterized|deepWounded|bleedingTime|deepWoundTime|additionalPain|
 -- bitten|scratched|scratchTime|biteTime|woundInfectionLevel|infectedWound|
--- cut|cutTime
+-- haveBullet|cut|cutTime
 -- global: shared with the other body-part wound actions (ISRemoveScabAction)
 EM_BODYWOUND_SYNC_FLAGS = 1 + 2 + 8 + 16 + 32 + 256 + 131072 + 262144 + 4194304
     + 4 + 64 + 4096 + 8192 + 32768 + 65536
-    + 274877906944 + 549755813888
+    + 274877906944 + 549755813888 + 1073741824
 
 -- scratch / laceration / bite, without deep wound; bandages must come
 -- off first; parts already carrying the vanilla cauterized flag are done
