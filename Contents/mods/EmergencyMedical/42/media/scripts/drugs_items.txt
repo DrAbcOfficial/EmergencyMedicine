@@ -70,4 +70,18 @@ module EmergencyMedical
         UseWhileEquipped = false,
         Tags = base:consumable,
     }
+    item methamphetamine
+    {
+        DisplayCategory = FirstAid,
+        ItemType = base:drainable,
+        Weight = 0.2,
+        Icon = methamphetamine,
+        Medical = true,
+        Tooltip = Tooltip_methamphetamine,
+        StaticModel = MethamphetamineBottle,
+        WorldStaticModel = MethamphetamineBottle,
+        UseDelta = 1.0,
+        UseWhileEquipped = false,
+        Tags = base:consumable,
+    }
 }

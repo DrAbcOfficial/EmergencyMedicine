@@ -62,6 +62,10 @@ local function distribute()
     addItem("PoliceEvidence", "EmergencyMedical.oxycontin", 3)
     addItem("PoliceEvidence", "EmergencyMedical.naloxone", 3)
 
+    -- army bunker medical station: methamphetamine, fentanyl rarity
+    addItem("ArmyBunkerMedical", "EmergencyMedical.methamphetamine", 8)
+    addItem("PoliceEvidence", "EmergencyMedical.methamphetamine", 1)
+
     -- police station desks / files, prison cells: naloxone only
     local naloxoneLists = {
         "PoliceDesk", "PoliceFileBox", "PoliceFilingCabinet",

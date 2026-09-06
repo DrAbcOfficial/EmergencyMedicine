@@ -12,5 +12,15 @@
     "IGUI_health_RemoveScab": "Remove scab",
     "IGUI_health_RemovePatch": "Peel off patch",
     "IGUI_health_CauterizedWound": "Cauterized wound",
-    "IGUI_health_FentanylPatch": "Fentanyl patch"
+    "IGUI_health_FentanylPatch": "Fentanyl patch",
+    "IGUI_health_AmphAddiction": "Amphetamine addiction",
+    "IGUI_health_AmphAddictionDescMild": "It's everything to me.",
+    "IGUI_health_AmphAddictionDescModerate": "I feel sick to my stomach.",
+    "IGUI_health_AmphAddictionDescSevere": "Awful awful awful awful awful.",
+    "IGUI_health_AmphAddictionDescExtreme": "I am superhuman superhuman superhuman superhuman.",
+    "IGUI_health_AmphWithdrawal": "Amphetamine withdrawal",
+    "IGUI_health_AmphWithdrawalDescMild": "I've never felt more awake.",
+    "IGUI_health_AmphWithdrawalDescModerate": "I miss sleep so much.",
+    "IGUI_health_AmphWithdrawalDescSevere": "Angry angry angry angry angry.",
+    "IGUI_health_AmphWithdrawalDescExtreme": "Me me me me I'll eat your face off."
 }

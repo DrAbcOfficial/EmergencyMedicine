@@ -12,5 +12,15 @@
     "IGUI_health_RemoveScab": "移除结痂",
     "IGUI_health_RemovePatch": "撕下贴剂",
     "IGUI_health_CauterizedWound": "灼烧结痂",
-    "IGUI_health_FentanylPatch": "芬太尼贴"
+    "IGUI_health_FentanylPatch": "芬太尼贴",
+    "IGUI_health_AmphAddiction": "安非他命成瘾",
+    "IGUI_health_AmphAddictionDescMild": "它是我的全部。",
+    "IGUI_health_AmphAddictionDescModerate": "感觉恶心想吐。",
+    "IGUI_health_AmphAddictionDescSevere": "难受难受难受难受难受。",
+    "IGUI_health_AmphAddictionDescExtreme": "我是超人超人超人超人超人超人超人。",
+    "IGUI_health_AmphWithdrawal": "安非他命戒断",
+    "IGUI_health_AmphWithdrawalDescMild": "我比任何时候都要清醒。",
+    "IGUI_health_AmphWithdrawalDescModerate": "我好想念睡觉的感觉。",
+    "IGUI_health_AmphWithdrawalDescSevere": "愤怒愤怒愤怒愤怒愤怒。",
+    "IGUI_health_AmphWithdrawalDescExtreme": "我我我我我要吃掉你的脸。"
 }

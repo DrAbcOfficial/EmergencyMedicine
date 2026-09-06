@@ -26,4 +26,10 @@
 	        mesh = WorldItems/MedicineBox,
 	        texture = WorldItems/SufentanilBox,
 	    }
+	    model MethamphetamineBottle
+	    {
+	        mesh = WorldItems/PillsBottle,
+	        texture = WorldItems/MethamphetamineBottle,
+	        scale = 0.01,
+	    }
 	}

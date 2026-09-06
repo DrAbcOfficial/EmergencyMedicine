@@ -200,6 +200,76 @@ option EmergencyMedical.AddictionDecayRate
     translation = EmergencyMedical_AddictionDecayRate,
 }
 
+option EmergencyMedical.AmphWithdrawalClimbMinutes
+{
+    type = integer,
+    default = 1440,
+    min = 60,
+    max = 2880,
+    page = EmergencyMedical,
+    translation = EmergencyMedical_AmphWithdrawalClimbMinutes,
+}
+
+option EmergencyMedical.AmphDecayRate
+{
+    type = double,
+    default = 0.36,
+    min = 0.0,
+    max = 1.0,
+    page = EmergencyMedical,
+    translation = EmergencyMedical_AmphDecayRate,
+}
+
+option EmergencyMedical.AmphPanicPerMinute
+{
+    type = double,
+    default = 1.0,
+    min = 0.0,
+    max = 100.0,
+    page = EmergencyMedical,
+    translation = EmergencyMedical_AmphPanicPerMinute,
+}
+
+option EmergencyMedical.AmphUnhappinessPerMinute
+{
+    type = double,
+    default = 1.0,
+    min = 0.0,
+    max = 100.0,
+    page = EmergencyMedical,
+    translation = EmergencyMedical_AmphUnhappinessPerMinute,
+}
+
+option EmergencyMedical.AmphDrunkPerMinute
+{
+    type = double,
+    default = 0.02,
+    min = 0.0,
+    max = 1.0,
+    page = EmergencyMedical,
+    translation = EmergencyMedical_AmphDrunkPerMinute,
+}
+
+option EmergencyMedical.AmphSleepReductionPerMinute
+{
+    type = double,
+    default = 0.01,
+    min = 0.0,
+    max = 1.0,
+    page = EmergencyMedical,
+    translation = EmergencyMedical_AmphSleepReductionPerMinute,
+}
+
+option EmergencyMedical.CrossWithdrawalHealthLoss
+{
+    type = double,
+    default = 10.0,
+    min = 0.0,
+    max = 100.0,
+    page = EmergencyMedical,
+    translation = EmergencyMedical_CrossWithdrawalHealthLoss,
+}
+
 option EmergencyMedical.SufentanilPatchDays
 {
     type = integer,

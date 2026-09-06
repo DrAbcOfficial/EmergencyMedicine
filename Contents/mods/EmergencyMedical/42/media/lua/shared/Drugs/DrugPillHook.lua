@@ -12,6 +12,7 @@ local DRUG_EFFECTS = {
     ["EmergencyMedical.morphine"] = InjectMorphine,
     ["EmergencyMedical.naloxone"] = InjectNaloxone,
     ["EmergencyMedical.fentanyl"] = InjectFentanyl,
+    ["EmergencyMedical.methamphetamine"] = TakeMethamphetamine,
     ["EmergencyMedical.oxycontin"] = TakeOxyContin,
     -- DrugSufentanil.lua sorts AFTER this file (S > P), so its global
     -- does not exist yet at load time: resolve lazily at dispatch.
