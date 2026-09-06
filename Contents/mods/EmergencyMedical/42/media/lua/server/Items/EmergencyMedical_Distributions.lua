@@ -1,9 +1,21 @@
 -- EmergencyMedical loot distribution: the five drugs spawn in hospital,
--- pharmacy, police and prison containers. Runs from OnGameBoot because
--- this file loads alphabetically BEFORE ProceduralDistributions.lua /
--- SuburbsDistributions.lua -- those tables only exist once every lua
--- file has loaded. Loot generation itself happens later (map load), so
--- the inserted entries are picked up.
+-- pharmacy, police and prison containers.
+--
+-- B42 pipeline (decompiled IsoWorld / ItemPickerJava): on world init the
+-- game fires OnPreDistributionMerge -> OnDistributionMerge ->
+-- OnPostDistributionMerge and THEN ItemPickerJava.Parse() bakes the Lua
+-- globals "ProceduralDistributions" / "SuburbsDistributions" into Java --
+-- all loot generation reads that bake. Mutations therefore belong in the
+-- merge events: OnGameBoot-time changes are lost when B42 reloads the
+-- Lua state on game enter (this file's original bug -- no error, just
+-- silently never applied).
+--   * container proc lists   -> OnPreDistributionMerge (ProceduralDistributions
+--     is not touched by the vanilla merge, which only rebuilds room tables)
+--   * room procList appends  -> OnPostDistributionMerge (SuburbsDistributions
+--     is final there: vanilla's merge re-assigns it to Distributions[1]
+--     and folds in mod addon tables)
+-- Pattern proven by Workshop mods (Authentic Z #2335368829 does its
+-- ProceduralDistributions work inside OnPreDistributionMerge).
 --
 -- Rarity tiers (weights on the vanilla lists' own scale; the drug
 -- family overall slightly more common than Antibiotics):
@@ -20,7 +32,7 @@ local function addItem(listName, fullType, weight)
     end
 end
 
-local function distribute()
+local function onPreDistributionMerge()
     -- hospital medical containers: all five drugs
     local hospitalLists = { "MedicalStorageDrugs", "HospitalLockers", "HospitalRoomCounter", "HospitalRoomShelves" }
     for i = 1, #hospitalLists do
@@ -35,9 +47,9 @@ local function distribute()
     -- oxycontin only
     addItem("MedicalClinicDrugs", "EmergencyMedical.oxycontin", 15)
 
-    -- pharmacy shelves: a dedicated list injected into the pharmacy
-    -- room's shelf procList, so it does NOT leak into the supermarkets
-    -- that share the StoreShelfMedical list
+    -- pharmacy shelves: a dedicated list, appended to the pharmacy room's
+    -- shelf procList below (onPostDistributionMerge) -- deliberately not
+    -- StoreShelfMedical, which would leak into the supermarkets sharing it
     ProceduralDistributions.list.EmergencyMedicalPharmacyShelf = {
         rolls = 1,
         items = {
@@ -48,12 +60,6 @@ local function distribute()
             items = {},
         },
     }
-    if SuburbsDistributions ~= nil and SuburbsDistributions.pharmacy ~= nil
-        and SuburbsDistributions.pharmacy.shelves ~= nil
-        and SuburbsDistributions.pharmacy.shelves.procList ~= nil then
-        table.insert(SuburbsDistributions.pharmacy.shelves.procList,
-            { name = "EmergencyMedicalPharmacyShelf", min = 0, max = 1, weightChance = 30 })
-    end
 
     -- police evidence: all five drugs, contraband rarity
     for j = 1, #OPIOIDS do
@@ -77,4 +83,16 @@ local function distribute()
     end
 end
 
-Events.OnGameBoot.Add(distribute)
+local function onPostDistributionMerge()
+    -- room tables are final here; append the dedicated shelf list to the
+    -- pharmacy room's shelves
+    if SuburbsDistributions ~= nil and SuburbsDistributions.pharmacy ~= nil
+        and SuburbsDistributions.pharmacy.shelves ~= nil
+        and SuburbsDistributions.pharmacy.shelves.procList ~= nil then
+        table.insert(SuburbsDistributions.pharmacy.shelves.procList,
+            { name = "EmergencyMedicalPharmacyShelf", min = 0, max = 1, weightChance = 30 })
+    end
+end
+
+Events.OnPreDistributionMerge.Add(onPreDistributionMerge)
+Events.OnPostDistributionMerge.Add(onPostDistributionMerge)
