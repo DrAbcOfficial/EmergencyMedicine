@@ -48,7 +48,11 @@ end
 -- The morphine path goes through EM_Addiction_UseInjection instead.
 function EMDrug_ChangeAddiction(player, amount)
     EM_Addiction_Set(player, EM_Addiction_Get(player) + amount)
-    if isClient() and player:isLocalPlayer() then
+    -- MP: effects run on the server (TakeDrug command) -> broadcast;
+    -- a client may only push its own player's table up (SP needs none)
+    if isServer() then
+        player:transmitModData()
+    elseif isClient() and player:isLocalPlayer() then
         player:transmitModData()
     end
 end

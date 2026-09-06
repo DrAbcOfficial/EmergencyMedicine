@@ -3,8 +3,8 @@
 -- a lighter-class tool (ItemTag.LIGHTER: zippo, disposable, BBQ, crafted
 -- battery lighter) or gunpowder (Base.GunPowder) is carried nearby.
 -- Eligibility lives in EMCauterize_IsEligiblePart (shared with the timed
--- action, see TimedActions/ISCauterizeAction.lua; both resolve it at
--- runtime).
+-- action and the server command handler, see shared/Wound/TreatmentOps.lua;
+-- all consumers resolve it at runtime).
 local Handler = EMBodyPartHandler:derive("EMCauterizeHandler")
 
 local CAUTERIZE_TOOL_TYPES = {

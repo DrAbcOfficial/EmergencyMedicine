@@ -66,9 +66,12 @@ local function simulate()
             minuteTick(players:get(i))
         end
     else
-        local player = getSpecificPlayer(0)
-        if player ~= nil and player:isLocalPlayer() then
-            minuteTick(player)
+        -- every local player (split-screen), not just index 0
+        for i = 0, getNumActivePlayers() - 1 do
+            local player = getSpecificPlayer(i)
+            if player ~= nil and not player:isDead() and player:isLocalPlayer() then
+                minuteTick(player)
+            end
         end
     end
 end

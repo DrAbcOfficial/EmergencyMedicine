@@ -63,7 +63,15 @@ local function dataOf(player, create)
 end
 
 local function transmit(player)
-    if isClient() and player:isLocalPlayer() then
+    -- MP: a server (dedicated, or the hidden coop-host server) broadcasts
+    -- its copy to every relevant client; a client may only push its OWN
+    -- player's table up -- the server applies and relays it. Changes made
+    -- on a client for a REMOTE player (doctor treatments) must therefore
+    -- run on the server instead: client/Wound actions route through a
+    -- client command (server/EmergencyMedical_ClientCommands.lua).
+    if isServer() then
+        player:transmitModData()
+    elseif isClient() and player:isLocalPlayer() then
         player:transmitModData()
     end
 end

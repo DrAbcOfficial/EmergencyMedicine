@@ -4,6 +4,10 @@
 -- accumulated painkiller wears off like any big dose would. Signature
 -- mirrors ISCauterizeAction/ISRemoveScabAction (character = doctor,
 -- patient = treated player).
+--
+-- MP: server-authoritative like every treatment -- complete() sends a
+-- client command and the server applies it; singleplayer calls the
+-- shared op directly (shared/Wound/TreatmentOps.lua).
 require "TimedActions/ISBaseTimedAction"
 
 ISRemovePatchAction = ISBaseTimedAction:derive("ISRemovePatchAction")
@@ -43,7 +47,14 @@ function ISRemovePatchAction:start()
 end
 
 function ISRemovePatchAction:complete()
-    EM_Wound_Remove(self.patient, self.bodyPart, "FentanylPatch")
+    if isClient() then
+        sendClientCommand(self.character, "EmergencyMedical", "RemovePatch", {
+            id = self.patient:getOnlineID(),
+            part = self.bodyPart:getIndex(),
+        })
+    else
+        EMTreatment_RemovePatch(self.patient, self.bodyPart)
+    end
     return true
 end
 

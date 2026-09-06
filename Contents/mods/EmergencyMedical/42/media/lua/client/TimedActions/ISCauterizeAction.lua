@@ -6,39 +6,29 @@
 -- animation (ISHealthPanel.getBandageType); treating someone else plays
 -- the Loot animation and faces the patient.
 --
--- Effects in complete():
---   - part:SetCauterized(true): the vanilla Java flag (unused by vanilla
---     Lua) -- stops the bleeding, clears stemmed/deep-wound/bandage, and
---     persists + syncs over MP for free (BodyDamageSync BD_IsCauterized).
---     A NEW wound on the part clears the flag again (vanilla behaviour).
+-- Effects (see shared/Wound/TreatmentOps.lua: EMTreatment_Cauterize):
+--   - the vanilla wound is removed and part:SetCauterized(true) set (the
+--     vanilla Java flag, unused by vanilla Lua -- stops the bleeding,
+--     clears stemmed/deep-wound/bandage, persists in the save; a NEW
+--     wound on the part clears the flag again, vanilla behaviour)
 --   - pain spike + small burn damage on the part
 --   - EM_Wound_Add(..., "Cauterized"): the long-lived scab state
---     (default 90 days, sandbox option; custom manager, shared/Wound/).
--- The eligibility predicate is shared with the health-panel hook (both
--- resolve it at runtime).
+--     (default 90 days, sandbox option; custom manager, shared/Wound/)
+--
+-- MP: body damage + wound states are server-authoritative (the
+-- client-side syncBodyPart is a no-op there), so complete() sends a
+-- client command and the server applies the treatment; singleplayer
+-- calls it directly. The tool is consumed client-side either way (the
+-- vanilla drainable sync carries it).
 require "TimedActions/ISBaseTimedAction"
 
 ISCauterizeAction = ISBaseTimedAction:derive("ISCauterizeAction")
 
 -- Pain spike and burn damage are sandbox-configurable
 -- (EM_Sandbox_Get "CauterizePain" / "CauterizeDamage")
--- BodyPartSyncPacket bits (sum): Health|bandaged|bleeding|IsBleedingStemmed|
--- IsCauterized|deepWounded|bleedingTime|deepWoundTime|additionalPain|
--- bitten|scratched|scratchTime|biteTime|woundInfectionLevel|infectedWound|
--- haveBullet|cut|cutTime
--- global: shared with the other body-part wound actions (ISRemoveScabAction)
-EM_BODYWOUND_SYNC_FLAGS = 1 + 2 + 8 + 16 + 32 + 256 + 131072 + 262144 + 4194304
-    + 4 + 64 + 4096 + 8192 + 32768 + 65536
-    + 274877906944 + 549755813888 + 1073741824
-
--- scratch / laceration / bite, without deep wound; bandages must come
--- off first; parts already carrying the vanilla cauterized flag are done
-function EMCauterize_IsEligiblePart(part)
-    if part == nil or part:deepWounded() or part:bandaged() or part:IsCauterized() then
-        return false
-    end
-    return part:getScratchTime() > 0 or part:getCutTime() > 0 or part:getBiteTime() > 0
-end
+-- EMCauterize_IsEligiblePart and EM_BODYWOUND_SYNC_FLAGS live in
+-- shared/Wound/TreatmentOps.lua (the server command handler needs them
+-- too, and the server does not load client files)
 
 function ISCauterizeAction:isValid()
     if ISHealthPanel.DidPatientMove(self.character, self.patient, self.patientX, self.patientY) then
@@ -106,26 +96,14 @@ function ISCauterizeAction:complete()
     if self.tool ~= nil and self.tool:IsDrainable() then
         self.tool:UseAndSync()
     end
-    local part = self.bodyPart
-    -- burn the wound shut: the vanilla wound is REMOVED and replaced by
-    -- the scab state below (the setters' false paths only clear their
-    -- flag + bleeding; SetCauterized additionally clears
-    -- stemmed/deep-wound/bandage). A local wound infection is seared out
-    -- as well -- the Knox virus (IsInfected) is deliberately NOT touched.
-    part:setScratched(false, true)
-    part:setCut(false)
-    part:SetBitten(false, false)
-    part:setScratchTime(0.0)
-    part:setCutTime(0.0)
-    part:setBiteTime(0.0)
-    part:setInfectedWound(false)
-    part:setWoundInfectionLevel(0.0)
-    part:SetCauterized(true)
-    part:setBleedingTime(0.0)
-    part:setAdditionalPain(math.min(part:getAdditionalPain() + EM_Sandbox_Get("CauterizePain"), 100.0))
-    part:ReduceHealth(EM_Sandbox_Get("CauterizeDamage"))
-    syncBodyPart(part, EM_BODYWOUND_SYNC_FLAGS)
-    EM_Wound_Add(self.patient, part, "Cauterized")
+    if isClient() then
+        sendClientCommand(self.character, "EmergencyMedical", "Cauterize", {
+            id = self.patient:getOnlineID(),
+            part = self.bodyPart:getIndex(),
+        })
+    else
+        EMTreatment_Cauterize(self.patient, self.bodyPart)
+    end
     return true
 end
 

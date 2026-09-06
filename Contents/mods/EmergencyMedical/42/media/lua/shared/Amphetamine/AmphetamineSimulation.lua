@@ -37,7 +37,11 @@ function EM_Meth_SetHigh(player, durationHours)
         return
     end
     data[METH_HIGH_KEY] = player:getHoursSurvived() + durationHours
-    if isClient() and player:isLocalPlayer() then
+    -- MP: effects run on the server (TakeDrug command) -> broadcast;
+    -- a client may only push its own player's table up
+    if isServer() then
+        player:transmitModData()
+    elseif isClient() and player:isLocalPlayer() then
         player:transmitModData()
     end
 end
@@ -127,9 +131,12 @@ local function simulate()
             minuteTick(players:get(i))
         end
     else
-        local player = getSpecificPlayer(0)
-        if player ~= nil and player:isLocalPlayer() then
-            minuteTick(player)
+        -- every local player (split-screen), not just index 0
+        for i = 0, getNumActivePlayers() - 1 do
+            local player = getSpecificPlayer(i)
+            if player ~= nil and not player:isDead() and player:isLocalPlayer() then
+                minuteTick(player)
+            end
         end
     end
 end

@@ -5,8 +5,9 @@
 -- OpioidSimulation.lua; withdrawal value management in
 -- OpioidWithdrawal.lua.
 --
--- Multiplayer: values live in player modData, changed on the player's
--- own client and sent up with transmitModData() so the server saves it.
+-- Multiplayer: values live in player modData; the drug effects run on
+-- the server (TakeDrug command) and broadcast with transmitModData(), a
+-- client may only push its own player's table up.
 
 local MOD_KEY = "EM_OpioidAddiction"
 -- per-injection gain is the "MorphineAddictionGain" sandbox option
@@ -76,8 +77,10 @@ function EM_Addiction_GetTier(player)
 end
 
 -- One opioid injection happened: the baseline dependence rises by half,
--- the withdrawal sickness is relieved, and the new values are synced to
--- the server. Called from the morphine drug effect.
+-- the withdrawal sickness is relieved, and the new values are synced
+-- (the server broadcasts; a client pushes its own table up). Called from
+-- the morphine drug effect -- which runs on the server in MP (TakeDrug
+-- command), directly in SP.
 function EM_Addiction_UseInjection(player)
     local data = ModData(player)
     if data == nil then
@@ -85,7 +88,9 @@ function EM_Addiction_UseInjection(player)
     end
     EM_Addiction_Set(player, EM_Addiction_Get(player) + EM_Sandbox_Get("MorphineAddictionGain"))
     EM_Withdrawal_Relieve(player)
-    if isClient() and player:isLocalPlayer() then
+    if isServer() then
+        player:transmitModData()
+    elseif isClient() and player:isLocalPlayer() then
         player:transmitModData()
     end
 end

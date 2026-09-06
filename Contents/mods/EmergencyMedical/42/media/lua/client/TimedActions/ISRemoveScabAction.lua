@@ -10,20 +10,16 @@
 -- flag is cleared here, vanilla would clear it on the next wound anyway).
 -- Signature mirrors ISCauterizeAction: character = doctor, patient =
 -- the treated player (same object for self-treatment).
+--
+-- MP: server-authoritative like every treatment -- complete() sends a
+-- client command and the server applies it (server/EmergencyMedical_
+-- ClientCommands.lua); singleplayer calls the shared op directly. The
+-- scratchTime mapping lives in shared/Wound/TreatmentOps.lua.
 require "TimedActions/ISBaseTimedAction"
 
 ISRemoveScabAction = ISBaseTimedAction:derive("ISRemoveScabAction")
 
-local REMOVE_SCAB_PAIN_OPTION = "RemoveScabPain"
--- scratchTime sandbox option per scab age level (see EM_Wound_GetLevel default)
-local SCAB_SCRATCH_OPTION = { [4] = "ScabScratchSevere", [3] = "ScabScratchModerate", [2] = "ScabScratchLight", [1] = "ScabScratchOld" }
-
-function EMRemoveScab_IsEligiblePart(patient, part)
-    if patient == nil or part == nil then
-        return false
-    end
-    return EM_Wound_Has(patient, part, "Cauterized")
-end
+-- EMRemoveScab_IsEligiblePart lives in shared/Wound/TreatmentOps.lua
 
 function ISRemoveScabAction:isValid()
     if ISHealthPanel.DidPatientMove(self.character, self.patient, self.patientX, self.patientY) then
@@ -87,18 +83,14 @@ function ISRemoveScabAction:perform()
 end
 
 function ISRemoveScabAction:complete()
-    local part = self.bodyPart
-    -- read the scab age BEFORE taking the state off
-    local level = EM_Wound_GetLevel(self.patient, part, "Cauterized")
-    -- scab state off: the pain floor in BodyWoundSimulation stops on its own
-    EM_Wound_Remove(self.patient, part, "Cauterized")
-    -- the vanilla flag goes too, so the fresh scratch can be re-cauterized
-    part:SetCauterized(false)
-    -- forceNoInfection = true: picking a scab must never roll the Knox virus
-    part:setScratched(true, true)
-    part:setScratchTime(EM_Sandbox_Get(SCAB_SCRATCH_OPTION[level] or "ScabScratchModerate"))
-    part:setAdditionalPain(math.min(part:getAdditionalPain() + EM_Sandbox_Get(REMOVE_SCAB_PAIN_OPTION), 100.0))
-    syncBodyPart(part, EM_BODYWOUND_SYNC_FLAGS)
+    if isClient() then
+        sendClientCommand(self.character, "EmergencyMedical", "RemoveScab", {
+            id = self.patient:getOnlineID(),
+            part = self.bodyPart:getIndex(),
+        })
+    else
+        EMTreatment_RemoveScab(self.patient, self.bodyPart)
+    end
     return true
 end
 

@@ -9,6 +9,10 @@
 --   - "DigBulletPain" extra pain
 -- Signature mirrors the other body-part actions (character = doctor,
 -- patient = treated player).
+--
+-- MP: server-authoritative like every treatment -- complete() sends a
+-- client command and the server applies it (shared op in shared/Wound/
+-- TreatmentOps.lua); singleplayer calls it directly.
 require "TimedActions/ISBaseTimedAction"
 
 ISDigBulletAction = ISBaseTimedAction:derive("ISDigBulletAction")
@@ -51,20 +55,14 @@ function ISDigBulletAction:start()
 end
 
 function ISDigBulletAction:complete()
-    local part = self.bodyPart
-    -- bare hands, no doctor XP
-    part:setHaveBullet(false, 0)
-    -- the hole becomes a deep wound, and a botched dig makes it nastier
-    part:generateDeepWound()
-    part:setDeepWoundTime(part:getDeepWoundTime() + EM_Sandbox_Get("DigBulletSeverity"))
-    -- bleeding caused or worsened
-    part:setBleeding(true)
-    part:setBleedingTime(part:getBleedingTime() + EM_Sandbox_Get("DigBulletBleeding"))
-    -- a local wound infection is caused or worsened (NOT the Knox virus)
-    part:setInfectedWound(true)
-    part:setWoundInfectionLevel(part:getWoundInfectionLevel() + EM_Sandbox_Get("DigBulletInfection"))
-    part:setAdditionalPain(math.min(part:getAdditionalPain() + EM_Sandbox_Get("DigBulletPain"), 100.0))
-    syncBodyPart(part, EM_BODYWOUND_SYNC_FLAGS)
+    if isClient() then
+        sendClientCommand(self.character, "EmergencyMedical", "DigBullet", {
+            id = self.patient:getOnlineID(),
+            part = self.bodyPart:getIndex(),
+        })
+    else
+        EMTreatment_DigBullet(self.patient, self.bodyPart)
+    end
     return true
 end
 
