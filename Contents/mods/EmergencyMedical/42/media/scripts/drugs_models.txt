@@ -19,5 +19,6 @@
 	    {
 	        mesh = WorldItems/PillsBottle,
 	        texture = WorldItems/OxyContinBottle,
+	        scale = 0.01,
 	    }
 	}

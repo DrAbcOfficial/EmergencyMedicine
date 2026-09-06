@@ -52,7 +52,7 @@ module EmergencyMedical
         Tooltip = Tooltip_oxycontin,
         StaticModel = OxyContinBottle,
         WorldStaticModel = OxyContinBottle,
-        UseDelta = 1.0,
+        UseDelta = 0.05,
         UseWhileEquipped = false,
         Tags = base:consumable,
     }

@@ -1,9 +1,13 @@
 -- Vanilla painkiller flow: right-click "Take" -> ISTakePillAction (cast/
--- progress) -> complete(). We hook complete() to consume one unit and
--- apply the matching drug effect, exactly like the vanilla pills do in
--- Java. The handler table holds function values; the drug files in this
--- folder load before this one (alphabetical file order), so the globals
--- are defined by the time this file runs.
+-- progress) -> complete(). We hook complete() to apply the matching drug
+-- effect. Consumption is NOT done here: ISTakePillAction:complete calls
+-- BodyDamage:JustTookPill(item), which ends in pill.UseAndSync() -- that
+-- drains one UseDelta per take and auto-removes the item when empty
+-- (script disappearOnUse defaults to true). Removing the item here as
+-- well would double-consume when carrying several units.
+-- The handler table holds function values; the drug files in this folder
+-- load before this one (alphabetical file order), so the globals are
+-- defined by the time this file runs.
 local DRUG_EFFECTS = {
     ["EmergencyMedical.morphine"] = InjectMorphine,
     ["EmergencyMedical.naloxone"] = InjectNaloxone,
@@ -19,10 +23,6 @@ if ISTakePillAction then
         if item then
             local handler = DRUG_EFFECTS[item:getFullType()]
             if handler ~= nil then
-                local container = item:getContainer()
-                if container and container:contains(item) then
-                    container:RemoveOneOf(item:getType())
-                end
                 handler(self.character)
             end
         end
