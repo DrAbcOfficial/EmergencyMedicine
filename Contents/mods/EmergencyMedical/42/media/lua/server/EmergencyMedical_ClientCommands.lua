@@ -83,10 +83,7 @@ local function onClientCommand(module, command, player, args)
     elseif command == "TemporarySplint" then
         handleTreatment(player, args, function(patient, part)
             if EMTemporarySplint_IsEligiblePart(patient, part) then
-                -- splintFactor comes from the acting doctor's skill, same
-                -- formula as the vanilla splint; clamp what arrives
-                local factor = tonumber(args.factor) or 1.0
-                EMTreatment_TemporarySplint(patient, part, math.min(math.max(factor, 0.0), 5.5))
+                EMTreatment_TemporarySplint(patient, part)
             end
         end)
     elseif command == "RemoveEmergencyFix" then

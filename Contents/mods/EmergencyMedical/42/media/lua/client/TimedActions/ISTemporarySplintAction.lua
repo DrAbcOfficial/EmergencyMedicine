@@ -1,11 +1,11 @@
 -- Improvised fixation of a fracture with the TemporarySplint item: the
--- part is splinted exactly like the vanilla splint (splint factor by
--- doctor skill) AND gains the "EmergencyFixed" state, which freezes the
--- fracture and hurts more until it comes off (shared/Wound/
--- TreatmentOps.lua). Eligibility lives in EMTemporarySplint_IsEligiblePart
--- (vanilla splint rules + fixation not present yet), re-validated
--- server-side. Signature mirrors the other body-part actions (character
--- = doctor, patient = treated player).
+-- fracture is TEMPORARILY REMOVED from the body and its severity rides
+-- the "EmergencyFixed" state as a custom param (shared/Wound/
+-- TreatmentOps.lua); no vanilla splint flags are set. Eligibility lives
+-- in EMTemporarySplint_IsEligiblePart (vanilla splint rules + fixation
+-- not present yet), re-validated server-side. Signature mirrors the
+-- other body-part actions (character = doctor, patient = treated
+-- player).
 --
 -- MP: server-authoritative like every treatment -- complete() sends a
 -- client command and the server applies it; singleplayer calls the
@@ -83,18 +83,13 @@ function ISTemporarySplintAction:complete()
     if isServer() then
         sendRemoveItemFromContainer(self.character:getInventory(), self.tool)
     end
-    local splintFactor = (self.character:getPerkLevel(Perks.Doctor) + 1) / 2
-    if isMultiplayer() and self.character:getRole():hasCapability(Capability.CanMedicalCheat) then
-        splintFactor = 5.5
-    end
     if isClient() then
         sendClientCommand(self.character, "EmergencyMedical", "TemporarySplint", {
             id = self.patient:getOnlineID(),
             part = self.bodyPart:getIndex(),
-            factor = splintFactor,
         })
     else
-        EMTreatment_TemporarySplint(self.patient, self.bodyPart, splintFactor)
+        EMTreatment_TemporarySplint(self.patient, self.bodyPart)
     end
     return true
 end

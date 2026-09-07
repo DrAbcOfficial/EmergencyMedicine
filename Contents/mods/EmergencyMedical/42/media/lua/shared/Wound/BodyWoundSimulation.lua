@@ -8,15 +8,16 @@
 --   repair) hurts +20% more from its wounds: additionalPain floors at
 --   the wound-generated pain x 0.2 while the state lasts
 -- * a part carrying the "EmergencyFixed" state (improvised splint on a
---   fracture) freezes the fracture: fractureTime is restored to the
---   value frozen at application every minute, so it can never heal
---   naturally while the fixation lasts; on top, every wound on the
---   part hurts +45% (pain floor x "EmergencyFixPainBoost"). The two
---   pain boosts stack by taking the max, not the sum. The state's
---   expiry is detected HERE on the raw modData -- the manager's lazy
---   cleanup silently scrubs an expired state on any read, so this raw
---   read must come first: once the expire time passes, the fracture
---   the fixation kept alive heals together with it.
+--   fracture): the fracture is REMOVED from the body while the state
+--   lasts (fractureTime zeroed at application, true severity riding
+--   the state as a custom param), so there is nothing to keep in place
+--   here. On top, every wound on the part hurts +45% (pain floor x
+--   "EmergencyFixPainBoost"); the two pain boosts stack by taking the
+--   max, not the sum. The state's expiry is detected HERE on the raw
+--   modData -- the manager's lazy cleanup silently scrubs an expired
+--   state on any read, so this raw read must come first: once the
+--   expire time passes, the hidden fracture heals together with the
+--   state.
 -- * a part carrying the "Cauterized" scab keeps a fixed pain floor:
 --   additionalPain never drops below the "ScabPainFloor" sandbox value
 --   while the scab lasts. Pain would otherwise decay away within a day;
@@ -55,10 +56,10 @@ local function tickFentanylPatch(player)
 end
 
 -- the improvised fixation carries its custom params on the state table
--- itself (fractureTime = severity frozen at application, expire = end of
--- the fixation). Read on the RAW modData: a manager read (EM_Wound_Has /
--- GetState) lazily deletes an expired state before the tick could act on
--- it, and the expiry must heal the fracture the state kept alive.
+-- itself (fractureTime = the hidden severity, expire = end of the
+-- fixation). Read on the RAW modData: a manager read (EM_Wound_Has /
+-- GetState) lazily deletes an expired state before the tick could act
+-- on it, and the expiry must heal the fracture the state hides.
 local function emergencyFixRawState(player, part)
     local wounds = player:getModData()[EM_Wound_DATA_KEY]
     if wounds == nil then
@@ -95,20 +96,14 @@ local function minuteTick(player)
         local fixState = emergencyFixRawState(player, part)
         if fixState ~= nil then
             if now >= fixState.expire then
-                -- the fixation ran its full course: the fracture it kept
-                -- alive heals together with the state (removal transmits)
+                -- the fixation ran its full course: the hidden fracture
+                -- heals together with the state (removal transmits)
                 EMTreatment_EmergencyFixExpired(player, part)
             else
-                -- improvised fixation: the fracture NEVER heals while the
-                -- state lasts -- restore the severity frozen at
-                -- application (the Java decay between ticks stays
-                -- microscopic). The frozen value is a custom param on
-                -- the state, written by the applying treatment.
-                local frozen = fixState.fractureTime or 0.0
-                if frozen > 0.0 and part:getFractureTime() > 0.0 and part:getFractureTime() < frozen then
-                    part:setFractureTime(frozen)
-                end
-                -- ... and every wound hurts +45% ("EmergencyFixPainBoost")
+                -- improvised fixation: every wound on the part hurts
+                -- +45% ("EmergencyFixPainBoost"); the fracture itself is
+                -- removed from the body for the duration, nothing to
+                -- maintain there
                 local floor = woundPain * EM_Sandbox_Get("EmergencyFixPainBoost")
                 if floor > boostFloor then
                     boostFloor = floor

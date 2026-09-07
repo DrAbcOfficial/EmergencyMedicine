@@ -272,39 +272,40 @@ function EMTemporarySplint_IsEligiblePart(patient, part)
     return true
 end
 
--- apply the improvised fixation: the part is splinted like vanilla
--- (splintFactor = (doctor level + 1) / 2, computed by the acting timed
--- action) and gains the "EmergencyFixed" state, which FREEZES the
--- fracture at its current severity for the state's whole duration
--- (per-minute restore in BodyWoundSimulation.lua). The frozen severity
--- rides on the wound state itself as a custom param -- written right
--- after EM_Wound_Add; every consumer (the freeze tick, the removal)
--- runs where this op runs, so the value is always in place when read.
-function EMTreatment_TemporarySplint(patient, part, splintFactor)
-    part:setSplint(true, splintFactor or 1.0)
-    part:setSplintItem("EmergencyMedical.TemporarySplint")
+-- apply the improvised fixation: the fracture is TEMPORARILY REMOVED
+-- from the body -- its severity is zeroed (no fracture line, no limp,
+-- no fracture damage, nothing for the vanilla UI to show) and the true
+-- value rides on the wound state as a custom param
+-- (state.fractureTime), written right after EM_Wound_Add. No vanilla
+-- splint flags are set: the part presents as unwounded except for the
+-- "EmergencyFixed" state itself, and the fracture comes back on
+-- removal (EMTreatment_RemoveEmergencyFix).
+function EMTreatment_TemporarySplint(patient, part)
     local state = EM_Wound_Add(patient, part, "EmergencyFixed")
     if state ~= nil then
         state.fractureTime = part:getFractureTime()
     end
+    part:setFractureTime(0.0)
     syncBodyPart(part, EM_SPLINT_SYNC_FLAGS)
     return state
 end
 
--- tear the improvised fixation off (unconditional): the fracture comes
--- back WORSE than when it was frozen -- the time spent in the bad
--- splint is added to its severity (capped at 100, panel "Severe" at
--- >50). The vanilla splint layer only goes with it if it is still the
--- emergency device (a proper splint applied on top is kept).
+-- tear the improvised fixation off (unconditional): the "removed"
+-- fracture comes back -- worse than when it was hidden, the time spent
+-- in the bad splint added to its severity (capped at 100, panel
+-- "Severe" at >50). A NEW fracture suffered while fixated keeps
+-- whichever severity is higher.
 function EMTreatment_RemoveEmergencyFix(patient, part)
-    -- read the frozen severity BEFORE taking the state off
+    -- read the hidden severity BEFORE taking the state off
     local state = EM_Wound_GetState(patient, part, "EmergencyFixed")
     EM_Wound_Remove(patient, part, "EmergencyFixed")
     if state ~= nil then
         local daysHeld = (patient:getHoursSurvived() - state.applied) / 24
-        local severity = (state.fractureTime or part:getFractureTime()) + daysHeld * EM_Sandbox_Get("EmergencyFixWorsenPerDay")
-        part:setFractureTime(math.min(severity, 100.0))
+        local restored = (state.fractureTime or 0.0) + daysHeld * EM_Sandbox_Get("EmergencyFixWorsenPerDay")
+        part:setFractureTime(math.min(math.max(part:getFractureTime(), restored), 100.0))
     end
+    -- a save from a build that splinted the part: the vanilla splint
+    -- layer goes with the state
     if part:getSplintItem() == "EmergencyMedical.TemporarySplint" then
         part:setSplint(false, 0)
         part:setSplintItem("")
@@ -313,11 +314,12 @@ function EMTreatment_RemoveEmergencyFix(patient, part)
 end
 
 -- the fixation state ran out ("EmergencyFixDurationDays" days): the
--- limb has healed up around the splint -- fracture and splint layer go
--- together. Called from the per-minute simulation
--- (BodyWoundSimulation.lua), which spots the expiry by reading the raw
--- wound state's expire field BEFORE the manager's lazy cleanup scrubs
--- it; syncBodyPart only really acts on a server.
+-- limb has healed up around the splint -- the hidden fracture (and any
+-- fresh one suffered while fixated) heals together with it. Called
+-- from the per-minute simulation (BodyWoundSimulation.lua), which
+-- spots the expiry by reading the raw wound state's expire field
+-- BEFORE the manager's lazy cleanup scrubs it; syncBodyPart only
+-- really acts on a server.
 function EMTreatment_EmergencyFixExpired(player, part)
     part:setFractureTime(0.0)
     if part:getSplintItem() == "EmergencyMedical.TemporarySplint" then

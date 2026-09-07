@@ -37,16 +37,16 @@ EM_Wound_Register("CrudeStitched", {
 
 EM_Wound_Register("EmergencyFixed", {
     -- improvised splint on a fracture (EmergencyMedical.TemporarySplint,
-    -- applied from the health panel): the fracture is frozen at its
-    -- severity for the whole duration and never heals naturally, every
-    -- wound on the part hurts +45% (BodyWoundSimulation.lua). Applied
-    -- with the part's vanilla splint layer (EMTreatment_TemporarySplint);
-    -- the frozen fracture severity travels as a custom param on the
-    -- state itself (state.fractureTime, written by the applying
-    -- treatment right after EM_Wound_Add). Removal restores the
-    -- fracture from that stored value (worse by the days held); natural
-    -- expiry is spotted by the per-minute simulation reading the raw
-    -- state's expire field -- see BodyWoundSimulation.lua.
+    -- applied from the health panel): the fracture is TEMPORARILY
+    -- REMOVED from the body for the whole duration (severity zeroed, no
+    -- vanilla fracture anywhere) and every wound on the part hurts +45%
+    -- (BodyWoundSimulation.lua). No vanilla splint flags are set. The
+    -- hidden severity travels as a custom param on the state itself
+    -- (state.fractureTime, written by the applying treatment right
+    -- after EM_Wound_Add). Removal restores the fracture from that
+    -- stored value (worse by the days held); natural expiry is spotted
+    -- by the per-minute simulation reading the raw state's expire
+    -- field -- see BodyWoundSimulation.lua.
     durationDays = function()
         return EM_Sandbox_Get("EmergencyFixDurationDays")
     end,
