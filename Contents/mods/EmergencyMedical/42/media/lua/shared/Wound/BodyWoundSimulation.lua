@@ -102,8 +102,8 @@ local function minuteTick(player)
                 -- improvised fixation: the fracture NEVER heals while the
                 -- state lasts -- restore the severity frozen at
                 -- application (the Java decay between ticks stays
-                -- microscopic). The frozen value is a custom param on the
-                -- state, written by the type's onAdd hook.
+                -- microscopic). The frozen value is a custom param on
+                -- the state, written by the applying treatment.
                 local frozen = fixState.fractureTime or 0.0
                 if frozen > 0.0 and part:getFractureTime() > 0.0 and part:getFractureTime() < frozen then
                     part:setFractureTime(frozen)

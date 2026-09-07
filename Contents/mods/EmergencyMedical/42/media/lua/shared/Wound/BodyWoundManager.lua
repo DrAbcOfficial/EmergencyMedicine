@@ -88,13 +88,14 @@ end
 --   panelLabelKey = "IGUI_..."       -- health panel wound line label
 --                                    -- (rendered by client/Wound/BodyPartPanel.lua)
 --   getLevel = function(state, player, partKey)  -- optional, default: age quartiles 4..1
---   onAdd = function(player, part)   -- optional hook, runs BEFORE the
---                                    -- state transmits: feature-specific
---                                    -- state params (plain fields on the
---                                    -- state table, persisted and synced
---                                    -- with the modData) must be written
---                                    -- here to reach every peer
 -- }
+--
+-- Feature-specific data travels as CUSTOM PARAMS on the state table
+-- itself (plain fields, persisted and synced with the modData): write
+-- them right after EM_Wound_Add returns. The add-time transmit won't
+-- carry them yet, so only code running on the side that applied the
+-- state (the server, in MP) may rely on them immediately -- remote
+-- copies pick them up with the next transmit.
 function EM_Wound_Register(id, def)
     def = def or {}
     def.id = id
@@ -136,9 +137,6 @@ function EM_Wound_Add(player, part, id, durationDays)
     end
     local state = { applied = t, expire = t + days * 24 }
     states[id] = state
-    if def.onAdd then
-        def.onAdd(player, part)
-    end
     transmit(player)
     return state
 end

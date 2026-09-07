@@ -276,13 +276,17 @@ end
 -- (splintFactor = (doctor level + 1) / 2, computed by the acting timed
 -- action) and gains the "EmergencyFixed" state, which FREEZES the
 -- fracture at its current severity for the state's whole duration
--- (per-minute restore in BodyWoundSimulation.lua). The frozen value is
--- captured inside the manager state by the type's onAdd hook (fired
--- before the state transmits).
+-- (per-minute restore in BodyWoundSimulation.lua). The frozen severity
+-- rides on the wound state itself as a custom param -- written right
+-- after EM_Wound_Add; every consumer (the freeze tick, the removal)
+-- runs where this op runs, so the value is always in place when read.
 function EMTreatment_TemporarySplint(patient, part, splintFactor)
     part:setSplint(true, splintFactor or 1.0)
     part:setSplintItem("EmergencyMedical.TemporarySplint")
     local state = EM_Wound_Add(patient, part, "EmergencyFixed")
+    if state ~= nil then
+        state.fractureTime = part:getFractureTime()
+    end
     syncBodyPart(part, EM_SPLINT_SYNC_FLAGS)
     return state
 end

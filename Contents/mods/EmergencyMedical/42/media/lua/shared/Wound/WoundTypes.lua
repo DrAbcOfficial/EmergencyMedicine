@@ -42,8 +42,8 @@ EM_Wound_Register("EmergencyFixed", {
     -- wound on the part hurts +45% (BodyWoundSimulation.lua). Applied
     -- with the part's vanilla splint layer (EMTreatment_TemporarySplint);
     -- the frozen fracture severity travels as a custom param on the
-    -- state itself (state.fractureTime) -- onAdd runs BEFORE the state
-    -- transmits, so the value reaches every peer. Removal restores the
+    -- state itself (state.fractureTime, written by the applying
+    -- treatment right after EM_Wound_Add). Removal restores the
     -- fracture from that stored value (worse by the days held); natural
     -- expiry is spotted by the per-minute simulation reading the raw
     -- state's expire field -- see BodyWoundSimulation.lua.
@@ -51,10 +51,4 @@ EM_Wound_Register("EmergencyFixed", {
         return EM_Sandbox_Get("EmergencyFixDurationDays")
     end,
     panelLabelKey = "IGUI_health_EmergencyFixed",
-    onAdd = function(player, part)
-        local state = EM_Wound_GetState(player, part, "EmergencyFixed")
-        if state ~= nil then
-            state.fractureTime = part:getFractureTime()
-        end
-    end,
 })
