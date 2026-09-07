@@ -13,4 +13,24 @@ module EmergencyMedical
         WorldStaticModel = GrassBandage,
         Tags = base:nopour,
     }
+    item BookSplint
+    {
+        DisplayCategory = FirstAid,
+        ItemType = base:normal,
+        Weight = 2.2,
+        Icon = BookSplint,
+        Medical = true,
+        Tooltip = Tooltip_BookSplint,
+        WorldStaticModel = BookSplint,
+    }
+    item TemporarySplint
+    {
+        DisplayCategory = FirstAid,
+        ItemType = base:normal,
+        Weight = 1.0,
+        Icon = TemporarySplint,
+        Medical = true,
+        Tooltip = Tooltip_TemporarySplint,
+        WorldStaticModel = TemporarySplint,
+    }
 }

@@ -1,3 +1,7 @@
 {
-    "MakeGrassBandage": "Make Grass Bandage"
+    "MakeGrassBandage": "Make Grass Bandage",
+    "MakeBookSplint": "Make Book Splint",
+    "MakeTemporarySplint": "Make Improvised Splint",
+    "MakeTemporarySplintBranch": "Make Improvised Splint",
+    "MakeTemporarySplintRod": "Make Improvised Splint"
 }

@@ -200,6 +200,36 @@ option EmergencyMedical.CrudeStitchReopenOld
     translation = EmergencyMedical_CrudeStitchReopenOld,
 }
 
+option EmergencyMedical.EmergencyFixDurationDays
+{
+    type = integer,
+    default = 365,
+    min = 1,
+    max = 3650,
+    page = EmergencyMedical,
+    translation = EmergencyMedical_EmergencyFixDurationDays,
+}
+
+option EmergencyMedical.EmergencyFixPainBoost
+{
+    type = double,
+    default = 0.45,
+    min = 0.0,
+    max = 2.0,
+    page = EmergencyMedical,
+    translation = EmergencyMedical_EmergencyFixPainBoost,
+}
+
+option EmergencyMedical.EmergencyFixWorsenPerDay
+{
+    type = double,
+    default = 1.0,
+    min = 0.0,
+    max = 10.0,
+    page = EmergencyMedical,
+    translation = EmergencyMedical_EmergencyFixWorsenPerDay,
+}
+
 option EmergencyMedical.MorphineAddictionGain
 {
     type = double,

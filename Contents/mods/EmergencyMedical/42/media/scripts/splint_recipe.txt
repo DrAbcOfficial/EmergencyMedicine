@@ -1,0 +1,67 @@
+module EmergencyMedical
+{
+    craftRecipe MakeBookSplint
+    {
+        timedAction = RipClothing,
+        time = 200,
+        Tags = InHandCraft;Health;CanBeDoneFromFloor,
+        category = Medical,
+        inputs
+        {
+            item 2 tags[base:hardcover;base:softcover;base:picturebook] flags[ItemCount],
+            item 2 [Base.RippedSheets;Base.RippedSheetsDirty;Base.AlcoholRippedSheets] flags[ItemCount],
+        }
+        outputs
+        {
+            item 1 Base.Splint,
+        }
+    }
+    craftRecipe MakeTemporarySplint
+    {
+        timedAction = RipClothing,
+        time = 150,
+        Tags = InHandCraft;Health;CanBeDoneFromFloor,
+        category = Medical,
+        inputs
+        {
+            item 1 tags[base:woodhandle;base:longstick;base:barstock;base:barstockhalf;base:barstockquarter;base:hardcover;base:softcover;base:picturebook;base:magazine;base:newspaper] flags[ItemCount],
+            item 1 [Base.DuctTape;Base.Scotchtape;Base.FiberglassTape;Base.Wire;Base.WireStack;Base.ElectricWire;Base.RippedSheets;Base.RippedSheetsDirty;Base.AlcoholRippedSheets] flags[ItemCount],
+        }
+        outputs
+        {
+            item 1 EmergencyMedical.TemporarySplint,
+        }
+    }
+    craftRecipe MakeTemporarySplintBranch
+    {
+        timedAction = RipClothing,
+        time = 150,
+        Tags = InHandCraft;Health;CanBeDoneFromFloor,
+        category = Medical,
+        inputs
+        {
+            item 1 [Base.TreeBranch;Base.LargeBranch;Base.MetalPipe;Base.LeadPipe;Base.MetalBar;Base.SteelRodHalf;Base.SteelRodQuarter] flags[ItemCount],
+            item 1 [Base.DuctTape;Base.Scotchtape;Base.FiberglassTape;Base.Wire;Base.WireStack;Base.ElectricWire;Base.RippedSheets;Base.RippedSheetsDirty;Base.AlcoholRippedSheets] flags[ItemCount],
+        }
+        outputs
+        {
+            item 1 EmergencyMedical.TemporarySplint,
+        }
+    }
+    craftRecipe MakeTemporarySplintRod
+    {
+        timedAction = RipClothing,
+        time = 150,
+        Tags = InHandCraft;Health;CanBeDoneFromFloor,
+        category = Medical,
+        inputs
+        {
+            item 1 [Base.WeldingRods] flags[ItemCount],
+            item 1 [Base.DuctTape;Base.Scotchtape;Base.FiberglassTape;Base.Wire;Base.WireStack;Base.ElectricWire;Base.RippedSheets;Base.RippedSheetsDirty;Base.AlcoholRippedSheets] flags[ItemCount],
+        }
+        outputs
+        {
+            item 1 EmergencyMedical.TemporarySplint,
+        }
+    }
+}

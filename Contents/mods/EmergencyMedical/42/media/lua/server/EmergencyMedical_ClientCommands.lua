@@ -80,6 +80,21 @@ local function onClientCommand(module, command, player, args)
         handleTreatment(player, args, function(patient, part)
             EMTreatment_InfectWound(patient, part)
         end)
+    elseif command == "TemporarySplint" then
+        handleTreatment(player, args, function(patient, part)
+            if EMTemporarySplint_IsEligiblePart(patient, part) then
+                -- splintFactor comes from the acting doctor's skill, same
+                -- formula as the vanilla splint; clamp what arrives
+                local factor = tonumber(args.factor) or 1.0
+                EMTreatment_TemporarySplint(patient, part, math.min(math.max(factor, 0.0), 5.5))
+            end
+        end)
+    elseif command == "RemoveEmergencyFix" then
+        handleTreatment(player, args, function(patient, part)
+            if EM_Wound_Has(patient, part, "EmergencyFixed") then
+                EMTreatment_RemoveEmergencyFix(patient, part)
+            end
+        end)
     elseif command == "TakeDrug" then
         -- self-use drug effect: the taker is the sender (consumption of
         -- the pill itself is vanilla client-side via JustTookPill ->

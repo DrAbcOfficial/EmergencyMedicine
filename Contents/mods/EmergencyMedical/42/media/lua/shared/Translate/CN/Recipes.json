@@ -1,3 +1,7 @@
 {
-    "MakeGrassBandage": "制作草绷带"
+    "MakeGrassBandage": "制作草绷带",
+    "MakeBookSplint": "制作书本夹板",
+    "MakeTemporarySplint": "制作应急夹板",
+    "MakeTemporarySplintBranch": "制作应急夹板",
+    "MakeTemporarySplintRod": "制作应急夹板"
 }

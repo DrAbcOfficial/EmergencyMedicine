@@ -18,6 +18,11 @@
 local DATA_KEY = "EM_BodyWounds"
 local DEFAULT_DURATION_DAYS = 90
 
+-- exported for the one consumer that must read a state BEFORE the lazy
+-- expiry below scrubs it (BodyWoundSimulation's fixation expiry check);
+-- read-only access -- mutate states only through the API functions
+EM_Wound_DATA_KEY = DATA_KEY
+
 local types = {}
 
 local function partKeyOf(part)
@@ -83,7 +88,12 @@ end
 --   panelLabelKey = "IGUI_..."       -- health panel wound line label
 --                                    -- (rendered by client/Wound/BodyPartPanel.lua)
 --   getLevel = function(state, player, partKey)  -- optional, default: age quartiles 4..1
---   onAdd = function(player, part)   -- optional hook
+--   onAdd = function(player, part)   -- optional hook, runs BEFORE the
+--                                    -- state transmits: feature-specific
+--                                    -- state params (plain fields on the
+--                                    -- state table, persisted and synced
+--                                    -- with the modData) must be written
+--                                    -- here to reach every peer
 -- }
 function EM_Wound_Register(id, def)
     def = def or {}

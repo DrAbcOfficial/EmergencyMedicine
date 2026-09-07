@@ -30,6 +30,11 @@ EM_CUTBITE_SYNC_FLAGS = EM_BODYWOUND_SYNC_FLAGS + 524288
 -- (BodyPartSyncPacket BD_woundInfectionLevel = 32768, BD_infectedWound = 65536)
 EM_INFECT_SYNC_FLAGS = 32768 + 65536
 
+-- the splint ops touch the fracture and the splint layer
+-- (BD_fractureTime + BD_splint + BD_splintFactor + BD_splintItem,
+-- the vanilla ISSplint syncParam 0x430000000 plus the fracture time)
+EM_SPLINT_SYNC_FLAGS = 134217728 + 268435456 + 536870912 + 17179869184
+
 -- a bite's biteTime starts at 50-80 (Fast Healer 30-50, Slow Healer
 -- 80-150) and ONLY decays from there -- the bite is considered
 -- established (the Knox virus has had time to transfer) once it decayed
@@ -244,4 +249,77 @@ function EMTreatment_RemoveCrudeStitch(patient, part)
     part:setBleedingTime(10.0)
     part:setAdditionalPain(math.max(part:getAdditionalPain(), EM_Sandbox_Get("RemoveCrudeStitchPain")))
     syncBodyPart(part, EM_BODYWOUND_SYNC_FLAGS)
+end
+
+-- improvised splint on a fracture: mirrors the vanilla splint rules
+-- (ISHealthPanel HSplint) -- no head/chest, a fracture must be present,
+-- and the part must not be splinted yet; never on a part already
+-- carrying the fixation state.
+function EMTemporarySplint_IsEligiblePart(patient, part)
+    if part == nil then
+        return false
+    end
+    local partType = part:getType()
+    if partType == BodyPartType.Head or partType == BodyPartType.Torso_Upper or partType == BodyPartType.Torso_Lower then
+        return false
+    end
+    if part:getFractureTime() <= 0.0 or part:getSplintFactor() > 0.0 then
+        return false
+    end
+    if patient ~= nil and EM_Wound_Has(patient, part, "EmergencyFixed") then
+        return false
+    end
+    return true
+end
+
+-- apply the improvised fixation: the part is splinted like vanilla
+-- (splintFactor = (doctor level + 1) / 2, computed by the acting timed
+-- action) and gains the "EmergencyFixed" state, which FREEZES the
+-- fracture at its current severity for the state's whole duration
+-- (per-minute restore in BodyWoundSimulation.lua). The frozen value is
+-- captured inside the manager state by the type's onAdd hook (fired
+-- before the state transmits).
+function EMTreatment_TemporarySplint(patient, part, splintFactor)
+    part:setSplint(true, splintFactor or 1.0)
+    part:setSplintItem("EmergencyMedical.TemporarySplint")
+    local state = EM_Wound_Add(patient, part, "EmergencyFixed")
+    syncBodyPart(part, EM_SPLINT_SYNC_FLAGS)
+    return state
+end
+
+-- tear the improvised fixation off (unconditional): the fracture comes
+-- back WORSE than when it was frozen -- the time spent in the bad
+-- splint is added to its severity (capped at 100, panel "Severe" at
+-- >50). The vanilla splint layer only goes with it if it is still the
+-- emergency device (a proper splint applied on top is kept).
+function EMTreatment_RemoveEmergencyFix(patient, part)
+    -- read the frozen severity BEFORE taking the state off
+    local state = EM_Wound_GetState(patient, part, "EmergencyFixed")
+    EM_Wound_Remove(patient, part, "EmergencyFixed")
+    if state ~= nil then
+        local daysHeld = (patient:getHoursSurvived() - state.applied) / 24
+        local severity = (state.fractureTime or part:getFractureTime()) + daysHeld * EM_Sandbox_Get("EmergencyFixWorsenPerDay")
+        part:setFractureTime(math.min(severity, 100.0))
+    end
+    if part:getSplintItem() == "EmergencyMedical.TemporarySplint" then
+        part:setSplint(false, 0)
+        part:setSplintItem("")
+    end
+    syncBodyPart(part, EM_SPLINT_SYNC_FLAGS)
+end
+
+-- the fixation state ran out ("EmergencyFixDurationDays" days): the
+-- limb has healed up around the splint -- fracture and splint layer go
+-- together. Called from the per-minute simulation
+-- (BodyWoundSimulation.lua), which spots the expiry by reading the raw
+-- wound state's expire field BEFORE the manager's lazy cleanup scrubs
+-- it; syncBodyPart only really acts on a server.
+function EMTreatment_EmergencyFixExpired(player, part)
+    part:setFractureTime(0.0)
+    if part:getSplintItem() == "EmergencyMedical.TemporarySplint" then
+        part:setSplint(false, 0)
+        part:setSplintItem("")
+    end
+    EM_Wound_Remove(player, part, "EmergencyFixed")
+    syncBodyPart(part, EM_SPLINT_SYNC_FLAGS)
 end

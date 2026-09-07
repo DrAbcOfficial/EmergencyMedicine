@@ -8,5 +8,7 @@
     "Tooltip_tranexamicacid": "An antifibrinolytic. Instantly stops bleeding from every part of the body. Side effect: moderate head pain.",
     "Tooltip_sulfadimidine": "A sulfonamide antibiotic. Clears the infection from all wounds, but does nothing against the zombie virus. Side effects: severe head pain and a moderate fever.",
     "Tooltip_dexmedetomidine": "A potent veterinary sedative. Instantly wipes away panic and stress, but leaves you noticeably drowsy. Side effect: severe head pain.",
-    "Tooltip_GrassBandage": "A rough bandage made of grass. Heals much worse than an adhesive bandage and will almost certainly infect the wound."
+    "Tooltip_GrassBandage": "A rough bandage made of grass. Heals much worse than an adhesive bandage and will almost certainly infect the wound.",
+    "Tooltip_BookSplint": "A splint lashed together from two books and some cloth. Works exactly like a proper splint -- stiff pages hold bone just fine.",
+    "Tooltip_TemporarySplint": "A field-expedient fixation lashed from a stick, a bar or even a book with tape or wire. Right-click a fractured part in the health panel to fixate it: the bone will not mend, but it stops grinding you down -- at the price of every wound on the limb hurting more. Taking it off leaves the fracture worse than before; only a full year of wear lets it heal outright."
 }
