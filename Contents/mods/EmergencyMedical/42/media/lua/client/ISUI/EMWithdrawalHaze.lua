@@ -1,5 +1,5 @@
 -- Client-only: withdrawal screen haze (the status values themselves live
--- in shared/Opioid/). Purely local-player, no server side.
+-- in shared/Status/Opioid/). Purely local-player, no server side.
 --
 -- A fullscreen dark vignette (media/ui/EMWithdrawalBlur.png) fades in
 -- with the raw withdrawal value, up to the "HazeMaxAlpha" sandbox option

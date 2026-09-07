@@ -1,5 +1,6 @@
 -- EmergencyMedical: the generic dependence-value engine behind the
--- opioid (Opioid/*.lua) and amphetamine (Amphetamine/*.lua) systems.
+-- opioid (Status/Opioid/*.lua) and amphetamine
+-- (Status/Amphetamine/*.lua) systems.
 -- Anything that stores one clamped 0..1 value in player modData and
 -- reads display levels off it lives here ONCE -- the per-substance
 -- files are thin wrappers that bind a modData key (and keep the public

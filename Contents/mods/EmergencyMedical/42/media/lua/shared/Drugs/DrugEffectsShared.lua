@@ -10,7 +10,7 @@
 -- calculations. potency 1.0 = the full-strength state.
 --
 -- BOREDOM / UNHAPPINESS / PANIC are CharacterStats in 0..100; addiction
--- values are the mod's 0..1 scale (see Opioid/OpioidAddiction.lua).
+-- values are the mod's 0..1 scale (see Status/Opioid/OpioidAddiction.lua).
 
 function EMDrug_HealToFull(player)
     local bodyDamage = player:getBodyDamage()
