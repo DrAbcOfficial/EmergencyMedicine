@@ -66,8 +66,18 @@ local SCAB_SCRATCH_OPTION = { [4] = "ScabScratchSevere", [3] = "ScabScratchModer
 -- scab state below (the setters' false paths only clear their flag +
 -- bleeding; SetCauterized additionally clears stemmed/deep-wound/bandage).
 -- A local wound infection is seared out as well -- the Knox virus
--- (IsInfected) is deliberately NOT touched.
+-- (IsInfected) is deliberately NOT touched. The burned-out wounds ride
+-- the state as custom params and COME BACK if the part is wounded again
+-- (BodyWoundSimulation pops the scab; EMTreatment_PopCauterized).
 function EMTreatment_Cauterize(patient, part)
+    -- the state goes on first so the wounds can be captured onto it
+    -- before they are cleared
+    local state = EM_Wound_Add(patient, part, "Cauterized")
+    if state ~= nil then
+        state.scratchTime = part:getScratchTime()
+        state.cutTime = part:getCutTime()
+        state.biteTime = part:getBiteTime()
+    end
     part:setScratched(false, true)
     part:setCut(false)
     part:SetBitten(false, false)
@@ -81,7 +91,7 @@ function EMTreatment_Cauterize(patient, part)
     part:setAdditionalPain(math.min(part:getAdditionalPain() + EM_Sandbox_Get("CauterizePain"), 100.0))
     part:ReduceHealth(EM_Sandbox_Get("CauterizeDamage"))
     syncBodyPart(part, EM_BODYWOUND_SYNC_FLAGS)
-    return EM_Wound_Add(patient, part, "Cauterized")
+    return state
 end
 
 -- scrape the scab off: becomes a scratch whose severity follows the
@@ -213,15 +223,23 @@ function EMCrudeStitch_IsEligiblePart(patient, part)
 end
 
 function EMTreatment_CrudeStitch(patient, part)
+    -- the state goes on first so the wound can be captured onto it
+    -- before it is closed
+    local state = EM_Wound_Add(patient, part, "CrudeStitched")
+    if state ~= nil then
+        state.deepWoundTime = part:getDeepWoundTime()
+        state.bleedingTime = part:getBleedingTime()
+    end
     -- close the wound: deep wound and bleeding are gone (the reopen
-    -- happens on scalpel excision, by age)
+    -- happens on scalpel excision, by age -- or when the part is
+    -- wounded again: EMTreatment_PopCrudeStitch)
     part:setDeepWoundTime(0.0)
     part:setDeepWounded(false)
     part:setBleeding(false)
     part:setBleedingTime(0.0)
     syncBodyPart(part, EM_BODYWOUND_SYNC_FLAGS)
     -- duration comes from the CrudeStitched def ("CrudeStitchedDurationDays")
-    return EM_Wound_Add(patient, part, "CrudeStitched")
+    return state
 end
 
 -- scalpel excision of the crude stitching: the wound REOPENS as a deep
@@ -327,5 +345,85 @@ function EMTreatment_EmergencyFixExpired(player, part)
         part:setSplintItem("")
     end
     EM_Wound_Remove(player, part, "EmergencyFixed")
+    syncBodyPart(part, EM_SPLINT_SYNC_FLAGS)
+end
+
+-- the stored-wound states (cauterized scab / crude stitching /
+-- improvised fixation) POP when the part takes a new wound (detected
+-- per minute in BodyWoundSimulation): the stored severity returns at
+-- once and the state is removed. A new wound of the SAME type as the
+-- stored one absorbs it -- the stored severity stacks onto the new
+-- wound, capped at 100; a different-type new wound leaves the stored
+-- wound standing on its own alongside. Restored wounds never roll the
+-- Knox virus (the ignore-infection setter paths only).
+local function stackSeverity(newValue, stored)
+    return math.min(newValue + stored, 100.0)
+end
+
+function EMTreatment_PopCauterized(patient, part, state)
+    EM_Wound_Remove(patient, part, "Cauterized")
+    -- clear the vanilla flag explicitly so the part can be re-cauterized
+    part:SetCauterized(false)
+    local storedScratch = state.scratchTime or 0.0
+    local storedCut = state.cutTime or 0.0
+    local storedBite = state.biteTime or 0.0
+    if part:getScratchTime() > 0.0 then
+        if storedScratch > 0.0 then
+            part:setScratchTime(stackSeverity(part:getScratchTime(), storedScratch))
+        end
+    elseif storedScratch > 0.0 then
+        part:setScratched(true, true)
+        part:setScratchTime(storedScratch)
+    end
+    if part:getCutTime() > 0.0 then
+        if storedCut > 0.0 then
+            part:setCutTime(stackSeverity(part:getCutTime(), storedCut))
+        end
+    elseif storedCut > 0.0 then
+        part:setCut(true, true)
+        part:setCutTime(storedCut)
+    end
+    if part:getBiteTime() > 0.0 then
+        if storedBite > 0.0 then
+            part:setBiteTime(stackSeverity(part:getBiteTime(), storedBite))
+        end
+    elseif storedBite > 0.0 then
+        -- infected=false: the Knox outcome was settled long ago, the
+        -- wound just comes back
+        part:SetBitten(true, false)
+        part:setBiteTime(storedBite)
+    end
+    syncBodyPart(part, EM_BODYWOUND_SYNC_FLAGS)
+end
+
+function EMTreatment_PopCrudeStitch(patient, part, state)
+    EM_Wound_Remove(patient, part, "CrudeStitched")
+    local stored = state.deepWoundTime or 0.0
+    if part:getDeepWoundTime() > 0.0 then
+        -- a new deep wound on the stitched part: it absorbs the stored one
+        part:setDeepWoundTime(stackSeverity(part:getDeepWoundTime(), stored))
+    elseif stored > 0.0 then
+        -- the stored deep wound tears back open on its own
+        part:setDeepWounded(true)
+        part:setDeepWoundTime(stored)
+    end
+    local storedBleeding = state.bleedingTime or 0.0
+    if storedBleeding > 0.0 then
+        part:setBleeding(true)
+        part:setBleedingTime(part:getBleedingTime() + storedBleeding)
+    end
+    syncBodyPart(part, EM_BODYWOUND_SYNC_FLAGS)
+end
+
+function EMTreatment_PopEmergencyFix(patient, part, state)
+    -- the trigger IS a fresh fracture on the fixated part: it absorbs
+    -- the hidden severity (no removal worsening here -- that is the
+    -- price of tearing the fixation off by choice)
+    EM_Wound_Remove(patient, part, "EmergencyFixed")
+    part:setFractureTime(stackSeverity(part:getFractureTime(), state.fractureTime or 0.0))
+    if part:getSplintItem() == "EmergencyMedical.TemporarySplint" then
+        part:setSplint(false, 0)
+        part:setSplintItem("")
+    end
     syncBodyPart(part, EM_SPLINT_SYNC_FLAGS)
 end

@@ -14,19 +14,25 @@
 -- Rules, every game minute:
 -- * "CrudeStitched" (glue/stapler field repair): every wound on the
 --   part hurts +20% -- additionalPain floors at the wound-generated
---   pain x the "CrudeStitchPainBoost" sandbox multiplier.
+--   pain x the "CrudeStitchPainBoost" sandbox multiplier. The part
+--   taking a NEW deep wound pops the state: the stored deep wound
+--   tears back open, stacked onto the new one.
 -- * "EmergencyFixed" (improvised splint): the fracture is REMOVED from
 --   the body while the state lasts (fractureTime zeroed at
 --   application, true severity riding the state as a custom param), so
 --   there is nothing to maintain -- but every wound on the part hurts
 --   +45% (pain floor x "EmergencyFixPainBoost"), and once the expire
 --   time passes the hidden fracture heals together with the state. The
---   two pain boosts stack by taking the max, not the sum.
+--   two pain boosts stack by taking the max, not the sum. A fresh
+--   fracture while fixated pops the state: the hidden severity stacks
+--   onto the new fracture.
 -- * "Cauterized" (scab): additionalPain never drops below the
 --   "ScabPainFloor" sandbox value while the scab lasts. Pain would
 --   otherwise decay away within a day; the scab aches for as long as
 --   it exists (painkillers buy relief until the next tick tops the
---   part back up). 0 disables the floor.
+--   part back up). 0 disables the floor. The part taking a new
+--   scratch/cut/bite pops the scab: the burned-out wounds return
+--   (stacked onto a same-type new wound).
 -- * "FentanylPatch" (sufentanil, right upper arm): feeds a painkiller
 --   dose, relieves withdrawal, grows addiction and pins
 --   pain/panic/unhappiness/boredom at zero -- rates via sandbox
@@ -80,13 +86,19 @@ local function minuteTick(player)
             local boostFloor = 0.0
             local stitched = states["CrudeStitched"]
             if stitched ~= nil and now < stitched.expire then
-                -- crude stitching: every wound on the part hurts +20%
-                -- while the state lasts (floor = the wound-generated
-                -- pain x the "CrudeStitchPainBoost" sandbox multiplier;
-                -- 0 disables)
-                local floor = woundPain * EM_Sandbox_Get("CrudeStitchPainBoost")
-                if floor > boostFloor then
-                    boostFloor = floor
+                if part:getDeepWoundTime() > 0.0 then
+                    -- the part was wounded again: the stored deep wound
+                    -- tears back open, stacked onto the new one
+                    EMTreatment_PopCrudeStitch(player, part, stitched)
+                else
+                    -- crude stitching: every wound on the part hurts +20%
+                    -- while the state lasts (floor = the wound-generated
+                    -- pain x the "CrudeStitchPainBoost" sandbox multiplier;
+                    -- 0 disables)
+                    local floor = woundPain * EM_Sandbox_Get("CrudeStitchPainBoost")
+                    if floor > boostFloor then
+                        boostFloor = floor
+                    end
                 end
             end
             local fix = states["EmergencyFixed"]
@@ -96,6 +108,10 @@ local function minuteTick(player)
                     -- fracture heals together with the state (removal
                     -- transmits)
                     EMTreatment_EmergencyFixExpired(player, part)
+                elseif part:getFractureTime() > 0.0 then
+                    -- a fresh fracture while fixated: it absorbs the
+                    -- hidden severity and the fixation breaks
+                    EMTreatment_PopEmergencyFix(player, part, fix)
                 else
                     -- improvised fixation: every wound on the part hurts
                     -- +45% ("EmergencyFixPainBoost"); the fracture itself
@@ -111,10 +127,16 @@ local function minuteTick(player)
                 part:setAdditionalPain(boostFloor)
             end
             local scab = states["Cauterized"]
-            if scab ~= nil and now < scab.expire
-                and painFloor ~= nil and painFloor > 0
-                and part:getAdditionalPain() < painFloor then
-                part:setAdditionalPain(painFloor)
+            if scab ~= nil and now < scab.expire then
+                if part:getScratchTime() > 0.0 or part:getCutTime() > 0.0 or part:getBiteTime() > 0.0 then
+                    -- the part was wounded again: the burned-out wounds
+                    -- return (stacked onto a same-type new wound), the
+                    -- scab pops
+                    EMTreatment_PopCauterized(player, part, scab)
+                elseif painFloor ~= nil and painFloor > 0
+                    and part:getAdditionalPain() < painFloor then
+                    part:setAdditionalPain(painFloor)
+                end
             end
             if EM_Wound_PartKey(part) == PATCH_PART_KEY then
                 local patch = states["FentanylPatch"]

@@ -4,7 +4,9 @@
 
 EM_Wound_Register("Cauterized", {
     -- the cauterization scab marks the part for a year by default
-    -- ("ScabDurationDays" sandbox option, resolved when the state is added)
+    -- ("ScabDurationDays" sandbox option, resolved when the state is
+    -- added). Holds the burned-out scratch/cut/bite as custom params;
+    -- a new wound on the part pops it (EMTreatment_PopCauterized).
     durationDays = function()
         return EM_Sandbox_Get("ScabDurationDays")
     end,
@@ -27,6 +29,8 @@ EM_Wound_Register("CrudeStitched", {
     -- every wound on the part hurts +20% while the crude stitching lasts
     -- (pain floor in BodyWoundSimulation.lua). The default age-quartile
     -- levels drive the reopened wound severity on scalpel excision.
+    -- Holds the closed deep wound + its bleeding as custom params; a new
+    -- deep wound on the part pops it (EMTreatment_PopCrudeStitch).
     -- ("CrudeStitchedDurationDays" sandbox option, resolved when the
     -- state is added)
     durationDays = function()
@@ -44,9 +48,11 @@ EM_Wound_Register("EmergencyFixed", {
     -- hidden severity travels as a custom param on the state itself
     -- (state.fractureTime, written by the applying treatment right
     -- after EM_Wound_Add). Removal restores the fracture from that
-    -- stored value (worse by the days held); natural expiry is spotted
-    -- by the per-minute simulation reading the raw state's expire
-    -- field -- see BodyWoundSimulation.lua.
+    -- stored value (worse by the days held); a fresh fracture while
+    -- fixated pops it with the severities stacked
+    -- (EMTreatment_PopEmergencyFix); natural expiry is spotted by the
+    -- per-minute simulation reading the raw state's expire field -- see
+    -- BodyWoundSimulation.lua.
     durationDays = function()
         return EM_Sandbox_Get("EmergencyFixDurationDays")
     end,
