@@ -76,17 +76,17 @@ local function minuteTick(player)
         local stats = player:getStats()
         local panic = EM_Sandbox_Get("AmphPanicPerMinute")
         if panic > 0 then
-            stats:set(CharacterStat.PANIC, math.min(100.0, stats:get(CharacterStat.PANIC) + panic))
+            stats:set(CharacterStat.PANIC, math.min(EM_CONST.STAT_SCALE_MAX_100, stats:get(CharacterStat.PANIC) + panic))
         end
         local unhappiness = EM_Sandbox_Get("AmphUnhappinessPerMinute")
         if unhappiness > 0 then
-            stats:set(CharacterStat.UNHAPPINESS, math.min(100.0, stats:get(CharacterStat.UNHAPPINESS) + unhappiness))
+            stats:set(CharacterStat.UNHAPPINESS, math.min(EM_CONST.STAT_SCALE_MAX_100, stats:get(CharacterStat.UNHAPPINESS) + unhappiness))
         end
         -- drunk kicks in at severe withdrawal or worse
         if withdrawal >= EM_AmphWithdrawal_GetSevereLevel() then
             local drunk = EM_Sandbox_Get("AmphDrunkPerMinute")
             if drunk > 0 then
-                stats:set(CharacterStat.DRUNK, math.min(1.0, stats:get(CharacterStat.DRUNK) + drunk))
+                stats:set(CharacterStat.DRUNK, math.min(EM_CONST.STAT_SCALE_MAX, stats:get(CharacterStat.DRUNK) + drunk))
             end
         end
     end

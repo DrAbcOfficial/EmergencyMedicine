@@ -14,7 +14,7 @@
 
 function EMDrug_HealToFull(player)
     local bodyDamage = player:getBodyDamage()
-    if bodyDamage:getHealth() < 100 then
+    if bodyDamage:getHealth() < EM_CONST.HEALTH_MAX then
         local parts = bodyDamage:getBodyParts()
         for i = 0, parts:size() - 1 do
             local part = parts:get(i)
@@ -56,6 +56,13 @@ end
 -- head part helper (head pain is the shared side effect of three drugs)
 function EMDrug_GetHeadPart(player)
     return player:getBodyDamage():getBodyParts():get(BodyPartType.ToIndex(BodyPartType.Head))
+end
+
+-- the shared head-pain side effect: each drug passes its own amount
+-- (moderate 30 / severe 70 live as locals in the drug files)
+function EMDrug_HeadPain(player, amount)
+    local head = EMDrug_GetHeadPart(player)
+    head:setAdditionalPain(math.min(head:getAdditionalPain() + amount, EM_CONST.PAIN_MAX))
 end
 
 -- stop every part's bleeding (tranexamic acid). Glass shards keep the

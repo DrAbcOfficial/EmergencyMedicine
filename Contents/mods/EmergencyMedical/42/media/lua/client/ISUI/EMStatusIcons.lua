@@ -25,6 +25,10 @@ EMStatusIcons.statuses = {}
 
 local moodleSizes = { 32, 48, 64, 80, 96, 128 }
 
+-- status levels run 1..4 (0 hidden); the icon tint blends gray ->
+-- bad/good across that range
+local MOODLE_LEVEL_MAX = 4
+
 local function getMoodleSize(optionValue)
     local index = (optionValue or 1) - 1
     if index < 0 then
@@ -153,7 +157,7 @@ function EMStatusManager:render()
     for i = 1, #list do
         local entry = list[i]
         local status = entry.status
-        local colorLevel = entry.level / 4
+        local colorLevel = entry.level / MOODLE_LEVEL_MAX
         local baseColor = status.tintColor == "good" and goodColor or badColor
         local gray = Color.gray
         local r = gray:getRedFloat() * (1 - colorLevel) + baseColor:getR() * colorLevel

@@ -5,6 +5,6 @@ function InjectNaloxone(player)
     EMDrug_ChangeAddiction(player, -EM_Sandbox_Get("NaloxoneAddictionReduce"))
     local hungerThirst = EM_Sandbox_Get("NaloxoneHungerThirst")
     local stats = player:getStats()
-    stats:set(CharacterStat.HUNGER, math.min(1.0, stats:get(CharacterStat.HUNGER) + hungerThirst))
-    stats:set(CharacterStat.THIRST, math.min(1.0, stats:get(CharacterStat.THIRST) + hungerThirst))
+    stats:set(CharacterStat.HUNGER, math.min(EM_CONST.STAT_SCALE_MAX, stats:get(CharacterStat.HUNGER) + hungerThirst))
+    stats:set(CharacterStat.THIRST, math.min(EM_CONST.STAT_SCALE_MAX, stats:get(CharacterStat.THIRST) + hungerThirst))
 end

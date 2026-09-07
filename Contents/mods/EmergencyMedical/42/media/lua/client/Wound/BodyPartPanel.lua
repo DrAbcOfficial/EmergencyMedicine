@@ -18,6 +18,12 @@ require "XpSystem/ISUI/ISHealthPanel"
 -- each file computes its own
 local FONT_HGT_SMALL = getTextManager():getFontHeight(UIFont.Small)
 
+-- the wound lines are indented like the vanilla ones and drawn in a
+-- burnt-orange between the vanilla red wound lines and the green
+-- cataplasm lines
+local LINE_INDENT = 15
+local WOUND_LINE_R, WOUND_LINE_G, WOUND_LINE_B = 0.90, 0.52, 0.13
+
 local origDoDrawItem = ISHealthBodyPartListBox.doDrawItem
 function ISHealthBodyPartListBox:doDrawItem(y, item, alt)
     y = origDoDrawItem(self, y, item, alt)
@@ -33,14 +39,12 @@ function ISHealthBodyPartListBox:doDrawItem(y, item, alt)
     if #woundIds == 0 then
         return y
     end
-    local x = 15
+    local x = LINE_INDENT
     local fontHgt = FONT_HGT_SMALL
     for i = 1, #woundIds do
         local def = EM_Wound_GetType(woundIds[i])
         if def ~= nil and def.panelLabelKey ~= nil then
-            -- burnt-orange, between the vanilla red wound lines and the
-            -- green cataplasm lines
-            self:drawText("- " .. getText(def.panelLabelKey), x, y, 0.90, 0.52, 0.13, 1, UIFont.Small)
+            self:drawText("- " .. getText(def.panelLabelKey), x, y, WOUND_LINE_R, WOUND_LINE_G, WOUND_LINE_B, 1, UIFont.Small)
             y = y + fontHgt
         end
     end

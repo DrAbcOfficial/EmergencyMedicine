@@ -29,6 +29,10 @@ require "ISUI/ISPanel"
 
 local BLUR_TEXTURE = "media/ui/EMWithdrawalBlur.png"
 
+-- the haze fades in from the level-1 withdrawal threshold (shared
+-- threshold table, shared/EM_Dependence.lua) up to full withdrawal
+local HAZE_START = EM_Dependence_LEVEL_THRESHOLDS[1]
+
 local EMWithdrawalOverlayPanel = ISPanel:derive("EMWithdrawalOverlayPanel")
 
 function EMWithdrawalOverlayPanel:new(x, y, width, height)
@@ -60,10 +64,10 @@ function EMWithdrawalOverlayPanel:render()
         return
     end
     local value = EM_Withdrawal_Get(player)
-    if value <= 0.15 then
+    if value <= HAZE_START then
         return
     end
-    local alpha = (value - 0.15) / 0.85 * EM_Sandbox_Get("HazeMaxAlpha")
+    local alpha = (value - HAZE_START) / (1.0 - HAZE_START) * EM_Sandbox_Get("HazeMaxAlpha")
     local tex = getTexture(BLUR_TEXTURE)
     if tex == nil then
         return

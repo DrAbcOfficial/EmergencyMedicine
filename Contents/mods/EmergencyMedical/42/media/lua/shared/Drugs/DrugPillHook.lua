@@ -15,7 +15,7 @@
 -- taker, and the modData transmits inside the effects broadcast from the
 -- server. Singleplayer applies directly. The dispatch table doubles as
 -- the whitelist on both sides: EMDrug_ApplyEffect only knows this mod's
--- own six fullTypes.
+-- own nine fullTypes.
 local DRUG_EFFECTS = {
     ["EmergencyMedical.morphine"] = InjectMorphine,
     ["EmergencyMedical.naloxone"] = InjectNaloxone,

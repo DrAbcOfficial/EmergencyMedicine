@@ -4,10 +4,14 @@
 -- (default 0.2 -- five doses clear it). AddGeneralHealth distributes the
 -- amount across the damaged body parts (guarded when nothing is
 -- damaged), so 15 = +15% overall.
+-- the health restore itself is a drug-design constant (deliberately
+-- not sandbox-exposed)
+local HEALTH_RESTORE = 15
+
 function TakeOxyContin(player)
     local bodyDamage = player:getBodyDamage()
-    if bodyDamage:getHealth() < 100 then
-        bodyDamage:AddGeneralHealth(15)
+    if bodyDamage:getHealth() < EM_CONST.HEALTH_MAX then
+        bodyDamage:AddGeneralHealth(HEALTH_RESTORE)
     end
     EMDrug_HalveMind(player)
     EM_Withdrawal_Relieve(player, EM_Sandbox_Get("OxycontinRelief"))

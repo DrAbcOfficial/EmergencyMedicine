@@ -50,18 +50,14 @@ function EM_Dependence_Set(player, key, value)
     end
 end
 
--- display levels: 0.15/0.3/0.5/0.7 -> 1..4 (identical for addiction and
--- withdrawal, both substances)
+-- display levels: LEVEL_THRESHOLDS[i] -> level i (identical for
+-- addiction and withdrawal, both substances)
 function EM_Dependence_GetLevel(player, key)
     local value = EM_Dependence_Get(player, key)
-    if value >= 0.7 then
-        return 4
-    elseif value >= 0.5 then
-        return 3
-    elseif value >= 0.3 then
-        return 2
-    elseif value >= 0.15 then
-        return 1
+    for level = #EM_Dependence_LEVEL_THRESHOLDS, 1, -1 do
+        if value >= EM_Dependence_LEVEL_THRESHOLDS[level] then
+            return level
+        end
     end
     return 0
 end
@@ -83,6 +79,13 @@ end
 -- tier 3 ("severe") entry, deliberately not sandbox-exposed: the
 -- addiction decay gate and the display flip are aligned with it
 EM_Dependence_SEVERE = 0.5
+
+-- display level thresholds (level 1..4 at >= 0.15/0.3/0.5/0.7);
+-- exported read-only for consumers aligned with the levels (the
+-- withdrawal haze starts at level 1)
+EM_Dependence_LEVEL_THRESHOLDS = { 0.15, 0.3, 0.5, 0.7 }
+
+local MINUTES_PER_GAME_DAY = 1440
 
 function EM_Dependence_IsSevere(player, key)
     return EM_Dependence_Get(player, key) >= EM_Dependence_SEVERE
@@ -110,13 +113,13 @@ function EM_Dependence_TickCore(player, addictionKey, withdrawalKey, severeLevel
     if withdrawal < addiction then
         newWithdrawal = math.min(addiction, withdrawal + addiction / math.max(climbMinutes, 1))
     elseif withdrawal > addiction then
-        newWithdrawal = math.max(addiction, withdrawal - fallPerDay / 1440)
+        newWithdrawal = math.max(addiction, withdrawal - fallPerDay / MINUTES_PER_GAME_DAY)
     end
     if newWithdrawal ~= withdrawal then
         EM_Dependence_Set(player, withdrawalKey, newWithdrawal)
     end
     if newWithdrawal >= severeLevel then
-        EM_Dependence_Set(player, addictionKey, EM_Dependence_Get(player, addictionKey) - decayPerDay / 1440)
+        EM_Dependence_Set(player, addictionKey, EM_Dependence_Get(player, addictionKey) - decayPerDay / MINUTES_PER_GAME_DAY)
         if EM_Dependence_Get(player, addictionKey) <= 0 then
             EM_Dependence_Set(player, withdrawalKey, 0)
         end

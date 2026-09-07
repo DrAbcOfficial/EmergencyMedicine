@@ -40,6 +40,10 @@
 
 local PATCH_PART_KEY = "UpperArm_R"
 
+-- the stored painkiller dose caps at full strength (vanilla PainMeds
+-- potency 1.0)
+local PAINKILLER_CAP = 1.0
+
 -- the sufentanil patch upkeep; the loop supplies an unexpired patch
 -- state, rates via sandbox options
 local function tickFentanylPatch(player)
@@ -48,7 +52,7 @@ local function tickFentanylPatch(player)
         -- PainMeds ACCUMULATES painDelta (and restarts its 5400s timer);
         -- cap the stored dose at 1.0 without stopping the refresh
         local painDelta = player:getPainDelta()
-        player:PainMeds(math.min(painkiller, math.max(0.0, 1.0 - painDelta)))
+        player:PainMeds(math.min(painkiller, math.max(0.0, PAINKILLER_CAP - painDelta)))
     end
     local relief = EM_Sandbox_Get("SufentanilWithdrawalRelief")
     if relief > 0 then

@@ -41,6 +41,12 @@ EM_SPLINT_SYNC_FLAGS = 134217728 + 268435456 + 536870912 + 17179869184
 -- below this threshold; cutting must happen while the bite is fresh
 EM_CUTBITE_FRESH_BITETIME = 30
 
+-- a re-opened crude stitch bleeds moderately regardless of its age
+local EXCISION_BLEEDING = 10.0
+
+-- a fresh grass-bandage infection starts at its minimum level
+local MIN_WOUND_INFECTION = 1.0
+
 -- scratch / laceration / bite, without deep wound; bandages must come
 -- off first; parts already carrying the vanilla cauterized flag are done
 function EMCauterize_IsEligiblePart(part)
@@ -88,7 +94,7 @@ function EMTreatment_Cauterize(patient, part)
     part:setWoundInfectionLevel(0.0)
     part:SetCauterized(true)
     part:setBleedingTime(0.0)
-    part:setAdditionalPain(math.min(part:getAdditionalPain() + EM_Sandbox_Get("CauterizePain"), 100.0))
+    part:setAdditionalPain(math.min(part:getAdditionalPain() + EM_Sandbox_Get("CauterizePain"), EM_CONST.PAIN_MAX))
     part:ReduceHealth(EM_Sandbox_Get("CauterizeDamage"))
     syncBodyPart(part, EM_BODYWOUND_SYNC_FLAGS)
     return state
@@ -107,7 +113,7 @@ function EMTreatment_RemoveScab(patient, part)
     part:SetCauterized(false)
     part:setScratched(true, true)
     part:setScratchTime(EM_Sandbox_Get(SCAB_SCRATCH_OPTION[level] or "ScabScratchModerate"))
-    part:setAdditionalPain(math.min(part:getAdditionalPain() + EM_Sandbox_Get("RemoveScabPain"), 100.0))
+    part:setAdditionalPain(math.min(part:getAdditionalPain() + EM_Sandbox_Get("RemoveScabPain"), EM_CONST.PAIN_MAX))
     syncBodyPart(part, EM_BODYWOUND_SYNC_FLAGS)
 end
 
@@ -126,7 +132,7 @@ function EMTreatment_DigBullet(patient, part)
     -- a local wound infection is caused or worsened (NOT the Knox virus)
     part:setInfectedWound(true)
     part:setWoundInfectionLevel(part:getWoundInfectionLevel() + EM_Sandbox_Get("DigBulletInfection"))
-    part:setAdditionalPain(math.min(part:getAdditionalPain() + EM_Sandbox_Get("DigBulletPain"), 100.0))
+    part:setAdditionalPain(math.min(part:getAdditionalPain() + EM_Sandbox_Get("DigBulletPain"), EM_CONST.PAIN_MAX))
     syncBodyPart(part, EM_BODYWOUND_SYNC_FLAGS)
 end
 
@@ -163,8 +169,8 @@ function EMTreatment_CutBite(patient, part, useGlass)
 
     part:generateDeepWound()
     part:setBleeding(true)
-    part:setBleedingTime(100.0)
-    part:setAdditionalPain(100.0)
+    part:setBleedingTime(EM_CONST.WOUND_TIME_MAX)
+    part:setAdditionalPain(EM_CONST.PAIN_MAX)
     if useGlass then
         part:setHaveGlass(true)
     end
@@ -198,7 +204,7 @@ end
 function EMTreatment_InfectWound(patient, part)
     if not part:isInfectedWound() then
         part:setInfectedWound(true)
-        part:setWoundInfectionLevel(1.0)
+        part:setWoundInfectionLevel(MIN_WOUND_INFECTION)
     end
     syncBodyPart(part, EM_INFECT_SYNC_FLAGS)
 end
@@ -264,7 +270,7 @@ function EMTreatment_RemoveCrudeStitch(patient, part)
     part:setDeepWounded(true)
     part:setDeepWoundTime(EM_Sandbox_Get(CRUDE_STITCH_REOPEN_OPTION[level] or "CrudeStitchReopenModerate"))
     part:setBleeding(true)
-    part:setBleedingTime(10.0)
+    part:setBleedingTime(EXCISION_BLEEDING)
     part:setAdditionalPain(math.max(part:getAdditionalPain(), EM_Sandbox_Get("RemoveCrudeStitchPain")))
     syncBodyPart(part, EM_BODYWOUND_SYNC_FLAGS)
 end
@@ -318,9 +324,9 @@ function EMTreatment_RemoveEmergencyFix(patient, part)
     local state = EM_Wound_GetState(patient, part, "EmergencyFixed")
     EM_Wound_Remove(patient, part, "EmergencyFixed")
     if state ~= nil then
-        local daysHeld = (patient:getHoursSurvived() - state.applied) / 24
+        local daysHeld = (patient:getHoursSurvived() - state.applied) / EM_CONST.HOURS_PER_GAME_DAY
         local restored = (state.fractureTime or 0.0) + daysHeld * EM_Sandbox_Get("EmergencyFixWorsenPerDay")
-        part:setFractureTime(math.min(math.max(part:getFractureTime(), restored), 100.0))
+        part:setFractureTime(math.min(math.max(part:getFractureTime(), restored), EM_CONST.WOUND_TIME_MAX))
     end
     -- a save from a build that splinted the part: the vanilla splint
     -- layer goes with the state
@@ -357,7 +363,7 @@ end
 -- wound standing on its own alongside. Restored wounds never roll the
 -- Knox virus (the ignore-infection setter paths only).
 local function stackSeverity(newValue, stored)
-    return math.min(newValue + stored, 100.0)
+    return math.min(newValue + stored, EM_CONST.WOUND_TIME_MAX)
 end
 
 function EMTreatment_PopCauterized(patient, part, state)
