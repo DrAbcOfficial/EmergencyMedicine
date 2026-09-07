@@ -30,73 +30,72 @@ local function handleTreatment(player, args, apply)
     apply(patient, parts:get(args.part))
 end
 
+-- one row per body-part treatment: re-validate the eligibility and
+-- apply the shared op. handleTreatment supplies patient + part (alive,
+-- part index and doctor distance are checked for every row alike).
+local TREATMENTS = {
+    Cauterize = function(patient, part)
+        if EMCauterize_IsEligiblePart(part) then
+            EMTreatment_Cauterize(patient, part)
+        end
+    end,
+    RemoveScab = function(patient, part)
+        if EMRemoveScab_IsEligiblePart(patient, part) then
+            EMTreatment_RemoveScab(patient, part)
+        end
+    end,
+    DigBullet = function(patient, part)
+        if part:haveBullet() then
+            EMTreatment_DigBullet(patient, part)
+        end
+    end,
+    RemovePatch = function(patient, part)
+        if EM_Wound_Has(patient, part, "FentanylPatch") then
+            EMTreatment_RemovePatch(patient, part)
+        end
+    end,
+    CutBite = function(patient, part, args)
+        if EMCutBite_IsEligiblePart(part) then
+            EMTreatment_CutBite(patient, part, args.glass == true)
+        end
+    end,
+    CrudeStitch = function(patient, part)
+        if EMCrudeStitch_IsEligiblePart(patient, part) then
+            EMTreatment_CrudeStitch(patient, part)
+        end
+    end,
+    RemoveCrudeStitch = function(patient, part)
+        if EMRemoveCrudeStitch_IsEligiblePart(patient, part) then
+            EMTreatment_RemoveCrudeStitch(patient, part)
+        end
+    end,
+    InfectWound = function(patient, part)
+        EMTreatment_InfectWound(patient, part)
+    end,
+    TemporarySplint = function(patient, part)
+        if EMTemporarySplint_IsEligiblePart(patient, part) then
+            EMTreatment_TemporarySplint(patient, part)
+        end
+    end,
+    RemoveEmergencyFix = function(patient, part)
+        if EM_Wound_Has(patient, part, "EmergencyFixed") then
+            EMTreatment_RemoveEmergencyFix(patient, part)
+        end
+    end,
+}
+
 local function onClientCommand(module, command, player, args)
     if module ~= "EmergencyMedical" or player == nil or args == nil then
         return
     end
-    if command == "Cauterize" then
-        handleTreatment(player, args, function(patient, part)
-            if EMCauterize_IsEligiblePart(part) then
-                EMTreatment_Cauterize(patient, part)
-            end
-        end)
-    elseif command == "RemoveScab" then
-        handleTreatment(player, args, function(patient, part)
-            if EMRemoveScab_IsEligiblePart(patient, part) then
-                EMTreatment_RemoveScab(patient, part)
-            end
-        end)
-    elseif command == "DigBullet" then
-        handleTreatment(player, args, function(patient, part)
-            if part:haveBullet() then
-                EMTreatment_DigBullet(patient, part)
-            end
-        end)
-    elseif command == "RemovePatch" then
-        handleTreatment(player, args, function(patient, part)
-            if EM_Wound_Has(patient, part, "FentanylPatch") then
-                EMTreatment_RemovePatch(patient, part)
-            end
-        end)
-    elseif command == "CutBite" then
-        handleTreatment(player, args, function(patient, part)
-            if EMCutBite_IsEligiblePart(part) then
-                EMTreatment_CutBite(patient, part, args.glass == true)
-            end
-        end)
-    elseif command == "CrudeStitch" then
-        handleTreatment(player, args, function(patient, part)
-            if EMCrudeStitch_IsEligiblePart(patient, part) then
-                EMTreatment_CrudeStitch(patient, part)
-            end
-        end)
-    elseif command == "RemoveCrudeStitch" then
-        handleTreatment(player, args, function(patient, part)
-            if EMRemoveCrudeStitch_IsEligiblePart(patient, part) then
-                EMTreatment_RemoveCrudeStitch(patient, part)
-            end
-        end)
-    elseif command == "InfectWound" then
-        handleTreatment(player, args, function(patient, part)
-            EMTreatment_InfectWound(patient, part)
-        end)
-    elseif command == "TemporarySplint" then
-        handleTreatment(player, args, function(patient, part)
-            if EMTemporarySplint_IsEligiblePart(patient, part) then
-                EMTreatment_TemporarySplint(patient, part)
-            end
-        end)
-    elseif command == "RemoveEmergencyFix" then
-        handleTreatment(player, args, function(patient, part)
-            if EM_Wound_Has(patient, part, "EmergencyFixed") then
-                EMTreatment_RemoveEmergencyFix(patient, part)
-            end
-        end)
+    local treatment = TREATMENTS[command]
+    if treatment ~= nil then
+        handleTreatment(player, args, treatment)
     elseif command == "TakeDrug" then
         -- self-use drug effect: the taker is the sender (consumption of
         -- the pill itself is vanilla client-side via JustTookPill ->
         -- UseAndSync). EMDrug_ApplyEffect dispatches only this mod's own
-        -- six fullTypes -- that IS the validation.
+        -- nine fullTypes -- that IS the validation.
         if type(args.drug) == "string" and player:isAlive() then
             EMDrug_ApplyEffect(player, args.drug)
         end

@@ -1,6 +1,8 @@
 -- EmergencyMedical: the amphetamine per-minute simulation (dynamics +
 -- behavioural effects). Mirrors OpioidSimulation.lua's cadence/branching
--- (server iterates online players, client handles the local player).
+-- (server iterates online players, client handles the local player);
+-- the shared chase/fall/grind core lives in EM_Dependence.lua
+-- (EM_Dependence_TickCore).
 --
 -- Rules, every game minute:
 -- * withdrawal chases the addiction baseline at
@@ -29,6 +31,10 @@
 -- per minute (set via EM_Meth_SetHigh from the drug effect).
 
 local METH_HIGH_KEY = "EM_MethHigh"
+-- modData keys -- must match AmphetamineAddiction.lua /
+-- AmphetamineWithdrawal.lua
+local ADDICTION_KEY = "EM_AmphAddiction"
+local WITHDRAWAL_KEY = "EM_AmphWithdrawal"
 
 -- drug effects call this with the ramp duration in game hours
 function EM_Meth_SetHigh(player, durationHours)
@@ -37,13 +43,7 @@ function EM_Meth_SetHigh(player, durationHours)
         return
     end
     data[METH_HIGH_KEY] = player:getHoursSurvived() + durationHours
-    -- MP: effects run on the server (TakeDrug command) -> broadcast;
-    -- a client may only push its own player's table up
-    if isServer() then
-        player:transmitModData()
-    elseif isClient() and player:isLocalPlayer() then
-        player:transmitModData()
-    end
+    EM_Dependence_Transmit(player)
 end
 
 local function tickMethHigh(player)
@@ -63,29 +63,13 @@ local function minuteTick(player)
         return
     end
     tickMethHigh(player)
-    local addiction = EM_AmphAddiction_Get(player)
-    if addiction <= 0 then
-        EM_AmphWithdrawal_Set(player, 0)
-    else
-        local withdrawal = EM_AmphWithdrawal_Get(player)
-        local newWithdrawal = withdrawal
-        if withdrawal < addiction then
-            local climbMinutes = EM_Sandbox_Get("AmphWithdrawalClimbMinutes")
-            newWithdrawal = math.min(addiction, withdrawal + addiction / math.max(climbMinutes, 1))
-        elseif withdrawal > addiction then
-            newWithdrawal = math.max(addiction, withdrawal - EM_Sandbox_Get("AmphDecayRate") / 1440)
-        end
-        if newWithdrawal ~= withdrawal then
-            EM_AmphWithdrawal_Set(player, newWithdrawal)
-        end
-        -- only severe withdrawal (cold turkey) grinds the baseline down
-        if newWithdrawal >= EM_AmphWithdrawal_GetSevereLevel() then
-            EM_AmphAddiction_Set(player, addiction - EM_Sandbox_Get("AmphDecayRate") / 1440)
-            if EM_AmphAddiction_Get(player) <= 0 then
-                EM_AmphWithdrawal_Set(player, 0)
-            end
-        end
-    end
+    EM_Dependence_TickCore(player,
+        ADDICTION_KEY,
+        WITHDRAWAL_KEY,
+        EM_AmphWithdrawal_GetSevereLevel(),
+        EM_Sandbox_Get("AmphWithdrawalClimbMinutes"),
+        EM_Sandbox_Get("AmphDecayRate"),
+        EM_Sandbox_Get("AmphDecayRate"))
 
     local withdrawal = EM_AmphWithdrawal_Get(player)
     if withdrawal > 0 then

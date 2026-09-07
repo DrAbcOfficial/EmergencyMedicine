@@ -74,11 +74,7 @@ local function transmit(player)
     -- on a client for a REMOTE player (doctor treatments) must therefore
     -- run on the server instead: client/Wound actions route through a
     -- client command (server/EmergencyMedical_ClientCommands.lua).
-    if isServer() then
-        player:transmitModData()
-    elseif isClient() and player:isLocalPlayer() then
-        player:transmitModData()
-    end
+    EM_Dependence_Transmit(player)
 end
 
 -- def = {

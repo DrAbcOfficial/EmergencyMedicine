@@ -1,9 +1,10 @@
--- Dig-bullet: an EMBodyPartHandler subclass that needs NO item -- bare
--- hands. Right-click a gunshot wound in the health panel -> "用手抠出子弹",
--- the risky removal: deep wound, worse severity, bleeding and infection
--- (see ISDigBulletAction.lua). Overrides addToMenu/onSelected because the
--- base ties its option to a found inventory item.
+-- Dig-bullet: a tool-less EMBodyPartHandler subclass (isToolless) --
+-- bare hands. Right-click a gunshot wound in the health panel ->
+-- "用手抠出子弹", the risky removal: deep wound, worse severity,
+-- bleeding and infection (see ISDigBulletAction.lua). matchesItem stays
+-- false so the container scan never collects anything for this handler.
 local Handler = EMBodyPartHandler:derive("EMDigBulletHandler")
+Handler.isToolless = true
 
 function Handler:isEligible()
     return self.bodyPart:haveBullet()
@@ -13,15 +14,8 @@ function Handler:getLabel()
     return getText("IGUI_health_DigBullet")
 end
 
-function Handler:addToMenu(context)
-    if not self:isEligible() then
-        return
-    end
-    context:addOption(self:getLabel(), self, self.onSelected)
-end
-
-function Handler:onSelected()
-    ISTimedActionQueue.add(ISDigBulletAction:new(self:getDoctor(), self:getPatient(), self.bodyPart))
+function Handler:createAction(doctor, patient, _item)
+    return ISDigBulletAction:new(doctor, patient, self.bodyPart)
 end
 
 EMBodyPartHandler.Register(Handler)

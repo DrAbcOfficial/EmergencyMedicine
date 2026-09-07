@@ -50,11 +50,7 @@ function EMDrug_ChangeAddiction(player, amount)
     EM_Addiction_Set(player, EM_Addiction_Get(player) + amount)
     -- MP: effects run on the server (TakeDrug command) -> broadcast;
     -- a client may only push its own player's table up (SP needs none)
-    if isServer() then
-        player:transmitModData()
-    elseif isClient() and player:isLocalPlayer() then
-        player:transmitModData()
-    end
+    EM_Dependence_Transmit(player)
 end
 
 -- head part helper (head pain is the shared side effect of three drugs)

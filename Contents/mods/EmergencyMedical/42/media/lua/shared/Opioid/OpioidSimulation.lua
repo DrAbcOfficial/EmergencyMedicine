@@ -1,6 +1,7 @@
 -- EmergencyMedical: the coupled addiction/withdrawal per-minute
 -- simulation. Pure dynamics -- the value APIs live in
--- OpioidAddiction.lua / OpioidWithdrawal.lua.
+-- OpioidAddiction.lua / OpioidWithdrawal.lua; the shared
+-- chase/fall/grind core in EM_Dependence.lua (EM_Dependence_TickCore).
 --
 -- Runs on the server for online players and on the local client (same
 -- rate both sides); values reach the server via transmitModData() on
@@ -25,40 +26,24 @@
 -- The rates are sandbox-configurable, read every tick so option changes
 -- apply from the next game minute on. "WithdrawalFallRate" and
 -- "AddictionDecayRate" are fractions of the full value PER GAME DAY
--- (defaults 0.288 / 0.72); they are converted to the per-minute decimals
--- by dividing by 1440 (0.0002 / 0.0005 per minute as before).
+-- (defaults 0.288 / 0.72); the core converts them to the per-minute
+-- decimals by dividing by 1440 (0.0002 / 0.0005 per minute as before).
+
+-- modData keys -- must match OpioidAddiction.lua / OpioidWithdrawal.lua
+local ADDICTION_KEY = "EM_OpioidAddiction"
+local WITHDRAWAL_KEY = "EM_OpioidWithdrawal"
 
 local function minuteTick(player)
     if player == nil then
         return
     end
-    local addiction = EM_Addiction_Get(player)
-    -- No baseline, no sickness: withdrawal ends immediately.
-    if addiction <= 0 then
-        EM_Withdrawal_Set(player, 0)
-        return
-    end
-    local withdrawal = EM_Withdrawal_Get(player)
-    -- Withdrawal chases the baseline: climbs fast while below it (the
-    -- whole gap closes within the configured climb time), wears off
-    -- slowly above it.
-    local newWithdrawal = withdrawal
-    if withdrawal < addiction then
-        local climbMinutes = EM_Sandbox_Get("WithdrawalClimbMinutes")
-        newWithdrawal = math.min(addiction, withdrawal + addiction / math.max(climbMinutes, 1))
-    elseif withdrawal > addiction then
-        newWithdrawal = math.max(addiction, withdrawal - EM_Sandbox_Get("WithdrawalFallRate") / 1440)
-    end
-    if newWithdrawal ~= withdrawal then
-        EM_Withdrawal_Set(player, newWithdrawal)
-    end
-    -- Only severe withdrawal (cold turkey) grinds the baseline down.
-    if newWithdrawal >= EM_Withdrawal_GetSevereLevel() then
-        EM_Addiction_Set(player, addiction - EM_Sandbox_Get("AddictionDecayRate") / 1440)
-        if EM_Addiction_Get(player) <= 0 then
-            EM_Withdrawal_Set(player, 0)
-        end
-    end
+    EM_Dependence_TickCore(player,
+        ADDICTION_KEY,
+        WITHDRAWAL_KEY,
+        EM_Withdrawal_GetSevereLevel(),
+        EM_Sandbox_Get("WithdrawalClimbMinutes"),
+        EM_Sandbox_Get("WithdrawalFallRate"),
+        EM_Sandbox_Get("AddictionDecayRate"))
 end
 
 local function simulate()

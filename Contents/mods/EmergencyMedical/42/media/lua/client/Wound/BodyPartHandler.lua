@@ -20,6 +20,11 @@
 --   createAction(doctor, patient, item) -> ISBaseTimedAction
 -- then EMBodyPartHandler.Register(class).
 --
+-- Tool-less subclasses (bare hands, peel-off states) set
+-- Handler.isToolless = true instead of defining matchesItem: the menu
+-- option shows without any found item and createAction receives a nil
+-- item.
+--
 -- client/Wound sorts before client/XpSystem alphabetically, so the
 -- vanilla health panel is not loaded yet at this point -- explicit
 -- require below.
@@ -58,24 +63,27 @@ function EMBodyPartHandler:checkItem(item)
 end
 
 function EMBodyPartHandler:addToMenu(context)
-    if #self.items == 0 or not self:isEligible() then
+    if not self:isEligible() then
+        return
+    end
+    if not self.isToolless and #self.items == 0 then
         return
     end
     context:addOption(self:getLabel(), self, self.onSelected)
 end
 
 function EMBodyPartHandler:onSelected()
-    local item = self.items[1]
-    if item == nil or not self:isEligible() then
+    if not self:isEligible() then
         return
     end
+    local item = self.items[1]
     local doctor = self:getDoctor()
     local patient = self:getPatient()
     local action = self:createAction(doctor, patient, item)
     if action == nil then
         return
     end
-    if item:getContainer() ~= doctor:getInventory() then
+    if item ~= nil and item:getContainer() ~= doctor:getInventory() then
         -- item picked up from a nearby container: walk over and take it,
         -- then chain the treatment after the transfer. B42's addAfter has
         -- NO nil-previousAction fallback (B41 had one) -- passing nil
