@@ -325,7 +325,10 @@ function EMTreatment_RemoveEmergencyFix(patient, part)
     EM_Wound_Remove(patient, part, "EmergencyFixed")
     if state ~= nil then
         local daysHeld = (patient:getHoursSurvived() - state.applied) / EM_CONST.HOURS_PER_GAME_DAY
-        local restored = (state.fractureTime or 0.0) + daysHeld * EM_Sandbox_Get("EmergencyFixWorsenPerDay")
+        -- the worsening rate is a 0-1 fraction of the fracture scale
+        -- per day (default 0.01 = one severity point per day)
+        local restored = (state.fractureTime or 0.0)
+            + daysHeld * EM_Sandbox_Get("EmergencyFixWorsenPerDay") * EM_CONST.WOUND_TIME_MAX
         part:setFractureTime(math.min(math.max(part:getFractureTime(), restored), EM_CONST.WOUND_TIME_MAX))
     end
     -- a save from a build that splinted the part: the vanilla splint

@@ -223,9 +223,9 @@ option EmergencyMedical.EmergencyFixPainBoost
 option EmergencyMedical.EmergencyFixWorsenPerDay
 {
     type = double,
-    default = 1.0,
+    default = 0.01,
     min = 0.0,
-    max = 10.0,
+    max = 1.0,
     page = EmergencyMedical,
     translation = EmergencyMedical_EmergencyFixWorsenPerDay,
 }
@@ -363,9 +363,9 @@ option EmergencyMedical.AmphDecayRate
 option EmergencyMedical.AmphPanicPerMinute
 {
     type = double,
-    default = 1.0,
+    default = 0.01,
     min = 0.0,
-    max = 100.0,
+    max = 1.0,
     page = EmergencyMedical,
     translation = EmergencyMedical_AmphPanicPerMinute,
 }
@@ -373,9 +373,9 @@ option EmergencyMedical.AmphPanicPerMinute
 option EmergencyMedical.AmphUnhappinessPerMinute
 {
     type = double,
-    default = 1.0,
+    default = 0.01,
     min = 0.0,
-    max = 100.0,
+    max = 1.0,
     page = EmergencyMedical,
     translation = EmergencyMedical_AmphUnhappinessPerMinute,
 }
@@ -433,9 +433,9 @@ option EmergencyMedical.AmphCrashAppetitePerDay
 option EmergencyMedical.CrossWithdrawalHealthLoss
 {
     type = double,
-    default = 10.0,
+    default = 0.1,
     min = 0.0,
-    max = 100.0,
+    max = 1.0,
     page = EmergencyMedical,
     translation = EmergencyMedical_CrossWithdrawalHealthLoss,
 }

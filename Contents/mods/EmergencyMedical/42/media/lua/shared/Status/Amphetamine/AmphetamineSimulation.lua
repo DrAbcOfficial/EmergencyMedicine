@@ -81,13 +81,15 @@ local function minuteTick(player)
     local withdrawal = EM_AmphWithdrawal_Get(player)
     if withdrawal > 0 then
         local stats = player:getStats()
+        -- the panic/unhappiness rates are 0-1 fractions of the stats'
+        -- own 0..100 scale
         local panic = EM_Sandbox_Get("AmphPanicPerMinute")
         if panic > 0 then
-            stats:set(CharacterStat.PANIC, math.min(EM_CONST.STAT_SCALE_MAX_100, stats:get(CharacterStat.PANIC) + panic))
+            stats:set(CharacterStat.PANIC, math.min(EM_CONST.STAT_SCALE_MAX_100, stats:get(CharacterStat.PANIC) + panic * EM_CONST.STAT_SCALE_MAX_100))
         end
         local unhappiness = EM_Sandbox_Get("AmphUnhappinessPerMinute")
         if unhappiness > 0 then
-            stats:set(CharacterStat.UNHAPPINESS, math.min(EM_CONST.STAT_SCALE_MAX_100, stats:get(CharacterStat.UNHAPPINESS) + unhappiness))
+            stats:set(CharacterStat.UNHAPPINESS, math.min(EM_CONST.STAT_SCALE_MAX_100, stats:get(CharacterStat.UNHAPPINESS) + unhappiness * EM_CONST.STAT_SCALE_MAX_100))
         end
         -- severe withdrawal or worse: the crash -- drunkenness plus a
         -- ravenous appetite (hunger and thirst climb a full stat scale
@@ -127,10 +129,12 @@ local function minuteTick(player)
         end
     end
 
-    -- opioid + amphetamine withdrawal stacking: health drains until death
+    -- opioid + amphetamine withdrawal stacking: health drains until
+    -- death (the option is a 0-1 fraction of the health scale per game
+    -- hour)
     local crossLoss = EM_Sandbox_Get("CrossWithdrawalHealthLoss")
     if crossLoss > 0 and withdrawal > 0 and EM_Withdrawal_Get(player) > 0 then
-        player:getBodyDamage():ReduceGeneralHealth(crossLoss / 60)
+        player:getBodyDamage():ReduceGeneralHealth(crossLoss * EM_CONST.HEALTH_MAX / 60)
     end
 end
 
