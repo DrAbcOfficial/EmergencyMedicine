@@ -85,8 +85,6 @@ EM_Dependence_SEVERE = 0.5
 -- withdrawal haze starts at level 1)
 EM_Dependence_LEVEL_THRESHOLDS = { 0.15, 0.3, 0.5, 0.7 }
 
-local MINUTES_PER_GAME_DAY = 1440
-
 function EM_Dependence_IsSevere(player, key)
     return EM_Dependence_Get(player, key) >= EM_Dependence_SEVERE
 end
@@ -113,13 +111,13 @@ function EM_Dependence_TickCore(player, addictionKey, withdrawalKey, severeLevel
     if withdrawal < addiction then
         newWithdrawal = math.min(addiction, withdrawal + addiction / math.max(climbMinutes, 1))
     elseif withdrawal > addiction then
-        newWithdrawal = math.max(addiction, withdrawal - fallPerDay / MINUTES_PER_GAME_DAY)
+        newWithdrawal = math.max(addiction, withdrawal - fallPerDay / EM_CONST.MINUTES_PER_GAME_DAY)
     end
     if newWithdrawal ~= withdrawal then
         EM_Dependence_Set(player, withdrawalKey, newWithdrawal)
     end
     if newWithdrawal >= severeLevel then
-        EM_Dependence_Set(player, addictionKey, EM_Dependence_Get(player, addictionKey) - decayPerDay / MINUTES_PER_GAME_DAY)
+        EM_Dependence_Set(player, addictionKey, EM_Dependence_Get(player, addictionKey) - decayPerDay / EM_CONST.MINUTES_PER_GAME_DAY)
         if EM_Dependence_Get(player, addictionKey) <= 0 then
             EM_Dependence_Set(player, withdrawalKey, 0)
         end

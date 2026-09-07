@@ -16,9 +16,16 @@
 --   "AmphPanicPerMinute" / "AmphUnhappinessPerMinute" per minute;
 -- * at severe withdrawal or worse the DRUNK stat (0..1) creeps up by
 --   "AmphDrunkPerMinute" as well;
--- * during MILD or MODERATE withdrawal (levels 1-2) the FATIGUE stat
---   (0..1) is drained by "AmphSleepReductionPerMinute" per minute --
---   the character cannot sleep;
+-- * during MILD or MODERATE withdrawal (levels 1-2) the stimulant
+--   keeps the body running: HUNGER is drained by
+--   "AmphHungerSuppressionPerMinute" and FATIGUE by
+--   "AmphSleepReductionPerMinute" per minute (the defaults outpace the
+--   vanilla stat gains -- the character never feels hungry or tired),
+--   and ENDURANCE keeps recovering at "AmphEnduranceRestorePerMinute";
+-- * at severe withdrawal or worse the crash sets in: the DRUNK stat
+--   (0..1) creeps up by "AmphDrunkPerMinute", and HUNGER and THIRST
+--   climb by "AmphCrashAppetitePerDay" of the full stat scale per game
+--   day (default 1.0 = starved and parched within one day);
 -- * while opioid AND amphetamine withdrawal are BOTH active, overall
 --   health takes "CrossWithdrawalHealthLoss" percent per game hour
 --   (÷60 per minute) until death.
@@ -82,22 +89,41 @@ local function minuteTick(player)
         if unhappiness > 0 then
             stats:set(CharacterStat.UNHAPPINESS, math.min(EM_CONST.STAT_SCALE_MAX_100, stats:get(CharacterStat.UNHAPPINESS) + unhappiness))
         end
-        -- drunk kicks in at severe withdrawal or worse
+        -- severe withdrawal or worse: the crash -- drunkenness plus a
+        -- ravenous appetite (hunger and thirst climb a full stat scale
+        -- per game day at the default rate)
         if withdrawal >= EM_AmphWithdrawal_GetSevereLevel() then
             local drunk = EM_Sandbox_Get("AmphDrunkPerMinute")
             if drunk > 0 then
                 stats:set(CharacterStat.DRUNK, math.min(EM_CONST.STAT_SCALE_MAX, stats:get(CharacterStat.DRUNK) + drunk))
             end
+            local appetite = EM_Sandbox_Get("AmphCrashAppetitePerDay")
+            if appetite > 0 then
+                local bump = appetite / EM_CONST.MINUTES_PER_GAME_DAY
+                stats:set(CharacterStat.HUNGER, math.min(EM_CONST.STAT_SCALE_MAX, stats:get(CharacterStat.HUNGER) + bump))
+                stats:set(CharacterStat.THIRST, math.min(EM_CONST.STAT_SCALE_MAX, stats:get(CharacterStat.THIRST) + bump))
+            end
         end
     end
 
-    -- mild/moderate withdrawal keeps the character awake (fatigue drained)
+    -- mild/moderate withdrawal: the stimulant keeps the body running --
+    -- hunger and sleepiness are suppressed (the defaults outpace the
+    -- vanilla gains: never hungry, never tired) and endurance keeps
+    -- recovering
     local level = EM_AmphWithdrawal_GetLevel(player)
     if level == 1 or level == 2 then
+        local stats = player:getStats()
+        local hungerSuppression = EM_Sandbox_Get("AmphHungerSuppressionPerMinute")
+        if hungerSuppression > 0 then
+            stats:set(CharacterStat.HUNGER, math.max(0.0, stats:get(CharacterStat.HUNGER) - hungerSuppression))
+        end
         local sleepReduction = EM_Sandbox_Get("AmphSleepReductionPerMinute")
         if sleepReduction > 0 then
-            local stats = player:getStats()
             stats:set(CharacterStat.FATIGUE, math.max(0.0, stats:get(CharacterStat.FATIGUE) - sleepReduction))
+        end
+        local enduranceRestore = EM_Sandbox_Get("AmphEnduranceRestorePerMinute")
+        if enduranceRestore > 0 then
+            stats:set(CharacterStat.ENDURANCE, math.min(EM_CONST.STAT_SCALE_MAX, stats:get(CharacterStat.ENDURANCE) + enduranceRestore))
         end
     end
 

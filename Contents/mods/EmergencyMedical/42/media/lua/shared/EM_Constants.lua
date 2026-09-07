@@ -5,10 +5,12 @@
 -- by more than one file lives here. Referenced at runtime everywhere,
 -- so load order never matters.
 EM_CONST = {
-    -- hoursSurvived is denominated in game hours; wound states store
-    -- their timestamps in it (BodyWoundManager), treatments convert
-    -- elapsed time to days with this
+    -- game-time denominations: hoursSurvived is denominated in game
+    -- hours; wound states store their timestamps in it, treatments
+    -- convert elapsed time to days with this, and per-day sandbox rates
+    -- convert to per-minute with MINUTES_PER_GAME_DAY
     HOURS_PER_GAME_DAY = 24.0,
+    MINUTES_PER_GAME_DAY = 1440.0,
 
     -- the character's overall health scale tops at 100
     HEALTH_MAX = 100.0,

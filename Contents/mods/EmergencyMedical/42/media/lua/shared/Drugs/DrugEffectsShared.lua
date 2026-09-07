@@ -91,3 +91,39 @@ function EMDrug_ClearWoundInfection(player)
         end
     end
 end
+
+-- wipe every VANILLA wound from every part: scratches, cuts, bites,
+-- deep wounds, burns, fractures, bleeding, local wound infections and
+-- the vanilla cauterized flag. The Knox virus (IsInfected) is NOT a
+-- wound and is deliberately untouched; so are bullets and glass shards
+-- (foreign objects with their own vanilla removal flows).
+function EMDrug_ClearAllWounds(player)
+    local parts = player:getBodyDamage():getBodyParts()
+    for i = 0, parts:size() - 1 do
+        local part = parts:get(i)
+        part:setScratched(false, true)
+        part:setCut(false)
+        part:SetBitten(false, false)
+        part:setScratchTime(0.0)
+        part:setCutTime(0.0)
+        part:setBiteTime(0.0)
+        part:setDeepWounded(false)
+        part:setDeepWoundTime(0.0)
+        part:setFractureTime(0.0)
+        part:setBleeding(false)
+        part:setBleedingTime(0.0)
+        part:setBurnTime(0.0)
+        part:setInfectedWound(false)
+        part:setWoundInfectionLevel(0.0)
+        part:SetCauterized(false)
+    end
+end
+
+-- remove every CUSTOM wound state (EM_Wound_*) from every part -- the
+-- cauterized scab, crude stitching, improvised fixation, fentanyl patch
+-- ...
+function EMDrug_ClearAllCustomWounds(player)
+    for id in pairs(EM_Wound_GetRegisteredTypes()) do
+        EM_Wound_RemoveAllOf(player, id)
+    end
+end
