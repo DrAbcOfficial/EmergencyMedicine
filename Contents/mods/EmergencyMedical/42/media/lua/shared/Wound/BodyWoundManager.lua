@@ -87,7 +87,6 @@ end
 --                                     -- (sandbox-configurable durations)
 --   panelLabelKey = "IGUI_..."       -- health panel wound line label
 --                                    -- (rendered by client/Wound/BodyPartPanel.lua)
---   getLevel = function(state, player, partKey)  -- optional, default: age quartiles 4..1
 -- }
 --
 -- Feature-specific data travels as CUSTOM PARAMS on the state table
@@ -194,15 +193,12 @@ function EM_Wound_Has(player, part, id)
     return EM_Wound_GetState(player, part, id) ~= nil
 end
 
--- 0 = none; default levels run 4 (fresh) -> 1 (oldest) by age quartiles
+-- 0 = none; levels derive purely from the state's own data: age
+-- quartiles 4 (fresh) -> 1 (oldest) over the state's lifetime
 function EM_Wound_GetLevel(player, part, id)
     local state = EM_Wound_GetState(player, part, id)
     if state == nil then
         return 0
-    end
-    local def = types[id]
-    if def and def.getLevel then
-        return def.getLevel(state, player, partKeyOf(part))
     end
     local duration = state.expire - state.applied
     if duration <= 0 then

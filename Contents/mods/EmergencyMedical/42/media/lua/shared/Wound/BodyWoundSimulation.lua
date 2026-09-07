@@ -3,34 +3,40 @@
 -- opioid simulation: the server iterates online players, the client
 -- handles the local player.
 --
+-- All states are maintained PURE-DATA here: the tick reads the part's
+-- wound states straight off the raw modData (EM_Wound_DATA_KEY) with an
+-- expire guard per entry -- no manager reads, no hooks. The raw read
+-- also sees an EXPIRED state before the manager's lazy cleanup would
+-- scrub it, which is what lets the "EmergencyFixed" fixation heal the
+-- fracture it hides (the one state that needs an expiry treatment; the
+-- others just fade).
+--
 -- Rules, every game minute:
--- * a part carrying the "CrudeStitched" state (glue/stapler field
---   repair) hurts +20% more from its wounds: additionalPain floors at
---   the wound-generated pain x 0.2 while the state lasts
--- * a part carrying the "EmergencyFixed" state (improvised splint on a
---   fracture): the fracture is REMOVED from the body while the state
---   lasts (fractureTime zeroed at application, true severity riding
---   the state as a custom param), so there is nothing to keep in place
---   here. On top, every wound on the part hurts +45% (pain floor x
---   "EmergencyFixPainBoost"); the two pain boosts stack by taking the
---   max, not the sum. The state's expiry is detected HERE on the raw
---   modData -- the manager's lazy cleanup silently scrubs an expired
---   state on any read, so this raw read must come first: once the
---   expire time passes, the hidden fracture heals together with the
---   state.
--- * a part carrying the "Cauterized" scab keeps a fixed pain floor:
---   additionalPain never drops below the "ScabPainFloor" sandbox value
---   while the scab lasts. Pain would otherwise decay away within a day;
---   the scab aches for as long as it exists (painkillers buy relief
---   until the next tick tops the part back up). 0 disables the floor.
--- * the "FentanylPatch" state (sufentanil, right upper arm) feeds a
---   painkiller dose, relieves withdrawal, grows addiction and pins
---   pain/panic/unhappiness/boredom at zero -- rates via sandbox options.
+-- * "CrudeStitched" (glue/stapler field repair): every wound on the
+--   part hurts +20% -- additionalPain floors at the wound-generated
+--   pain x the "CrudeStitchPainBoost" sandbox multiplier.
+-- * "EmergencyFixed" (improvised splint): the fracture is REMOVED from
+--   the body while the state lasts (fractureTime zeroed at
+--   application, true severity riding the state as a custom param), so
+--   there is nothing to maintain -- but every wound on the part hurts
+--   +45% (pain floor x "EmergencyFixPainBoost"), and once the expire
+--   time passes the hidden fracture heals together with the state. The
+--   two pain boosts stack by taking the max, not the sum.
+-- * "Cauterized" (scab): additionalPain never drops below the
+--   "ScabPainFloor" sandbox value while the scab lasts. Pain would
+--   otherwise decay away within a day; the scab aches for as long as
+--   it exists (painkillers buy relief until the next tick tops the
+--   part back up). 0 disables the floor.
+-- * "FentanylPatch" (sufentanil, right upper arm): feeds a painkiller
+--   dose, relieves withdrawal, grows addiction and pins
+--   pain/panic/unhappiness/boredom at zero -- rates via sandbox
+--   options.
 
+local PATCH_PART_KEY = "UpperArm_R"
+
+-- the sufentanil patch upkeep; the loop supplies an unexpired patch
+-- state, rates via sandbox options
 local function tickFentanylPatch(player)
-    if not EM_Wound_Has(player, "UpperArm_R", "FentanylPatch") then
-        return
-    end
     local painkiller = EM_Sandbox_Get("SufentanilPainkillerPerMinute")
     if painkiller > 0 then
         -- PainMeds ACCUMULATES painDelta (and restarts its 5400s timer);
@@ -55,67 +61,67 @@ local function tickFentanylPatch(player)
     end
 end
 
--- the improvised fixation carries its custom params on the state table
--- itself (fractureTime = the hidden severity, expire = end of the
--- fixation). Read on the RAW modData: a manager read (EM_Wound_Has /
--- GetState) lazily deletes an expired state before the tick could act
--- on it, and the expiry must heal the fracture the state hides.
-local function emergencyFixRawState(player, part)
-    local wounds = player:getModData()[EM_Wound_DATA_KEY]
-    if wounds == nil then
-        return nil
-    end
-    local states = wounds[EM_Wound_PartKey(part)]
-    if states == nil then
-        return nil
-    end
-    return states["EmergencyFixed"]
-end
-
 local function minuteTick(player)
     if player == nil then
         return
     end
-    tickFentanylPatch(player)
     local parts = player:getBodyDamage():getBodyParts()
     local painFloor = EM_Sandbox_Get("ScabPainFloor")
     local now = player:getHoursSurvived()
+    -- one raw modData read per player; every entry is guarded by its
+    -- own expire time below, so an expired-but-not-yet-cleaned state
+    -- can't trip any effect
+    local wounds = player:getModData()[EM_Wound_DATA_KEY]
     for i = 0, parts:size() - 1 do
         local part = parts:get(i)
-        local woundPain = part:getPain() - part:getAdditionalPain(true)
-        local boostFloor = 0.0
-        if EM_Wound_Has(player, part, "CrudeStitched") then
-            -- crude stitching: every wound on the part hurts +20% while
-            -- the state lasts (floor = the wound-generated pain x the
-            -- "CrudeStitchPainBoost" sandbox multiplier; 0 disables)
-            local floor = woundPain * EM_Sandbox_Get("CrudeStitchPainBoost")
-            if floor > boostFloor then
-                boostFloor = floor
-            end
-        end
-        local fixState = emergencyFixRawState(player, part)
-        if fixState ~= nil then
-            if now >= fixState.expire then
-                -- the fixation ran its full course: the hidden fracture
-                -- heals together with the state (removal transmits)
-                EMTreatment_EmergencyFixExpired(player, part)
-            else
-                -- improvised fixation: every wound on the part hurts
-                -- +45% ("EmergencyFixPainBoost"); the fracture itself is
-                -- removed from the body for the duration, nothing to
-                -- maintain there
-                local floor = woundPain * EM_Sandbox_Get("EmergencyFixPainBoost")
+        local states = wounds ~= nil and wounds[EM_Wound_PartKey(part)] or nil
+        if states ~= nil then
+            local woundPain = part:getPain() - part:getAdditionalPain(true)
+            local boostFloor = 0.0
+            local stitched = states["CrudeStitched"]
+            if stitched ~= nil and now < stitched.expire then
+                -- crude stitching: every wound on the part hurts +20%
+                -- while the state lasts (floor = the wound-generated
+                -- pain x the "CrudeStitchPainBoost" sandbox multiplier;
+                -- 0 disables)
+                local floor = woundPain * EM_Sandbox_Get("CrudeStitchPainBoost")
                 if floor > boostFloor then
                     boostFloor = floor
                 end
             end
-        end
-        if boostFloor > 0.0 and part:getAdditionalPain() < boostFloor then
-            part:setAdditionalPain(boostFloor)
-        end
-        if painFloor ~= nil and painFloor > 0
-            and EM_Wound_Has(player, part, "Cauterized") and part:getAdditionalPain() < painFloor then
-            part:setAdditionalPain(painFloor)
+            local fix = states["EmergencyFixed"]
+            if fix ~= nil then
+                if now >= fix.expire then
+                    -- the fixation ran its full course: the hidden
+                    -- fracture heals together with the state (removal
+                    -- transmits)
+                    EMTreatment_EmergencyFixExpired(player, part)
+                else
+                    -- improvised fixation: every wound on the part hurts
+                    -- +45% ("EmergencyFixPainBoost"); the fracture itself
+                    -- is removed from the body for the duration, nothing
+                    -- to maintain there
+                    local floor = woundPain * EM_Sandbox_Get("EmergencyFixPainBoost")
+                    if floor > boostFloor then
+                        boostFloor = floor
+                    end
+                end
+            end
+            if boostFloor > 0.0 and part:getAdditionalPain() < boostFloor then
+                part:setAdditionalPain(boostFloor)
+            end
+            local scab = states["Cauterized"]
+            if scab ~= nil and now < scab.expire
+                and painFloor ~= nil and painFloor > 0
+                and part:getAdditionalPain() < painFloor then
+                part:setAdditionalPain(painFloor)
+            end
+            if EM_Wound_PartKey(part) == PATCH_PART_KEY then
+                local patch = states["FentanylPatch"]
+                if patch ~= nil and now < patch.expire then
+                    tickFentanylPatch(player)
+                end
+            end
         end
     end
 end
