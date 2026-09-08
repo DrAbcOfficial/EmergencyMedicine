@@ -65,29 +65,97 @@ function EMDrug_HeadPain(player, amount)
     head:setAdditionalPain(math.min(head:getAdditionalPain() + amount, EM_CONST.PAIN_MAX))
 end
 
--- stop every part's bleeding (tranexamic acid). Glass shards keep the
--- vanilla floor trickling (DamageUpdate re-raises bleedingTime to 3
--- while haveGlass) -- shards still in, still oozing.
-function EMDrug_StopAllBleeding(player)
+-- nausea stat: B42 moved food poisoning to CharacterStat.FOOD_SICKNESS
+-- (0..100, decays on its own, drives the Sick moodle)
+function EMDrug_AddFoodSickness(player, amount)
+    player:getStats():add(CharacterStat.FOOD_SICKNESS, amount)
+end
+
+-- pile a removed bleed/infection amount onto the part's dominant
+-- (largest) existing wound time, capped -- a proportional
+-- hemostasis/antibiosis dose shows up as a heavier wound instead of a
+-- free fix. Fracture/stitch times are deliberately not targets; a part
+-- without any wound time skips the transfer (nothing to worsen).
+function EMDrug_TransferWoundSeverity(part, amount)
+    if amount <= 0.0 then
+        return
+    end
+    local dominant, maxTime = nil, 0.0
+    local scratch, cut = part:getScratchTime(), part:getCutTime()
+    local bite, deep, burn = part:getBiteTime(), part:getDeepWoundTime(), part:getBurnTime()
+    if scratch > maxTime then
+        dominant, maxTime = "scratch", scratch
+    end
+    if cut > maxTime then
+        dominant, maxTime = "cut", cut
+    end
+    if bite > maxTime then
+        dominant, maxTime = "bite", bite
+    end
+    if deep > maxTime then
+        dominant, maxTime = "deep", deep
+    end
+    if burn > maxTime then
+        dominant, maxTime = "burn", burn
+    end
+    if dominant == nil then
+        return
+    end
+    local newTime = math.min(maxTime + amount, EM_CONST.WOUND_TIME_MAX)
+    if dominant == "scratch" then
+        part:setScratchTime(newTime)
+    elseif dominant == "cut" then
+        part:setCutTime(newTime)
+    elseif dominant == "bite" then
+        part:setBiteTime(newTime)
+    elseif dominant == "deep" then
+        part:setDeepWoundTime(newTime)
+    else
+        part:setBurnTime(newTime)
+    end
+end
+
+-- proportional hemostasis (tranexamic acid): clots the given share of
+-- every part's bleedingTime per dose, piling the removed amount 1:1
+-- onto the part's dominant wound time. Glass-shard parts are skipped
+-- outright: DamageUpdate keeps re-raising their bleeding floor, so the
+-- reduction wouldn't stick while the severity transfer would -- repeat
+-- dosing would farm wound severity for nothing.
+function EMDrug_StopBleedingProportional(player, ratio)
     local parts = player:getBodyDamage():getBodyParts()
     for i = 0, parts:size() - 1 do
         local part = parts:get(i)
-        if part:bleeding() or part:getBleedingTime() > 0.0 then
-            part:setBleeding(false)
-            part:setBleedingTime(0.0)
+        local bleedingTime = part:getBleedingTime()
+        if not part:haveGlass() and bleedingTime > 0.0 then
+            local removed = bleedingTime * ratio
+            part:setBleedingTime(bleedingTime - removed)
+            EMDrug_TransferWoundSeverity(part, removed)
         end
     end
 end
 
--- clear the LOCAL wound infection on every part (sulfadimidine) -- NOT
--- the Knox virus (IsInfected is deliberately not touched)
-function EMDrug_ClearWoundInfection(player)
+-- proportional antibiosis (sulfadimidine): clears the given share of
+-- every part's LOCAL wound infection per dose (NOT the Knox virus),
+-- piling the removed amount x transferFactor onto the dominant wound
+-- time -- a heavy infection heals into a heavy wound. Remainders at or
+-- under MIN_WOUND_INFECTION snap clean so repeated doses converge.
+local MIN_WOUND_INFECTION = 1.0
+
+function EMDrug_ClearWoundInfectionProportional(player, ratio, transferFactor)
     local parts = player:getBodyDamage():getBodyParts()
     for i = 0, parts:size() - 1 do
         local part = parts:get(i)
-        if part:isInfectedWound() or part:getWoundInfectionLevel() > 0.0 then
-            part:setInfectedWound(false)
-            part:setWoundInfectionLevel(0.0)
+        local level = part:getWoundInfectionLevel()
+        if level > 0.0 then
+            local removed = level * ratio
+            local newLevel = level - removed
+            if newLevel <= MIN_WOUND_INFECTION then
+                part:setInfectedWound(false)
+                part:setWoundInfectionLevel(0.0)
+            else
+                part:setWoundInfectionLevel(newLevel)
+            end
+            EMDrug_TransferWoundSeverity(part, removed * transferFactor)
         end
     end
 end

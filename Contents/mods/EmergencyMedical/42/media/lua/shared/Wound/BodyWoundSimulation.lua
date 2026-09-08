@@ -37,6 +37,13 @@
 --   dose, relieves withdrawal, grows addiction and pins
 --   pain/panic/unhappiness/boredom at zero -- rates via sandbox
 --   options.
+-- * "DrugHeadache" / "DrugFever" (drug side effects on the head): the
+--   lingering headache floors the head's additionalPain at the value
+--   the dosing drug stored on the state (painFloor custom param); a
+--   drug fever pins the TEMPERATURE stat at its stored floor
+--   (tempFloor) against the thermoregulator's pull back to 37.
+-- * "ShoddySedation" (veterinary dexmedetomidine) is a pure display
+--   row with no upkeep -- the calm/agitation roll happened at dosing.
 
 local PATCH_PART_KEY = "UpperArm_R"
 
@@ -146,6 +153,29 @@ local function minuteTick(player)
                 local patch = states["FentanylPatch"]
                 if patch ~= nil and now < patch.expire then
                     tickFentanylPatch(player)
+                end
+            end
+            local headache = states["DrugHeadache"]
+            if headache ~= nil and now < headache.expire then
+                -- drug headache: the head keeps aching at the floor the
+                -- dosing drug stored on the state (custom params may be
+                -- missing on remote copies until the next transmit)
+                local floor = headache.painFloor
+                if floor ~= nil and floor > 0 and part:getAdditionalPain() < floor then
+                    part:setAdditionalPain(floor)
+                end
+            end
+            local drugFever = states["DrugFever"]
+            if drugFever ~= nil and now < drugFever.expire then
+                -- drug fever: the thermoregulator keeps pulling the
+                -- temperature back toward 37, the tick pins it at the
+                -- floor the dosing drug stored on the state
+                local floor = drugFever.tempFloor
+                if floor ~= nil then
+                    local stats = player:getStats()
+                    if stats:get(CharacterStat.TEMPERATURE) < floor then
+                        stats:set(CharacterStat.TEMPERATURE, floor)
+                    end
                 end
             end
         end
