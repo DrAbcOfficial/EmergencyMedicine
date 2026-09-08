@@ -95,9 +95,14 @@ local function onClientCommand(module, command, player, args)
         -- the auto-injector watch trigger: the client detected the health
         -- gate; EMAutoInjector_TryInject re-validates everything server-side
         -- (alive, health below threshold, watch worn, drug whitelisted,
-        -- physical ampoule present) before applying and consuming
+        -- physical ampoule present) before applying and consuming. On a
+        -- real shot the owning client gets the AutoInjectSound echo so it
+        -- plays the injection sound locally (server-side playSound is a
+        -- no-op dummy emitter, and the sound must stay user-only anyway)
         if type(args.drug) == "string" then
-            EMAutoInjector_TryInject(player, args.drug)
+            if EMAutoInjector_TryInject(player, args.drug) then
+                sendServerCommand(player, "EmergencyMedical", "AutoInjectSound", {})
+            end
         end
     elseif command == "TakeDrug" then
         -- self-use drug effect: the taker is the sender (consumption of

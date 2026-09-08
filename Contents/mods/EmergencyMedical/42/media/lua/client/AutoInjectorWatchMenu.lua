@@ -12,7 +12,9 @@
 -- AutoInject client command (the server re-validates everything and
 -- consumes the physical ampoule); the local load is cleared
 -- optimistically so the trigger fires once. Singleplayer calls
--- EMAutoInjector_TryInject directly.
+-- EMAutoInjector_TryInject directly. The injection sound (user-only)
+-- plays in SP on a successful TryInject, in MP on the server's
+-- AutoInjectSound echo command (see onServerCommand below).
 
 local function onFillContextMenu(playerNum, context, items)
 	local playerObj = getSpecificPlayer(playerNum)
@@ -124,8 +126,26 @@ local function onPlayerUpdate(player)
 		sendClientCommand(player, "EmergencyMedical", "AutoInject", { drug = drug })
 		watch:getModData().EM_AutoInjectDrug = nil
 	else
-		EMAutoInjector_TryInject(player, drug)
+		-- singleplayer: the injection happens right here, play the sound
+		-- only if the shot actually went in
+		if EMAutoInjector_TryInject(player, drug) then
+			EM_Inject_PlaySound(player)
+		end
 	end
 end
 
 Events.OnPlayerUpdate.Add(onPlayerUpdate)
+
+-- MP: the server runs the injection, so the sound is played on the echo
+-- command it sends back to the owning client on success (AutoInjectSound,
+-- sent by the AutoInject command handler) -- a rejected trigger (no
+-- physical ampoule left, watch taken off...) never plays a sound. The
+-- handler runs on the owning client only, and EM_Inject_PlaySound stays
+-- local to this client: nobody else hears it.
+local function onServerCommand(module, command, args)
+	if module == "EmergencyMedical" and command == "AutoInjectSound" then
+		EM_Inject_PlaySound(getSpecificPlayer(0))
+	end
+end
+
+Events.OnServerCommand.Add(onServerCommand)

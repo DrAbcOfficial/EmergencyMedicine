@@ -21,6 +21,28 @@ local PILL_BANDAGE_ANIM = {
     ["EmergencyMedical.sufentanil"] = "RightArm",
 }
 
+-- the injection sound (GameSound registered in media/scripts/drugs_sounds.txt)
+-- and the ampoule set that plays it when taken / auto-injected. B42 plays
+-- file clips through GameSound script blocks (the old .snd scripts are
+-- gone); the name GameSounds registers is the bare sound name, no module
+-- prefix. player:playSound is a purely local call (the client-side
+-- CharacterSoundEmitter sends no network packet), so only the acting
+-- player ever hears it -- that IS the "user only" guarantee, MP included.
+EM_INJECT_SOUND = "EM_Inject"
+
+EM_INJECT_AMPOULE_DRUGS = {
+    ["EmergencyMedical.morphine"] = true,
+    ["EmergencyMedical.naloxone"] = true,
+    ["EmergencyMedical.fentanyl"] = true,
+    ["EmergencyMedical.dexmedetomidine"] = true,
+}
+
+function EM_Inject_PlaySound(player)
+    if player ~= nil and not isServer() then
+        player:playSound(EM_INJECT_SOUND)
+    end
+end
+
 if ISTakePillAction then
     local ISTakePillAction_start = ISTakePillAction.start
     local ISTakePillAction_update = ISTakePillAction.update

@@ -48,6 +48,13 @@ if ISTakePillAction then
         if item then
             local fullType = item:getFullType()
             if DRUG_EFFECTS[fullType] ~= nil then
+                -- ampoule drugs play the injection sound at the moment the
+                -- needle goes in; complete() runs on the acting player's
+                -- own client (timed actions are client-side), so the
+                -- local-only playSound reaches exactly the user
+                if EM_INJECT_AMPOULE_DRUGS[fullType] then
+                    EM_Inject_PlaySound(self.character)
+                end
                 if isClient() then
                     sendClientCommand(self.character, "EmergencyMedical", "TakeDrug", {
                         drug = fullType,
