@@ -99,5 +99,11 @@
     "Sandbox_EmergencyMedical_SufentanilAddictionPerMinute": "贴剂成瘾增量",
     "Sandbox_EmergencyMedical_SufentanilAddictionPerMinute_tooltip": "贴用期间每游戏分钟增加的成瘾值（0-1）",
     "Sandbox_EmergencyMedical_SufentanilClearMind": "贴剂稳定情绪",
-    "Sandbox_EmergencyMedical_SufentanilClearMind_tooltip": "开启时，贴用期间疼痛、惊恐、不开心、无聊恒为 0"
+    "Sandbox_EmergencyMedical_SufentanilClearMind_tooltip": "开启时，贴用期间疼痛、惊恐、不开心、无聊恒为 0",
+    "Sandbox_EmergencyMedical_DrugStatusDoseGain": "药物状态单剂增幅",
+    "Sandbox_EmergencyMedical_DrugStatusDoseGain_tooltip": "每次服用对应药物时，其药物异常状态进度的增加值（0-1 满值比例）。默认 0.2，即五剂达到满值",
+    "Sandbox_EmergencyMedical_DrugStatusDecayPerHour": "药物状态每小时衰减",
+    "Sandbox_EmergencyMedical_DrugStatusDecayPerHour_tooltip": "药物异常状态每游戏小时自然消退的进度比例（0-1）。进度衰减到 0 时状态结束",
+    "Sandbox_EmergencyMedical_DrugStatusDebuffRate": "药物状态副作用转化率",
+    "Sandbox_EmergencyMedical_DrugStatusDebuffRate_tooltip": "状态进度转化为实际副作用的强度（0-1）。1 = 完整强度；0 = 状态仅作显示"
 }

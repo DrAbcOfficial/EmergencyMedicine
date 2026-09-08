@@ -37,26 +37,14 @@
 --   dose, relieves withdrawal, grows addiction and pins
 --   pain/panic/unhappiness/boredom at zero -- rates via sandbox
 --   options.
--- * "DrugHeadache" / "DrugFever" (drug side effects on the head): the
---   lingering headache floors the head's additionalPain at the value
---   the dosing drug stored on the state (painFloor custom param); a
---   drug fever pins the TEMPERATURE stat at its stored floor
---   (tempFloor) against the thermoregulator's pull back to 37.
--- * "ShoddySedation" (veterinary dexmedetomidine) is a pure display
---   row with no upkeep -- the calm/agitation roll happened at dosing.
--- * "CoughSuppress" (dextromethorphan): the sneeze/cough countdown
---   (BodyDamage timeToSneezeOrCough, real-world-seconds) is held at
---   SNEEZE_HOLD while the state lasts -- a head cold goes quiet. The
---   cold itself (moodle, coldStrength) is untouched. Both ends run the
---   push, so MP suppresses on the client's own countdown too.
+--
+-- Drug side-effect statuses (DrugHeadache / DrugFever / ShoddySedation /
+-- CoughSuppress) are NOT wound states and are NOT maintained here:
+-- they are player-level EM_DrugFx records with their own simulation
+-- (shared/Status/DrugEffect/DrugEffectSimulation.lua) and their own
+-- status icons (client/ISUI/StatusDrugEffects.lua).
 
 local PATCH_PART_KEY = "UpperArm_R"
-
--- while "CoughSuppress" lasts, the sneeze/cough countdown is held no
--- lower than this (vanilla delays run 200-800; between two per-minute
--- ticks the countdown sheds ~60 units, so 90 always outruns it -- the
--- short tail after expiry is a feature: one last sniffle as it wears off)
-local SNEEZE_HOLD = 90.0
 
 -- the stored painkiller dose caps at full strength (vanilla PainMeds
 -- potency 1.0)
@@ -164,38 +152,6 @@ local function minuteTick(player)
                 local patch = states["FentanylPatch"]
                 if patch ~= nil and now < patch.expire then
                     tickFentanylPatch(player)
-                end
-            end
-            local headache = states["DrugHeadache"]
-            if headache ~= nil and now < headache.expire then
-                -- drug headache: the head keeps aching at the floor the
-                -- dosing drug stored on the state (custom params may be
-                -- missing on remote copies until the next transmit)
-                local floor = headache.painFloor
-                if floor ~= nil and floor > 0 and part:getAdditionalPain() < floor then
-                    part:setAdditionalPain(floor)
-                end
-            end
-            local drugFever = states["DrugFever"]
-            if drugFever ~= nil and now < drugFever.expire then
-                -- drug fever: the thermoregulator keeps pulling the
-                -- temperature back toward 37, the tick pins it at the
-                -- floor the dosing drug stored on the state
-                local floor = drugFever.tempFloor
-                if floor ~= nil then
-                    local stats = player:getStats()
-                    if stats:get(CharacterStat.TEMPERATURE) < floor then
-                        stats:set(CharacterStat.TEMPERATURE, floor)
-                    end
-                end
-            end
-            local coughSuppress = states["CoughSuppress"]
-            if coughSuppress ~= nil and now < coughSuppress.expire then
-                -- dextromethorphan: hold the sneeze/cough countdown back
-                -- so the head cold makes no noise for the duration
-                local bodyDamage = player:getBodyDamage()
-                if bodyDamage:getTimeToSneezeOrCough() < SNEEZE_HOLD then
-                    bodyDamage:setTimeToSneezeOrCough(SNEEZE_HOLD)
                 end
             end
         end

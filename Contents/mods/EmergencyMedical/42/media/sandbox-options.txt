@@ -310,6 +310,36 @@ option EmergencyMedical.NaloxoneHungerThirst
     translation = EmergencyMedical_NaloxoneHungerThirst,
 }
 
+option EmergencyMedical.DrugStatusDoseGain
+{
+    type = double,
+    default = 0.2,
+    min = 0.0,
+    max = 1.0,
+    page = EmergencyMedical,
+    translation = EmergencyMedical_DrugStatusDoseGain,
+}
+
+option EmergencyMedical.DrugStatusDecayPerHour
+{
+    type = double,
+    default = 0.05,
+    min = 0.0,
+    max = 1.0,
+    page = EmergencyMedical,
+    translation = EmergencyMedical_DrugStatusDecayPerHour,
+}
+
+option EmergencyMedical.DrugStatusDebuffRate
+{
+    type = double,
+    default = 1.0,
+    min = 0.0,
+    max = 1.0,
+    page = EmergencyMedical,
+    translation = EmergencyMedical_DrugStatusDebuffRate,
+}
+
 option EmergencyMedical.WithdrawalClimbMinutes
 {
     type = integer,

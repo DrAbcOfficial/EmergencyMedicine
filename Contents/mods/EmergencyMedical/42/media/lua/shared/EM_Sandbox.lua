@@ -64,6 +64,9 @@ local DEFAULTS = {
 	SufentanilWithdrawalRelief = 0.05,
 	SufentanilAddictionPerMinute = 0.01,
 	SufentanilClearMind = true,
+	DrugStatusDoseGain = 0.2,
+	DrugStatusDecayPerHour = 0.05,
+	DrugStatusDebuffRate = 1.0,
 }
 
 function EM_Sandbox_Get(name)

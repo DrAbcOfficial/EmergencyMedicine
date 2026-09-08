@@ -59,38 +59,8 @@ EM_Wound_Register("EmergencyFixed", {
     panelLabelKey = "IGUI_health_EmergencyFixed",
 })
 
--- Drug side-effect states, all applied by the shared drug effect
--- functions to the HEAD. Durations ride the EM_Wound_Add call from the
--- drug files; the registered defaults mirror those values.
-EM_Wound_Register("DrugHeadache", {
-    -- lingering post-dose headache (tranexamic acid):
-    -- BodyWoundSimulation floors the head's additionalPain at the
-    -- state's painFloor custom param
-    durationDays = 0.375, -- 9 game hours
-    panelLabelKey = "IGUI_health_DrugHeadache",
-})
-
-EM_Wound_Register("DrugFever", {
-    -- antibiotic course fever (sulfadimidine): BodyWoundSimulation
-    -- pins the TEMPERATURE stat at the state's tempFloor custom param
-    -- against the thermoregulator's pull back to 37
-    durationDays = 0.5, -- 12 game hours
-    panelLabelKey = "IGUI_health_DrugFever",
-})
-
-EM_Wound_Register("ShoddySedation", {
-    -- veterinary dexmedetomidine: pure display row, no upkeep -- the
-    -- calm/agitation dice roll happened at dosing and rides along as
-    -- the state's outcome custom param
-    durationDays = 0.5, -- 12 game hours
-    panelLabelKey = "IGUI_health_ShoddySedation",
-})
-
-EM_Wound_Register("CoughSuppress", {
-    -- dextromethorphan cough suppression: pure marker row; while it
-    -- lasts BodyWoundSimulation holds the vanilla sneeze/cough
-    -- countdown back, so a head cold makes no noise -- the moodle and
-    -- the cold itself are untouched
-    durationDays = 0.25, -- 6 game hours
-    panelLabelKey = "IGUI_health_CoughSuppress",
-})
+-- Drug side-effect statuses (DrugHeadache / DrugFever / ShoddySedation /
+-- CoughSuppress) are deliberately NOT wound states -- they are
+-- player-level statuses in the EM_DrugFx engine
+-- (shared/Drugs/DrugStatus.lua), displayed as abnormal-status icons in
+-- the vanilla moodle column (client/ISUI/StatusDrugEffects.lua).
