@@ -44,8 +44,19 @@
 --   (tempFloor) against the thermoregulator's pull back to 37.
 -- * "ShoddySedation" (veterinary dexmedetomidine) is a pure display
 --   row with no upkeep -- the calm/agitation roll happened at dosing.
+-- * "CoughSuppress" (dextromethorphan): the sneeze/cough countdown
+--   (BodyDamage timeToSneezeOrCough, real-world-seconds) is held at
+--   SNEEZE_HOLD while the state lasts -- a head cold goes quiet. The
+--   cold itself (moodle, coldStrength) is untouched. Both ends run the
+--   push, so MP suppresses on the client's own countdown too.
 
 local PATCH_PART_KEY = "UpperArm_R"
+
+-- while "CoughSuppress" lasts, the sneeze/cough countdown is held no
+-- lower than this (vanilla delays run 200-800; between two per-minute
+-- ticks the countdown sheds ~60 units, so 90 always outruns it -- the
+-- short tail after expiry is a feature: one last sniffle as it wears off)
+local SNEEZE_HOLD = 90.0
 
 -- the stored painkiller dose caps at full strength (vanilla PainMeds
 -- potency 1.0)
@@ -176,6 +187,15 @@ local function minuteTick(player)
                     if stats:get(CharacterStat.TEMPERATURE) < floor then
                         stats:set(CharacterStat.TEMPERATURE, floor)
                     end
+                end
+            end
+            local coughSuppress = states["CoughSuppress"]
+            if coughSuppress ~= nil and now < coughSuppress.expire then
+                -- dextromethorphan: hold the sneeze/cough countdown back
+                -- so the head cold makes no noise for the duration
+                local bodyDamage = player:getBodyDamage()
+                if bodyDamage:getTimeToSneezeOrCough() < SNEEZE_HOLD then
+                    bodyDamage:setTimeToSneezeOrCough(SNEEZE_HOLD)
                 end
             end
         end

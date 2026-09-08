@@ -126,4 +126,19 @@ module EmergencyMedical
         UseWhileEquipped = false,
         Tags = base:consumable,
     }
+    item dextromethorphan
+    {
+        DisplayCategory = FirstAid,
+        ItemType = base:drainable,
+        Weight = 0.3,
+        Icon = dextromethorphan,
+        Medical = true,
+        EatType = Bourbon,
+        Tooltip = Tooltip_dextromethorphan,
+        StaticModel = DextromethorphanBottle,
+        WorldStaticModel = DextromethorphanBottle,
+        UseDelta = 0.2,
+        UseWhileEquipped = false,
+        Tags = base:consumable,
+    }
 }

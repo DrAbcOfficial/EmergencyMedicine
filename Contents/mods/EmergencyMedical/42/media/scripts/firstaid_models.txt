@@ -4,11 +4,12 @@
 	    {
 	        mesh = WorldItems/BookSplint,
 	        texture = WorldItems/BookSplint,
+			scale = 0.2,
 	    }
 	    model TemporarySplint
 	    {
-	        mesh = WorldItems/Splint,
+	        mesh = WorldItems/BookSplint,
 	        texture = WorldItems/TemporarySplint,
-	        scale = 0.4,
+	        scale = 0.2,
 	    }
 	}

@@ -15,7 +15,7 @@
 -- taker, and the modData transmits inside the effects broadcast from the
 -- server. Singleplayer applies directly. The dispatch table doubles as
 -- the whitelist on both sides: EMDrug_ApplyEffect only knows this mod's
--- own nine fullTypes.
+-- own ten fullTypes.
 local DRUG_EFFECTS = {
     ["EmergencyMedical.morphine"] = InjectMorphine,
     ["EmergencyMedical.naloxone"] = InjectNaloxone,
@@ -23,6 +23,7 @@ local DRUG_EFFECTS = {
     ["EmergencyMedical.methamphetamine"] = TakeMethamphetamine,
     ["EmergencyMedical.oxycontin"] = TakeOxyContin,
     ["EmergencyMedical.dexmedetomidine"] = TakeDexmedetomidine,
+    ["EmergencyMedical.dextromethorphan"] = TakeDextromethorphan,
     -- DrugSufentanil.lua sorts AFTER this file (S > P), so its global
     -- does not exist yet at load time: resolve lazily at dispatch.
     ["EmergencyMedical.sufentanil"] = function(player) return TakeSufentanil(player) end,

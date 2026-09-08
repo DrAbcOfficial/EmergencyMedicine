@@ -85,3 +85,12 @@ EM_Wound_Register("ShoddySedation", {
     durationDays = 0.5, -- 12 game hours
     panelLabelKey = "IGUI_health_ShoddySedation",
 })
+
+EM_Wound_Register("CoughSuppress", {
+    -- dextromethorphan cough suppression: pure marker row; while it
+    -- lasts BodyWoundSimulation holds the vanilla sneeze/cough
+    -- countdown back, so a head cold makes no noise -- the moodle and
+    -- the cold itself are untouched
+    durationDays = 0.25, -- 6 game hours
+    panelLabelKey = "IGUI_health_CoughSuppress",
+})

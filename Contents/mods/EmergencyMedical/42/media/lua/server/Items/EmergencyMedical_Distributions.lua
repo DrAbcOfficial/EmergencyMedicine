@@ -49,6 +49,11 @@ local function onPreDistributionMerge()
     addItem("MedicalClinicDrugs", "EmergencyMedical.oxycontin", 15)
     addItem("MedicalClinicDrugs", "EmergencyMedical.tranexamicacid", 12)
 
+    -- OTC cough syrup (dextromethorphan): the family bathroom cabinet
+    -- is where it actually lives, plus the pharmacy counters/shelf
+    addItem("BathroomCounter", "EmergencyMedical.dextromethorphan", 15)
+    addItem("MedicalClinicDrugs", "EmergencyMedical.dextromethorphan", 12)
+
     -- pharmacy shelves: a dedicated list, appended to the pharmacy room's
     -- shelf procList below (onPostDistributionMerge) -- deliberately not
     -- StoreShelfMedical, which would leak into the supermarkets sharing it
@@ -57,6 +62,7 @@ local function onPreDistributionMerge()
         items = {
             "EmergencyMedical.oxycontin", 15,
             "EmergencyMedical.tranexamicacid", 12,
+            "EmergencyMedical.dextromethorphan", 12,
         },
         junk = {
             rolls = 1,

@@ -1,14 +1,15 @@
 {
-    "Tooltip_morphine": "Instantly restores health, kills all pain and clears the mind, but does not heal wounds. Highly addictive.",
-    "Tooltip_naloxone": "An opioid antagonist. Eases addiction, but leaves you hungry and parched.",
-    "Tooltip_fentanyl": "A potent synthetic opioid. Instantly restores health and erases every wound -- injuries, fractures, scabs, stitches, fixations and patches all gone (bullets and glass shards stay; the zombie virus is untouched). Kills all pain and clears the mind. Extremely addictive.",
-    "Tooltip_oxycontin": "A mild opioid painkiller. Restores some health and takes the edge off. Somewhat addictive.",
-    "Tooltip_sufentanil": "A potent patch applied to the right upper arm. While it lasts it steadily eases pain and withdrawal and keeps you calm, but the addiction quietly deepens. Lasts for days; peel it off to stop.",
-    "Tooltip_methamphetamine": "A powerful central nervous system stimulant. Instantly wide awake, but it won't be long before the addiction swallows you whole.",
-    "Tooltip_tranexamicacid": "An antifibrinolytic. Clots the better part of every wound's bleeding, but the clot settles as extra wound severity -- the heavier the bleed, the heavier the wound left behind. Side effects: dizzy weakness, nausea and a lingering headache.",
-    "Tooltip_sulfadimidine": "A sulfonamide antibiotic. Each dose burns down most of a wound infection -- heavy infections take several courses, and each one heals into a heavier wound. Does nothing against the zombie virus. Side effects: severe head pain, a fever that lingers for hours, aching kidneys and nausea.",
-    "Tooltip_dexmedetomidine": "A potent sedative used in veterinary medicine for small animals -- cats, dogs and the like. It usually wipes panic and stress away completely, but animal-grade stock is a coin flip: some doses backfire into paradoxical agitation, leaving panic and stress far worse than before. Either way expect heavy drowsiness. Side effect: severe head pain.",
-    "Tooltip_GrassBandage": "A rough bandage made of grass. Heals much worse than an adhesive bandage and will almost certainly infect the wound.",
-    "Tooltip_BookSplint": "A splint lashed together from two books and some cloth. Works exactly like a proper splint -- stiff pages hold bone just fine.",
-    "Tooltip_TemporarySplint": "A field-expedient fixation lashed from a stick, a bar or even a book with tape or wire. Right-click a fractured part in the health panel: the fracture vanishes as if it was never there -- no pain, no limp -- but the bone has not mended. Every wound on the limb hurts a little more while it stays on, and a fresh wound on that part breaks the fixation, the fracture returning at once; taking it off brings the fracture back, worse the longer it was worn. Only a full year of wear lets it heal outright."
+    "Tooltip_morphine": "Instantly restores health, kills all pain, clears the mind. Does not heal wounds.\nHighly addictive.",
+    "Tooltip_naloxone": "Opioid antagonist. Eases addiction.\nLeaves you hungry and parched.",
+    "Tooltip_fentanyl": "Restores health and erases every wound and treatment (bullets, glass and the virus stay). Kills all pain, clears the mind.\nExtremely addictive.",
+    "Tooltip_oxycontin": "Mild opioid. Restores some health, calms the mind, eases withdrawal.\nSomewhat addictive.",
+    "Tooltip_sufentanil": "Patch on the right upper arm: for days it eases pain and withdrawal and keeps you calm, while addiction quietly deepens.\nPeel off to stop.",
+    "Tooltip_methamphetamine": "Instantly wide awake. Feeds amphetamine addiction hard -- the crash will come.",
+    "Tooltip_tranexamicacid": "Clots most of the bleeding; the clot settles as a heavier wound.\nDizzy weakness, nausea, lingering headache.",
+    "Tooltip_sulfadimidine": "Burns down most of a wound infection per dose; heavy infections take several courses and heal into heavier wounds. No effect on the zombie virus.\nHead pain, a lingering fever, kidney strain, nausea.",
+    "Tooltip_dexmedetomidine": "Small-animal veterinary sedative. Calm -- or agitation; a coin flip.\nHeavy drowsiness, severe head pain.",
+    "Tooltip_dextromethorphan": "Cough syrup. Silences sneezing and coughing, helps the cold burn off faster; the rest is up to rest.\nDrowsy and parched. Chug it and you pass out.",
+    "Tooltip_GrassBandage": "Rough grass bandage. Heals far worse than a real one -- and will almost surely infect the wound.",
+    "Tooltip_BookSplint": "A proper splint lashed from two books and cloth.",
+    "Tooltip_TemporarySplint": "Improvised fixation: while worn, the fracture vanishes but the limb's wounds hurt more. A fresh wound on the part breaks it; removal brings the fracture back, worse the longer it was worn.\nA full year of wear heals the bone outright."
 }

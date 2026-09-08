@@ -47,6 +47,12 @@
 	        mesh = WorldItems/Ampoule,
 	        texture = WorldItems/DexmedetomidineAmpoule,
 	    }
+	    model DextromethorphanBottle
+	    {
+	        mesh = WorldItems/PillsBottle,
+	        texture = WorldItems/DextromethorphanBottle,
+	        scale = 0.01,
+	    }
 	    model GrassBandage
 	    {
 	        mesh = WorldItems/Bandage,
