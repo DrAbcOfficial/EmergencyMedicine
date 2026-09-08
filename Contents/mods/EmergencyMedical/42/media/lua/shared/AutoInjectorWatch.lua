@@ -1,5 +1,6 @@
--- Auto-injector watch: the four craftable watch items (black / red /
--- metal / luxury) share one behavior. They tell time, date and
+-- Auto-injector watch: the craftable watch items (four styles -- black
+-- / red / metal / luxury -- each in a right-wrist and a left-wrist
+-- variant) share one behavior. They tell time, date and
 -- temperature like any digital watch (vanilla alarmclockclothing item
 -- type), hold ONE loaded ampoule drug (morphine / naloxone / fentanyl /
 -- dexmedetomidine, recorded on the watch item's modData -- the mod is
@@ -18,12 +19,18 @@
 -- threshold, watch worn, drug whitelisted, physical ampoule present)
 -- and executes. Singleplayer calls EMAutoInjector_TryInject directly.
 
--- the four craftable variants
+-- the eight watch items: four styles, each in a right-wrist and a
+-- left-wrist variant (vanilla parity -- the worn swap between them is a
+-- vanilla item replace, the load carries across via the menu wrap)
 EM_AUTOINJECT_WATCH_TYPES = {
 	"EmergencyMedical.AutoInjectorWatchBlack",
+	"EmergencyMedical.AutoInjectorWatchBlackLeft",
 	"EmergencyMedical.AutoInjectorWatchRed",
+	"EmergencyMedical.AutoInjectorWatchRedLeft",
 	"EmergencyMedical.AutoInjectorWatchMetal",
+	"EmergencyMedical.AutoInjectorWatchMetalLeft",
 	"EmergencyMedical.AutoInjectorWatchLuxury",
+	"EmergencyMedical.AutoInjectorWatchLuxuryLeft",
 }
 
 -- the loadable ampoule drugs
@@ -98,10 +105,11 @@ function EMAutoInjector_TryInject(player, drug)
 	if player:getBodyDamage():getHealth() >= EM_AUTOINJECT_HEALTH_THRESHOLD then
 		return false
 	end
-	-- a physical ampoule must be in the inventory: the injection
-	-- consumes it, so the record alone can never duplicate a dose
+	-- a physical ampoule must be in the inventory (recurse -- it usually
+	-- sits inside the equipped backpack): the injection consumes it, so
+	-- the record alone can never duplicate a dose
 	local inventory = player:getInventory()
-	local ampoule = inventory:getFirstType(drug)
+	local ampoule = inventory:getFirstTypeRecurse(drug)
 	if ampoule == nil then
 		return false
 	end
@@ -111,7 +119,7 @@ function EMAutoInjector_TryInject(player, drug)
 		container:Remove(ampoule)
 	end
 	if isServer() then
-		sendRemoveItemFromContainer(inventory, ampoule)
+		sendRemoveItemFromContainer(container, ampoule)
 	end
 	-- the record is spent
 	watch:getModData().EM_AutoInjectDrug = nil

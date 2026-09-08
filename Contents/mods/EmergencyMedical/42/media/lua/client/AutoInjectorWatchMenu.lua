@@ -1,8 +1,11 @@
 -- Client side of the auto-injector watch: the load/unload context menu
--- (right-click a watch -> load one of the four ampoule drugs / unload)
--- and the auto-injection trigger loop. Loading consumes the physical
--- ampoule and records it on the watch item's modData; unloading spawns
--- a fresh ampoule (single-dose ampoules lose nothing in transit).
+-- (right-click a watch in ANY panel -- main inventory, backpack,
+-- equipment) and the auto-injection trigger loop. The menu is mutually
+-- exclusive: an empty watch offers loading (only the ampoule drugs
+-- actually present in the inventory), a loaded watch offers unloading.
+-- Loading consumes the physical ampoule and records it on the watch
+-- item's modData; unloading spawns a fresh ampoule (single-dose
+-- ampoules lose nothing in transit).
 --
 -- Trigger: OnPlayerUpdate -- the health check runs first so the worn
 -- scan only happens in the emergency case. MP routes through the
@@ -17,9 +20,16 @@ local function onFillContextMenu(playerNum, context, items)
 		return
 	end
 	local watch = nil
-	for i = 1, #items do
-		local entry = items[i]
-		if instanceof(entry, "InventoryItem") and EMAutoInjector_IsWatch(entry) then
+	if ISInventoryPane == nil or ISInventoryPane.getActualItems == nil then
+		return
+	end
+	-- panel entries come in two shapes: raw InventoryItems (main
+	-- inventory) and stack tables {items = {...}} (bag/loot panels) --
+	-- the vanilla helper flattens both
+	local flat = ISInventoryPane.getActualItems(items)
+	for i = 1, #flat do
+		local entry = flat[i]
+		if EMAutoInjector_IsWatch(entry) then
 			watch = entry
 			break
 		end
@@ -27,47 +37,70 @@ local function onFillContextMenu(playerNum, context, items)
 	if watch == nil then
 		return
 	end
+	-- recurse: the ampoules usually sit inside the equipped backpack,
+	-- which the plain main-inventory scan would miss
 	local inventory = playerObj:getInventory()
 	local loaded = EMAutoInjector_GetLoaded(watch)
 
+	-- mutually exclusive: loaded -> unload only; not loaded -> the load
+	-- submenu, which lists ONLY the ampoule drugs actually present in
+	-- the inventory (no greyed entries; nothing present = no menu at all)
+	if loaded ~= nil then
+		context:addOption(getText("IGUI_health_AutoInjectUnload"), playerObj, function(p, w)
+			local drug = EMAutoInjector_GetLoaded(w)
+			if drug == nil then
+				return
+			end
+			w:getModData().EM_AutoInjectDrug = nil
+			p:getInventory():AddItem(drug)
+		end, watch)
+		return
+	end
+	local present = {}
+	for a = 1, #EM_AUTOINJECT_AMPOULES do
+		local drug = EM_AUTOINJECT_AMPOULES[a]
+		if inventory:getFirstTypeRecurse(drug) ~= nil then
+			present[#present + 1] = drug
+		end
+	end
+	if #present == 0 then
+		return
+	end
 	local loadOption = context:addOption(getText("IGUI_health_AutoInjectLoad"), nil, nil)
 	local loadMenu = ISContextMenu:getNew(context)
 	context:addSubMenu(loadOption, loadMenu)
-	local anyLoadable = false
-	for a = 1, #EM_AUTOINJECT_AMPOULES do
-		local drug = EM_AUTOINJECT_AMPOULES[a]
-		local hasAmpoule = inventory:getFirstType(drug) ~= nil
-		anyLoadable = anyLoadable or hasAmpoule
-		local option = loadMenu:addOption(getText(drug), playerObj, function(p, w, d)
-			local ampoule = p:getInventory():getFirstType(d)
+	for i = 1, #present do
+		loadMenu:addOption(getItemNameFromFullType(present[i]), playerObj, function(p, w, d)
+			local ampoule = p:getInventory():getFirstTypeRecurse(d)
 			if ampoule == nil then
 				return
 			end
-			p:getInventory():Remove(ampoule)
+			ampoule:getContainer():Remove(ampoule)
 			w:getModData().EM_AutoInjectDrug = d
-		end, watch, drug)
-		if not hasAmpoule then
-			option.notAvailable = true
-		end
-	end
-	if not anyLoadable then
-		loadOption.notAvailable = true
-	end
-
-	local unloadOption = context:addOption(getText("IGUI_health_AutoInjectUnload"), playerObj, function(p, w)
-		local drug = EMAutoInjector_GetLoaded(w)
-		if drug == nil then
-			return
-		end
-		w:getModData().EM_AutoInjectDrug = nil
-		p:getInventory():AddItem(drug)
-	end, watch, loaded)
-	if loaded == nil then
-		unloadOption.notAvailable = true
+		end, watch, present[i])
 	end
 end
 
 Events.OnFillInventoryObjectContextMenu.Add(onFillContextMenu)
+
+-- the vanilla left/right wrist swap REPLACES the item (destroy +
+-- create): carry the loaded drug across our own watch swaps, otherwise
+-- a loaded dose silently vanishes on a wrist change. The vanilla
+-- callback's third argument IS the player object (not a player number).
+local origOnClothingItemExtra = ISInventoryPaneContextMenu.onClothingItemExtra
+function ISInventoryPaneContextMenu.onClothingItemExtra(item, fullType, playerObj)
+	local carriedDrug = nil
+	if playerObj ~= nil and EMAutoInjector_IsWatch(item) then
+		carriedDrug = EMAutoInjector_GetLoaded(item)
+	end
+	origOnClothingItemExtra(item, fullType, playerObj)
+	if carriedDrug ~= nil and playerObj ~= nil then
+		local newWatch = EMAutoInjector_GetEquipped(playerObj)
+		if newWatch ~= nil and EMAutoInjector_GetLoaded(newWatch) == nil then
+			newWatch:getModData().EM_AutoInjectDrug = carriedDrug
+		end
+	end
+end
 
 local function onPlayerUpdate(player)
 	if player == nil then

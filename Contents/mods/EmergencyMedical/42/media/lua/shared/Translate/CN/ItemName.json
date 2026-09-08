@@ -15,5 +15,9 @@
     "EmergencyMedical.AutoInjectorWatchBlack": "自动注射手表（黑）",
     "EmergencyMedical.AutoInjectorWatchRed": "自动注射手表（红）",
     "EmergencyMedical.AutoInjectorWatchMetal": "自动注射手表（金属风）",
-    "EmergencyMedical.AutoInjectorWatchLuxury": "自动注射手表（豪华）"
+    "EmergencyMedical.AutoInjectorWatchLuxury": "自动注射手表（豪华）",
+    "EmergencyMedical.AutoInjectorWatchBlackLeft": "自动注射手表（黑）",
+    "EmergencyMedical.AutoInjectorWatchRedLeft": "自动注射手表（红）",
+    "EmergencyMedical.AutoInjectorWatchMetalLeft": "自动注射手表（金属风）",
+    "EmergencyMedical.AutoInjectorWatchLuxuryLeft": "自动注射手表（豪华）"
 }

@@ -15,5 +15,9 @@
     "EmergencyMedical.AutoInjectorWatchBlack": "Auto-Injector Watch (Black)",
     "EmergencyMedical.AutoInjectorWatchRed": "Auto-Injector Watch (Red)",
     "EmergencyMedical.AutoInjectorWatchMetal": "Auto-Injector Watch (Metal)",
-    "EmergencyMedical.AutoInjectorWatchLuxury": "Auto-Injector Watch (Luxury)"
+    "EmergencyMedical.AutoInjectorWatchLuxury": "Auto-Injector Watch (Luxury)",
+    "EmergencyMedical.AutoInjectorWatchBlackLeft": "Auto-Injector Watch (Black)",
+    "EmergencyMedical.AutoInjectorWatchRedLeft": "Auto-Injector Watch (Red)",
+    "EmergencyMedical.AutoInjectorWatchMetalLeft": "Auto-Injector Watch (Metal)",
+    "EmergencyMedical.AutoInjectorWatchLuxuryLeft": "Auto-Injector Watch (Luxury)"
 }
