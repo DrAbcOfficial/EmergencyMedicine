@@ -43,6 +43,8 @@
     "IGUI_health_SomnolenceDescExtreme": "Snoooore... Zzzzzzz",
     "IGUI_health_CoughSuppress": "Cough suppressant",
     "IGUI_health_CoughSuppressDesc": "Sneezing and coughing are held down.",
+    "IGUI_health_AutoInjectLoad": "Load an ampoule",
+    "IGUI_health_AutoInjectUnload": "Remove the ampoule",
     "IGUI_health_AmphAddiction": "Amphetamine addiction",
     "IGUI_health_AmphAddictionDescMild": "It's everything to me.",
     "IGUI_health_AmphAddictionDescModerate": "I feel sick to my stomach.",

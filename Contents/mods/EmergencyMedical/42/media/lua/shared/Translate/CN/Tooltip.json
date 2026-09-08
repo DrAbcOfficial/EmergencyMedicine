@@ -11,5 +11,6 @@
     "Tooltip_dextromethorphan": "压制喷嚏咳嗽\n困倦口干，且嗜睡",
     "Tooltip_GrassBandage": "草料粗制的应急绷带，容易感染伤口",
     "Tooltip_BookSplint": "两本书捆成的夹板",
-    "Tooltip_TemporarySplint": "应急骨折固定\n无法治愈骨折，除非极长期佩戴"
+    "Tooltip_TemporarySplint": "应急骨折固定\n无法治愈骨折，除非极长期佩戴",
+    "Tooltip_AutoInjectorWatch": "显示时间、日期与温度\n装入药品后生命危急时将自动完成注射"
 }

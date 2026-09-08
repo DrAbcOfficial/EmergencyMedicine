@@ -11,5 +11,9 @@
     "EmergencyMedical.dextromethorphan": "Dextromethorphan",
     "EmergencyMedical.GrassBandage": "Grass Bandage",
     "EmergencyMedical.BookSplint": "Book Splint",
-    "EmergencyMedical.TemporarySplint": "Improvised Splint"
+    "EmergencyMedical.TemporarySplint": "Improvised Splint",
+    "EmergencyMedical.AutoInjectorWatchBlack": "Auto-Injector Watch (Black)",
+    "EmergencyMedical.AutoInjectorWatchRed": "Auto-Injector Watch (Red)",
+    "EmergencyMedical.AutoInjectorWatchMetal": "Auto-Injector Watch (Metal)",
+    "EmergencyMedical.AutoInjectorWatchLuxury": "Auto-Injector Watch (Luxury)"
 }

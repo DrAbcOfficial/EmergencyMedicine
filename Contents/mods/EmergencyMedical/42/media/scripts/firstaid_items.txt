@@ -33,4 +33,68 @@ module EmergencyMedical
         Tooltip = Tooltip_TemporarySplint,
         WorldStaticModel = TemporarySplint,
     }
+    item AutoInjectorWatchBlack
+    {
+        DisplayCategory = Accessory,
+        ItemType = base:alarmclockclothing,
+        Weight = 0.1,
+        Icon = DigitalWatch_Black,
+        AlarmSound = WatchAlarmLoop,
+        BodyLocation = base:rightwrist,
+        Cosmetic = true,
+        MetalValue = 3.0,
+        SoundRadius = 7,
+        Tooltip = Tooltip_AutoInjectorWatch,
+        ClothingItem = WristWatch_Right_DigitalBlack,
+        WorldStaticModel = DigitalWatchBlack,
+        Tags = base:digital;base:hasmetal,
+    }
+    item AutoInjectorWatchRed
+    {
+        DisplayCategory = Accessory,
+        ItemType = base:alarmclockclothing,
+        Weight = 0.1,
+        Icon = DigitalWatch_Red,
+        AlarmSound = WatchAlarmLoop,
+        BodyLocation = base:rightwrist,
+        Cosmetic = true,
+        MetalValue = 3.0,
+        SoundRadius = 7,
+        Tooltip = Tooltip_AutoInjectorWatch,
+        ClothingItem = WristWatch_Right_DigitalRed,
+        WorldStaticModel = DigitalWatchBlack,
+        Tags = base:digital;base:hasmetal,
+    }
+    item AutoInjectorWatchMetal
+    {
+        DisplayCategory = Accessory,
+        ItemType = base:alarmclockclothing,
+        Weight = 0.1,
+        Icon = DigitalWatch_Fancy,
+        AlarmSound = WatchAlarmLoop,
+        BodyLocation = base:rightwrist,
+        Cosmetic = true,
+        MetalValue = 3.0,
+        SoundRadius = 7,
+        Tooltip = Tooltip_AutoInjectorWatch,
+        ClothingItem = WristWatch_Right_DigitalDress,
+        WorldStaticModel = DigitalWatchBlack,
+        Tags = base:digital;base:hasmetal,
+    }
+    item AutoInjectorWatchLuxury
+    {
+        DisplayCategory = Accessory,
+        ItemType = base:alarmclockclothing,
+        Weight = 0.2,
+        Icon = Watch_Expensive,
+        AlarmSound = WatchAlarmLoop,
+        BodyLocation = base:rightwrist,
+        Cosmetic = true,
+        MetalValue = 3.0,
+        SoundRadius = 7,
+        Tooltip = Tooltip_AutoInjectorWatch,
+        ClothingItem = WristWatch_Right_Expensive,
+        WorldStaticModel = WatchExpensive,
+        Tags = base:digital;base:hasmetal,
+    }
 }

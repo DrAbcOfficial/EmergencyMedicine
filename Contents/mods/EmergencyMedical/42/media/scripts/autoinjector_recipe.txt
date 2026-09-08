@@ -1,0 +1,79 @@
+module EmergencyMedical
+{
+    craftRecipe MakeAutoInjectorWatchBlack
+    {
+        timedAction = MakingElectrical,
+        time = 200,
+        SkillRequired = Electricity:7,
+        Tags = AnySurfaceCraft,
+        category = Medical,
+        xpAward = Electricity:10,
+        inputs
+        {
+            item 1 [Base.WristWatch_Right_DigitalBlack;Base.WristWatch_Left_DigitalBlack] mode:destroy,
+            item 4 [Base.ElectronicsScrap] flags[ItemCount],
+            item 1 [Base.Needle;Base.ForgedNeedle;Base.SutureNeedle] mode:destroy,
+        }
+        outputs
+        {
+            item 1 EmergencyMedical.AutoInjectorWatchBlack,
+        }
+    }
+    craftRecipe MakeAutoInjectorWatchRed
+    {
+        timedAction = MakingElectrical,
+        time = 200,
+        SkillRequired = Electricity:7,
+        Tags = AnySurfaceCraft,
+        category = Medical,
+        xpAward = Electricity:10,
+        inputs
+        {
+            item 1 [Base.WristWatch_Right_DigitalRed;Base.WristWatch_Left_DigitalRed] mode:destroy,
+            item 4 [Base.ElectronicsScrap] flags[ItemCount],
+            item 1 [Base.Needle;Base.ForgedNeedle;Base.SutureNeedle] mode:destroy,
+        }
+        outputs
+        {
+            item 1 EmergencyMedical.AutoInjectorWatchRed,
+        }
+    }
+    craftRecipe MakeAutoInjectorWatchMetal
+    {
+        timedAction = MakingElectrical,
+        time = 200,
+        SkillRequired = Electricity:7,
+        Tags = AnySurfaceCraft,
+        category = Medical,
+        xpAward = Electricity:10,
+        inputs
+        {
+            item 1 [Base.WristWatch_Right_DigitalDress;Base.WristWatch_Left_DigitalDress] mode:destroy,
+            item 4 [Base.ElectronicsScrap] flags[ItemCount],
+            item 1 [Base.Needle;Base.ForgedNeedle;Base.SutureNeedle] mode:destroy,
+        }
+        outputs
+        {
+            item 1 EmergencyMedical.AutoInjectorWatchMetal,
+        }
+    }
+    craftRecipe MakeAutoInjectorWatchLuxury
+    {
+        timedAction = MakingElectrical,
+        time = 200,
+        SkillRequired = Electricity:7,
+        Tags = AnySurfaceCraft,
+        category = Medical,
+        xpAward = Electricity:10,
+        inputs
+        {
+            item 1 [Base.WristWatch_Right_Expensive;Base.WristWatch_Left_Expensive] mode:destroy,
+            item 4 [Base.ElectronicsScrap] flags[ItemCount],
+            item 1 [Base.Needle;Base.ForgedNeedle;Base.SutureNeedle] mode:destroy,
+        }
+        outputs
+        {
+            item 1 EmergencyMedical.AutoInjectorWatchLuxury,
+        }
+    }
+}

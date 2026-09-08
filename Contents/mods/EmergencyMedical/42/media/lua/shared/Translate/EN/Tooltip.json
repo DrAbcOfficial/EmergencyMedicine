@@ -11,5 +11,6 @@
     "Tooltip_dextromethorphan": "Suppresses sneezing and coughing\nDrowsy and parched; sleepiness takes over",
     "Tooltip_GrassBandage": "A crude emergency bandage of grass; all but guarantees wound infection",
     "Tooltip_BookSplint": "A splint lashed from two books",
-    "Tooltip_TemporarySplint": "Improvised fracture fixation\nDoes not heal the fracture -- unless worn for a very long time"
+    "Tooltip_TemporarySplint": "Improvised fracture fixation\nDoes not heal the fracture -- unless worn for a very long time",
+    "Tooltip_AutoInjectorWatch": "An auto-injector watch. Tells time, date and temperature like any digital watch. Load one ampoule (morphine, naloxone, fentanyl or dexmedetomidine) through the right-click menu: while WORN, it injects automatically the moment overall health drops below a quarter. Right-click the watch to load or remove the ampoule.\nCrafted by an experienced electrician."
 }

@@ -3,5 +3,9 @@
     "MakeBookSplint": "Make Book Splint",
     "MakeTemporarySplint": "Make Improvised Splint",
     "MakeTemporarySplintBranch": "Make Improvised Splint",
-    "MakeTemporarySplintRod": "Make Improvised Splint"
+    "MakeTemporarySplintRod": "Make Improvised Splint",
+    "MakeAutoInjectorWatchBlack": "Make Auto-Injector Watch (Black)",
+    "MakeAutoInjectorWatchRed": "Make Auto-Injector Watch (Red)",
+    "MakeAutoInjectorWatchMetal": "Make Auto-Injector Watch (Metal)",
+    "MakeAutoInjectorWatchLuxury": "Make Auto-Injector Watch (Luxury)"
 }

@@ -43,6 +43,8 @@
     "IGUI_health_SomnolenceDescExtreme": "呼噜噜Zzzzzzz",
     "IGUI_health_CoughSuppress": "镇咳",
     "IGUI_health_CoughSuppressDesc": "喷嚏与咳嗽被压制",
+    "IGUI_health_AutoInjectLoad": "装入安瓿",
+    "IGUI_health_AutoInjectUnload": "取出安瓿",
     "IGUI_health_AmphAddiction": "安非他命成瘾",
     "IGUI_health_AmphAddictionDescMild": "它是我的全部。",
     "IGUI_health_AmphAddictionDescModerate": "感觉恶心想吐。",

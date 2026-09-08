@@ -3,5 +3,9 @@
     "MakeBookSplint": "制作书本夹板",
     "MakeTemporarySplint": "制作应急夹板",
     "MakeTemporarySplintBranch": "制作应急夹板",
-    "MakeTemporarySplintRod": "制作应急夹板"
+    "MakeTemporarySplintRod": "制作应急夹板",
+    "MakeAutoInjectorWatchBlack": "制作自动注射手表（黑）",
+    "MakeAutoInjectorWatchRed": "制作自动注射手表（红）",
+    "MakeAutoInjectorWatchMetal": "制作自动注射手表（金属风）",
+    "MakeAutoInjectorWatchLuxury": "制作自动注射手表（豪华）"
 }

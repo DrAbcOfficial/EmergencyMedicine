@@ -91,6 +91,14 @@ local function onClientCommand(module, command, player, args)
     local treatment = TREATMENTS[command]
     if treatment ~= nil then
         handleTreatment(player, args, treatment)
+    elseif command == "AutoInject" then
+        -- the auto-injector watch trigger: the client detected the health
+        -- gate; EMAutoInjector_TryInject re-validates everything server-side
+        -- (alive, health below threshold, watch worn, drug whitelisted,
+        -- physical ampoule present) before applying and consuming
+        if type(args.drug) == "string" then
+            EMAutoInjector_TryInject(player, args.drug)
+        end
     elseif command == "TakeDrug" then
         -- self-use drug effect: the taker is the sender (consumption of
         -- the pill itself is vanilla client-side via JustTookPill ->

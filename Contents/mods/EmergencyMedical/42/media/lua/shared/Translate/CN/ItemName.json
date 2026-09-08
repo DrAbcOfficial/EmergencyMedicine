@@ -11,5 +11,9 @@
     "EmergencyMedical.dextromethorphan": "右美沙芬",
     "EmergencyMedical.GrassBandage": "草绷带",
     "EmergencyMedical.BookSplint": "书本夹板",
-    "EmergencyMedical.TemporarySplint": "应急夹板"
+    "EmergencyMedical.TemporarySplint": "应急夹板",
+    "EmergencyMedical.AutoInjectorWatchBlack": "自动注射手表（黑）",
+    "EmergencyMedical.AutoInjectorWatchRed": "自动注射手表（红）",
+    "EmergencyMedical.AutoInjectorWatchMetal": "自动注射手表（金属风）",
+    "EmergencyMedical.AutoInjectorWatchLuxury": "自动注射手表（豪华）"
 }
