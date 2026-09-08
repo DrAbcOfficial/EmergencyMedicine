@@ -1,15 +1,15 @@
 {
-    "Tooltip_morphine": "瞬间回血、完全止痛、平复心神，不治疗伤口。\n极易成瘾。",
-    "Tooltip_naloxone": "阿片拮抗剂。缓解成瘾。\n代价是饥饿与口渴。",
-    "Tooltip_fentanyl": "回满血并抹除一切伤口与处置（子弹、玻璃渣、病毒除外）。完全止痛、平复心神。\n成瘾性极强。",
-    "Tooltip_oxycontin": "温和阿片。略微回血、稍安心神、小幅缓解戒断。\n略有成瘾性。",
-    "Tooltip_sufentanil": "贴于右上臂：数日内持续止痛、缓解戒断、情绪平稳，成瘾悄然加深。\n撕下即止。",
-    "Tooltip_methamphetamine": "瞬间清醒，毫无睡意。安非他命成瘾猛涨——崩溃迟早会来。",
-    "Tooltip_tranexamicacid": "压下大部分出血，凝血转为加重的伤口。\n头晕乏力、恶心、持续头痛。",
-    "Tooltip_sulfadimidine": "每剂压下大部分创面感染；重度感染需连服数剂，且愈合成更重的伤口。不影响僵尸病毒。\n头部疼痛、持续发热、肾负担、恶心。",
-    "Tooltip_dexmedetomidine": "小型动物兽用镇静剂。平静——或激越，全凭运气。\n明显困倦、头部重度疼痛。",
-    "Tooltip_dextromethorphan": "镇咳糖浆。压制喷嚏咳嗽，帮助身体更快驱散感冒；其余交给静养。\n困倦口干。连服多剂会当场昏睡。",
-    "Tooltip_GrassBandage": "草料粗制的绷带。效果远差于正经绷带——且几乎必定感染伤口。",
-    "Tooltip_BookSplint": "两本书加布条捆成的正规夹板。",
-    "Tooltip_TemporarySplint": "应急固定：佩戴期间骨折仿佛消失，但肢体伤口更疼。部位再受伤会使固定失效、骨折归来；拆除时骨折按佩戴时长加重。\n戴满一整年可彻底痊愈。"
+    "Tooltip_morphine": "瞬间回血、完全止痛、平复心神\n不治疗伤口且极易成瘾",
+    "Tooltip_naloxone": "阿片拮抗剂，缓解成瘾。\n会感到饥饿与口渴",
+    "Tooltip_fentanyl": "完全回复、平复心神\n立即成瘾",
+    "Tooltip_oxycontin": "略微回血、稍安心神\n略有成瘾性",
+    "Tooltip_sufentanil": "贴于右上臂：数日内持续止痛与平稳情绪\n持续成瘾",
+    "Tooltip_methamphetamine": "持续数日的清醒与有力\n崩溃迟早会来",
+    "Tooltip_tranexamicacid": "压下大部分出血\n凝血转为伤口，头晕乏力、恶心、持续头痛",
+    "Tooltip_sulfadimidine": "压下大部分创面感染\n感染转为伤口，头部疼痛、持续发热、肾负担、恶心",
+    "Tooltip_dexmedetomidine": "小型动物兽用镇静剂\n效果优劣不定、明显困倦、头部重度疼痛",
+    "Tooltip_dextromethorphan": "压制喷嚏咳嗽\n困倦口干，且嗜睡",
+    "Tooltip_GrassBandage": "草料粗制的应急绷带，容易感染伤口",
+    "Tooltip_BookSplint": "两本书捆成的夹板",
+    "Tooltip_TemporarySplint": "应急骨折固定\n无法治愈骨折，除非极长期佩戴"
 }

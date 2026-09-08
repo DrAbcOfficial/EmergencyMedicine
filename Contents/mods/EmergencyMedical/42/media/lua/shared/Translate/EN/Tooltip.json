@@ -1,15 +1,15 @@
 {
-    "Tooltip_morphine": "Instantly restores health, kills all pain, clears the mind. Does not heal wounds.\nHighly addictive.",
-    "Tooltip_naloxone": "Opioid antagonist. Eases addiction.\nLeaves you hungry and parched.",
-    "Tooltip_fentanyl": "Restores health and erases every wound and treatment (bullets, glass and the virus stay). Kills all pain, clears the mind.\nExtremely addictive.",
-    "Tooltip_oxycontin": "Mild opioid. Restores some health, calms the mind, eases withdrawal.\nSomewhat addictive.",
-    "Tooltip_sufentanil": "Patch on the right upper arm: for days it eases pain and withdrawal and keeps you calm, while addiction quietly deepens.\nPeel off to stop.",
-    "Tooltip_methamphetamine": "Instantly wide awake. Feeds amphetamine addiction hard -- the crash will come.",
-    "Tooltip_tranexamicacid": "Clots most of the bleeding; the clot settles as a heavier wound.\nDizzy weakness, nausea, lingering headache.",
-    "Tooltip_sulfadimidine": "Burns down most of a wound infection per dose; heavy infections take several courses and heal into heavier wounds. No effect on the zombie virus.\nHead pain, a lingering fever, kidney strain, nausea.",
-    "Tooltip_dexmedetomidine": "Small-animal veterinary sedative. Calm -- or agitation; a coin flip.\nHeavy drowsiness, severe head pain.",
-    "Tooltip_dextromethorphan": "Cough syrup. Silences sneezing and coughing, helps the cold burn off faster; the rest is up to rest.\nDrowsy and parched. Chug it and you pass out.",
-    "Tooltip_GrassBandage": "Rough grass bandage. Heals far worse than a real one -- and will almost surely infect the wound.",
-    "Tooltip_BookSplint": "A proper splint lashed from two books and cloth.",
-    "Tooltip_TemporarySplint": "Improvised fixation: while worn, the fracture vanishes but the limb's wounds hurt more. A fresh wound on the part breaks it; removal brings the fracture back, worse the longer it was worn.\nA full year of wear heals the bone outright."
+    "Tooltip_morphine": "Instantly restores health, kills all pain, clears the mind\nDoes not heal wounds; highly addictive",
+    "Tooltip_naloxone": "Opioid antagonist; eases addiction.\nLeaves you hungry and parched",
+    "Tooltip_fentanyl": "Fully restores health, clears the mind\nInstantly addictive",
+    "Tooltip_oxycontin": "Restores a little health, calms the mind\nSomewhat addictive",
+    "Tooltip_sufentanil": "Patch on the right upper arm: for days it keeps easing pain and holding you steady\nAddiction keeps deepening",
+    "Tooltip_methamphetamine": "Days wide awake and strong\nThe crash will come",
+    "Tooltip_tranexamicacid": "Clots most of the bleeding\nThe clot turns into wound severity; dizzy weakness, nausea, lingering headache",
+    "Tooltip_sulfadimidine": "Clears most of a wound infection\nThe infection turns into wound severity; head pain, lingering fever, kidney strain, nausea",
+    "Tooltip_dexmedetomidine": "Small-animal veterinary sedative\nEffect is a coin flip; heavy drowsiness, severe head pain",
+    "Tooltip_dextromethorphan": "Suppresses sneezing and coughing\nDrowsy and parched; sleepiness takes over",
+    "Tooltip_GrassBandage": "A crude emergency bandage of grass; all but guarantees wound infection",
+    "Tooltip_BookSplint": "A splint lashed from two books",
+    "Tooltip_TemporarySplint": "Improvised fracture fixation\nDoes not heal the fracture -- unless worn for a very long time"
 }
