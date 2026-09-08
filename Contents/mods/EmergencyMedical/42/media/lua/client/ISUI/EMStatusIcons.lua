@@ -23,6 +23,26 @@ require "ISUI/ISPanelJoypad"
 EMStatusIcons = EMStatusIcons or {}
 EMStatusIcons.statuses = {}
 
+-- nil-safe local-player guard shared by every status glue file
+function EMStatusIcons.LocalPlayer(playerObj)
+    if playerObj == nil or not playerObj:isLocalPlayer() then
+        return nil
+    end
+    return playerObj
+end
+
+-- the standard 4-level description key table for a prefix:
+-- LevelDescKeys("IGUI_health_XDesc") -> { [1] = ..Mild, [2] = ..Moderate,
+-- [3] = ..Severe, [4] = ..Extreme }
+function EMStatusIcons.LevelDescKeys(prefix)
+    return {
+        [1] = prefix .. "Mild",
+        [2] = prefix .. "Moderate",
+        [3] = prefix .. "Severe",
+        [4] = prefix .. "Extreme",
+    }
+end
+
 local moodleSizes = { 32, 48, 64, 80, 96, 128 }
 
 -- status levels run 1..4 (0 hidden); the icon tint blends gray ->

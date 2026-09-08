@@ -45,23 +45,19 @@ local WITHDRAWAL_KEY = "EM_AmphWithdrawal"
 
 -- drug effects call this with the ramp duration in game hours
 function EM_Meth_SetHigh(player, durationHours)
-    local data = player and player:getModData()
-    if data == nil then
-        return
-    end
-    data[METH_HIGH_KEY] = player:getHoursSurvived() + durationHours
-    EM_Dependence_Transmit(player)
+    EM_TimedStatus.Set(player, METH_HIGH_KEY, nil, "high",
+        EM_TimedStatus.TimedRecord(player:getHoursSurvived(), durationHours), true)
 end
 
 local function tickMethHigh(player)
-    local data = player and player:getModData()
-    if data == nil or data[METH_HIGH_KEY] == nil then
+    local high = EM_TimedStatus.Get(player, METH_HIGH_KEY, nil, "high")
+    if high == nil then
         return
     end
-    if player:getHoursSurvived() < data[METH_HIGH_KEY] then
+    if player:getHoursSurvived() < high.expire then
         EM_AmphAddiction_Set(player, EM_AmphAddiction_Get(player) + 1 / 60)
     else
-        data[METH_HIGH_KEY] = nil
+        EM_TimedStatus.Remove(player, METH_HIGH_KEY, nil, "high", false)
     end
 end
 
@@ -138,21 +134,4 @@ local function minuteTick(player)
     end
 end
 
-local function simulate()
-    if isServer() then
-        local players = getOnlinePlayers()
-        for i = 0, players:size() - 1 do
-            minuteTick(players:get(i))
-        end
-    else
-        -- every local player (split-screen), not just index 0
-        for i = 0, getNumActivePlayers() - 1 do
-            local player = getSpecificPlayer(i)
-            if player ~= nil and not player:isDead() and player:isLocalPlayer() then
-                minuteTick(player)
-            end
-        end
-    end
-end
-
-Events.EveryOneMinute.Add(simulate)
+EM_Sim.EveryOneMinute(minuteTick)

@@ -18,10 +18,6 @@
 local DATA_KEY = "EM_BodyWounds"
 local DEFAULT_DURATION_DAYS = 90
 
--- the default age-quartile level split (4 = freshest quarter -> 1 =
--- oldest quarter)
-local AGE_QUARTILE = 0.25
-
 -- exported for the one consumer that must read a state BEFORE the lazy
 -- expiry below scrubs it (BodyWoundSimulation's fixation expiry check);
 -- read-only access -- mutate states only through the API functions
@@ -195,24 +191,13 @@ end
 
 -- 0 = none; levels derive purely from the state's own data: age
 -- quartiles 4 (fresh) -> 1 (oldest) over the state's lifetime
+-- (EM_TimedStatus.AgeLevel)
 function EM_Wound_GetLevel(player, part, id)
     local state = EM_Wound_GetState(player, part, id)
     if state == nil then
         return 0
     end
-    local duration = state.expire - state.applied
-    if duration <= 0 then
-        return 1
-    end
-    local frac = (player:getHoursSurvived() - state.applied) / duration
-    if frac <= AGE_QUARTILE then
-        return 4
-    elseif frac <= AGE_QUARTILE * 2 then
-        return 3
-    elseif frac <= AGE_QUARTILE * 3 then
-        return 2
-    end
-    return 1
+    return EM_TimedStatus.AgeLevel(state, player:getHoursSurvived())
 end
 
 -- all part keys currently carrying the state (fresh table per call)

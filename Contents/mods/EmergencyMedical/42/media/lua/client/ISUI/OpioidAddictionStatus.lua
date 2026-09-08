@@ -21,13 +21,6 @@ function EM_Addiction_GetMoodleType()
     return EM.MoodleTypes and EM.MoodleTypes.OpioidAddiction or nil
 end
 
-local function player(playerObj)
-    if playerObj == nil or not playerObj:isLocalPlayer() then
-        return nil
-    end
-    return playerObj
-end
-
 local tierDescKeys = {
     [1] = "IGUI_health_AddictionDescMild",
     [2] = "IGUI_health_AddictionDescModerate",
@@ -39,7 +32,7 @@ EMStatusIcons.RegisterStatus("OpioidAddiction", {
     icon = "media/ui/Moodles/OpioidAddictionIcon.png",
     tintColor = "bad",
     getLevel = function(playerObj)
-        if player(playerObj) == nil then
+        if EMStatusIcons.LocalPlayer(playerObj) == nil then
             return 0
         end
         return EM_Addiction_GetLevel(playerObj)

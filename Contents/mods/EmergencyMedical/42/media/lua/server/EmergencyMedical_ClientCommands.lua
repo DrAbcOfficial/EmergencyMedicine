@@ -95,9 +95,17 @@ local function onClientCommand(module, command, player, args)
         -- self-use drug effect: the taker is the sender (consumption of
         -- the pill itself is vanilla client-side via JustTookPill ->
         -- UseAndSync). EMDrug_ApplyEffect dispatches only this mod's own
-        -- nine fullTypes -- that IS the validation.
+        -- ten fullTypes -- that IS the validation.
         if type(args.drug) == "string" and player:isAlive() then
             EMDrug_ApplyEffect(player, args.drug)
+            -- several effects touch part data (heal, bleeding stops,
+            -- pain, wound-time transfers): push the whole body at once
+            -- -- the periodic damage sync alone would take 30-60s to
+            -- carry it to the owner
+            local parts = player:getBodyDamage():getBodyParts()
+            for i = 0, parts:size() - 1 do
+                syncBodyPart(parts:get(i), EM_BODYWOUND_SYNC_FLAGS)
+            end
         end
     end
 end

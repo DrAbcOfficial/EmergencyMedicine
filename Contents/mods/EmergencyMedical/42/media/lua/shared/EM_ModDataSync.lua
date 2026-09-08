@@ -18,12 +18,9 @@ local function onMinute()
         return
     end
     minutes = 0
-    for i = 0, getNumActivePlayers() - 1 do
-        local player = getSpecificPlayer(i)
-        if player ~= nil and not player:isDead() and player:isLocalPlayer() then
-            player:transmitModData()
-        end
-    end
+    EM_Sim.ForLocalPlayers(function(player)
+        player:transmitModData()
+    end)
 end
 
 Events.EveryOneMinute.Add(onMinute)

@@ -13,13 +13,6 @@ if EMStatusIcons == nil then
     return
 end
 
-local function localPlayer(playerObj)
-    if playerObj == nil or not playerObj:isLocalPlayer() then
-        return nil
-    end
-    return playerObj
-end
-
 local addictionDescKeys = {
     [1] = "IGUI_health_AmphAddictionDescMild",
     [2] = "IGUI_health_AmphAddictionDescModerate",
@@ -31,7 +24,7 @@ EMStatusIcons.RegisterStatus("AmphetamineAddiction", {
     icon = "media/ui/Moodles/AmphetamineAddictionIcon.png",
     tintColor = "bad",
     getLevel = function(playerObj)
-        local p = localPlayer(playerObj)
+        local p = EMStatusIcons.LocalPlayer(playerObj)
         if p == nil then
             return 0
         end
@@ -53,18 +46,11 @@ EMStatusIcons.RegisterStatus("AmphetamineAddiction", {
     end,
 })
 
-local withdrawalDescKeys = {
-    [1] = "IGUI_health_AmphWithdrawalDescMild",
-    [2] = "IGUI_health_AmphWithdrawalDescModerate",
-    [3] = "IGUI_health_AmphWithdrawalDescSevere",
-    [4] = "IGUI_health_AmphWithdrawalDescExtreme",
-}
-
 EMStatusIcons.RegisterStatus("AmphetamineWithdrawal", {
     icon = "media/ui/Moodles/AmphetamineWithdrawal.png",
     tintColor = "bad",
     getLevel = function(playerObj)
-        local p = localPlayer(playerObj)
+        local p = EMStatusIcons.LocalPlayer(playerObj)
         if p == nil then
             return 0
         end
@@ -77,7 +63,7 @@ EMStatusIcons.RegisterStatus("AmphetamineWithdrawal", {
         if playerObj == nil then
             return ""
         end
-        local key = withdrawalDescKeys[EM_AmphWithdrawal_GetLevel(playerObj)]
+        local key = EMStatusIcons.LevelDescKeys("IGUI_health_AmphWithdrawalDesc")[EM_AmphWithdrawal_GetLevel(playerObj)]
         if key == nil then
             return ""
         end

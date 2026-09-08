@@ -13,25 +13,13 @@ if EMStatusIcons == nil then
     return
 end
 
-local function localPlayer(playerObj)
-    if playerObj == nil or not playerObj:isLocalPlayer() then
-        return nil
-    end
-    return playerObj
-end
-
 local function registerDrugStatus(id, iconFile)
-    local descKeys = {
-        [1] = "IGUI_health_" .. id .. "DescMild",
-        [2] = "IGUI_health_" .. id .. "DescModerate",
-        [3] = "IGUI_health_" .. id .. "DescSevere",
-        [4] = "IGUI_health_" .. id .. "DescExtreme",
-    }
+    local descKeys = EMStatusIcons.LevelDescKeys("IGUI_health_" .. id .. "Desc")
     EMStatusIcons.RegisterStatus(id, {
         icon = "media/ui/Moodles/" .. iconFile,
         tintColor = "bad",
         getLevel = function(playerObj)
-            local p = localPlayer(playerObj)
+            local p = EMStatusIcons.LocalPlayer(playerObj)
             if p == nil then
                 return 0
             end
