@@ -40,8 +40,11 @@ function TakeDextromethorphan(player)
     -- the vanilla flu-medicine channel: forces recovering + doubles the
     -- cold recovery rate while the feed lasts (consumes itself)
     bodyDamage:setColdReduction(bodyDamage:getColdReduction() + COLD_REDUCTION)
-    -- cough suppression + drowsiness status; DrugEffectSimulation holds
-    -- the sneeze countdown back while it lasts
+    -- the drowsiness is the generic Somnolence status (morphine
+    -- withdrawal stacks the same one); the cough suppression rides an
+    -- unregistered CoughSuppress record -- DrugEffectSimulation holds
+    -- the sneeze countdown back while it exists
+    EM_DrugFx_Add(player, "Somnolence")
     EM_DrugFx_Add(player, "CoughSuppress")
     -- antihistamine side effects: drowsy is the trade that steers you to
     -- the bed the cold needs anyway

@@ -340,6 +340,16 @@ option EmergencyMedical.DrugStatusDebuffRate
     translation = EmergencyMedical_DrugStatusDebuffRate,
 }
 
+option EmergencyMedical.SomnolenceFatigueFloor
+{
+    type = double,
+    default = 0.8,
+    min = 0.0,
+    max = 1.0,
+    page = EmergencyMedical,
+    translation = EmergencyMedical_SomnolenceFatigueFloor,
+}
+
 option EmergencyMedical.WithdrawalClimbMinutes
 {
     type = integer,
@@ -368,6 +378,16 @@ option EmergencyMedical.AddictionDecayRate
     max = 1.0,
     page = EmergencyMedical,
     translation = EmergencyMedical_AddictionDecayRate,
+}
+
+option EmergencyMedical.OpioidWithdrawalSomnolencePerHour
+{
+    type = double,
+    default = 0.15,
+    min = 0.0,
+    max = 1.0,
+    page = EmergencyMedical,
+    translation = EmergencyMedical_OpioidWithdrawalSomnolencePerHour,
 }
 
 option EmergencyMedical.AmphWithdrawalClimbMinutes
@@ -410,16 +430,6 @@ option EmergencyMedical.AmphUnhappinessPerMinute
     translation = EmergencyMedical_AmphUnhappinessPerMinute,
 }
 
-option EmergencyMedical.AmphDrunkPerMinute
-{
-    type = double,
-    default = 0.02,
-    min = 0.0,
-    max = 1.0,
-    page = EmergencyMedical,
-    translation = EmergencyMedical_AmphDrunkPerMinute,
-}
-
 option EmergencyMedical.AmphSleepReductionPerMinute
 {
     type = double,
@@ -430,20 +440,20 @@ option EmergencyMedical.AmphSleepReductionPerMinute
     translation = EmergencyMedical_AmphSleepReductionPerMinute,
 }
 
-option EmergencyMedical.AmphHungerSuppressionPerMinute
+option EmergencyMedical.AmphHungerThirstSuppressionPerMinute
 {
     type = double,
     default = 0.01,
     min = 0.0,
     max = 1.0,
     page = EmergencyMedical,
-    translation = EmergencyMedical_AmphHungerSuppressionPerMinute,
+    translation = EmergencyMedical_AmphHungerThirstSuppressionPerMinute,
 }
 
 option EmergencyMedical.AmphEnduranceRestorePerMinute
 {
     type = double,
-    default = 0.01,
+    default = 0.1,
     min = 0.0,
     max = 1.0,
     page = EmergencyMedical,
@@ -458,6 +468,26 @@ option EmergencyMedical.AmphCrashAppetitePerDay
     max = 1.0,
     page = EmergencyMedical,
     translation = EmergencyMedical_AmphCrashAppetitePerDay,
+}
+
+option EmergencyMedical.AmphWithdrawalHeadachePerHour
+{
+    type = double,
+    default = 0.3,
+    min = 0.0,
+    max = 1.0,
+    page = EmergencyMedical,
+    translation = EmergencyMedical_AmphWithdrawalHeadachePerHour,
+}
+
+option EmergencyMedical.AmphWithdrawalFeverPerHour
+{
+    type = double,
+    default = 0.3,
+    min = 0.0,
+    max = 1.0,
+    page = EmergencyMedical,
+    translation = EmergencyMedical_AmphWithdrawalFeverPerHour,
 }
 
 option EmergencyMedical.CrossWithdrawalHealthLoss

@@ -12,6 +12,13 @@
 -- BOREDOM / UNHAPPINESS / PANIC are CharacterStats in 0..100; addiction
 -- values are the mod's 0..1 scale (see Status/Opioid/OpioidAddiction.lua).
 
+-- the two drug-status peaks, shared by the dosing drugs (tranexamic
+-- acid / sulfadimidine) AND the severe amphetamine withdrawal
+-- accumulation (AmphetamineSimulation.lua) -- DrugEffectSimulation
+-- scales them by status progress x DrugStatusDebuffRate
+EM_DRUG_HEADACHE_PAIN_FLOOR = 12.0
+EM_DRUG_FEVER_TEMPERATURE = 38.5
+
 function EMDrug_HealToFull(player)
     local bodyDamage = player:getBodyDamage()
     if bodyDamage:getHealth() < EM_CONST.HEALTH_MAX then

@@ -44,6 +44,17 @@ local function minuteTick(player)
         EM_Sandbox_Get("WithdrawalClimbMinutes"),
         EM_Sandbox_Get("WithdrawalFallRate"),
         EM_Sandbox_Get("AddictionDecayRate"))
+    -- opioid withdrawal accumulates the generic Somnolence status
+    -- (drowsiness with teeth -- DrugEffectSimulation floors FATIGUE by
+    -- its progress): one progress add per game hour, self-clocked off
+    -- the record's applied time, on top of the status's natural decay
+    if EM_Dependence_Get(player, WITHDRAWAL_KEY) > 0 then
+        local now = player:getHoursSurvived()
+        local somnolence = EM_TimedStatus.Get(player, EM_DrugFx_DATA_KEY, nil, "Somnolence")
+        if somnolence == nil or now - somnolence.applied >= 1.0 then
+            EM_DrugFx_Add(player, "Somnolence", nil, EM_Sandbox_Get("OpioidWithdrawalSomnolencePerHour"))
+        end
+    end
 end
 
 EM_Sim.EveryOneMinute(minuteTick)

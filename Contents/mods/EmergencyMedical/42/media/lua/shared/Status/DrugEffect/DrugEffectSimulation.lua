@@ -11,11 +11,17 @@
 -- * "DrugFever" (sulfadimidine): the TEMPERATURE stat is pinned
 --   between 37 and the record's tempFloor peak x progress x rate,
 --   against the thermoregulator's pull back to 37.
--- * "CoughSuppress" (dextromethorphan): while any progress remains, the
---   sneeze/cough countdown (BodyDamage timeToSneezeOrCough,
---   real-world-seconds) is held at SNEEZE_HOLD -- a head cold goes
---   quiet; the cold itself (moodle, coldStrength) is untouched. Both
---   ends run the push, so MP suppresses the client's own countdown too.
+-- * "CoughSuppress" (dextromethorphan, unregistered -- no icon): while
+--   any progress remains, the sneeze/cough countdown (BodyDamage
+--   timeToSneezeOrCough, real-world-seconds) is held at SNEEZE_HOLD --
+--   a head cold goes quiet; the cold itself (moodle, coldStrength) is
+--   untouched. Both ends run the push, so MP suppresses the client's
+--   own countdown too.
+-- * "Somnolence" (generic drowsiness -- dextromethorphan doses AND
+--   opioid withdrawal stack it): FATIGUE floors at the
+--   SomnolenceFatigueFloor sandbox peak x progress x debuff rate while
+--   awake; skipped asleep (the floor must not fight the sleep it asks
+--   for).
 -- * "ShoddySedation" (veterinary dexmedetomidine) is a pure marker --
 --   the calm/agitation roll happened at dosing.
 --
@@ -77,6 +83,24 @@ local function minuteTick(player)
             local bodyDamage = player:getBodyDamage()
             if bodyDamage:getTimeToSneezeOrCough() < SNEEZE_HOLD then
                 bodyDamage:setTimeToSneezeOrCough(SNEEZE_HOLD)
+            end
+        end
+    end
+    local somnolence = drugFx["Somnolence"]
+    if somnolence ~= nil then
+        local progress = EM_DrugFx_Progress(somnolence, now)
+        if progress <= 0.0 then
+            drugFx["Somnolence"] = nil
+        elseif not player:isAsleep() then
+            -- drowsiness with teeth: fatigue floors at the sandbox peak
+            -- x progress x rate while awake -- sleep it off or drink
+            -- coffee, but the floor lifts as the status decays
+            local floor = EM_Sandbox_Get("SomnolenceFatigueFloor") * progress * debuffRate
+            if floor > 0.0 then
+                local stats = player:getStats()
+                if stats:get(CharacterStat.FATIGUE) < floor then
+                    stats:set(CharacterStat.FATIGUE, floor)
+                end
             end
         end
     end

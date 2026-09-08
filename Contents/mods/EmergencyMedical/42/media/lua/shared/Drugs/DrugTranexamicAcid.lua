@@ -9,7 +9,6 @@ local STOP_RATIO = 0.7          -- share of bleedingTime clotted per dose
 local WEAKNESS_ENDURANCE = 0.1  -- hypotension: endurance crushed to this
 local SEDATION_FATIGUE = 0.2    -- antifibrinolytic malaise
 local NAUSEA = 20.0             -- FOOD_SICKNESS bump (0..100, self-decays)
-local HEADACHE_FLOOR = 12.0     -- DrugHeadache pain floor at full progress
 
 function TakeTranexamicAcid(player)
     EMDrug_StopBleedingProportional(player, STOP_RATIO)
@@ -20,8 +19,8 @@ function TakeTranexamicAcid(player)
     -- lingering headache status; DrugEffectSimulation floors the head's
     -- pain by the status level (instant top-up so it aches now)
     local head = EMDrug_GetHeadPart(player)
-    EM_DrugFx_Add(player, "DrugHeadache", { painFloor = HEADACHE_FLOOR })
-    if head:getAdditionalPain() < HEADACHE_FLOOR then
-        head:setAdditionalPain(HEADACHE_FLOOR)
+    EM_DrugFx_Add(player, "DrugHeadache", { painFloor = EM_DRUG_HEADACHE_PAIN_FLOOR })
+    if head:getAdditionalPain() < EM_DRUG_HEADACHE_PAIN_FLOOR then
+        head:setAdditionalPain(EM_DRUG_HEADACHE_PAIN_FLOOR)
     end
 end

@@ -46,12 +46,14 @@ local DEFAULTS = {
 	AmphDecayRate = 0.36,
 	AmphPanicPerMinute = 0.01,
 	AmphUnhappinessPerMinute = 0.01,
-	AmphDrunkPerMinute = 0.02,
 	AmphSleepReductionPerMinute = 0.01,
-	AmphHungerSuppressionPerMinute = 0.01,
-	AmphEnduranceRestorePerMinute = 0.01,
+	AmphHungerThirstSuppressionPerMinute = 0.01,
+	AmphEnduranceRestorePerMinute = 0.1,
 	AmphCrashAppetitePerDay = 1.0,
+	AmphWithdrawalHeadachePerHour = 0.3,
+	AmphWithdrawalFeverPerHour = 0.3,
 	CrossWithdrawalHealthLoss = 0.1,
+	OpioidWithdrawalSomnolencePerHour = 0.15,
 	FentanylAddiction = 1.0,
 	FentanylRelief = 1.0,
 	OxycontinAddiction = 0.15,
@@ -67,6 +69,7 @@ local DEFAULTS = {
 	DrugStatusDoseGain = 0.2,
 	DrugStatusDecayPerHour = 0.05,
 	DrugStatusDebuffRate = 1.0,
+	SomnolenceFatigueFloor = 0.8,
 }
 
 function EM_Sandbox_Get(name)

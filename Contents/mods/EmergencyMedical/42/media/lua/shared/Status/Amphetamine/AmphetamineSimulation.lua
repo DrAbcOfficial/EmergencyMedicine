@@ -14,18 +14,21 @@
 --   as the opioid cold turkey, so quitting takes much longer);
 -- * while withdrawing, PANIC and UNHAPPINESS (both 0..100) creep up by
 --   "AmphPanicPerMinute" / "AmphUnhappinessPerMinute" per minute;
--- * at severe withdrawal or worse the DRUNK stat (0..1) creeps up by
---   "AmphDrunkPerMinute" as well;
--- * during MILD or MODERATE withdrawal (levels 1-2) the stimulant
---   keeps the body running: HUNGER is drained by
---   "AmphHungerSuppressionPerMinute" and FATIGUE by
+-- * the stimulant benefits apply as soon as ANY withdrawal exists
+--   (counted at least level 1 -- no waiting for the level-1 threshold)
+--   and until it turns severe: HUNGER and THIRST are both drained by
+--   "AmphHungerThirstSuppressionPerMinute" and FATIGUE by
 --   "AmphSleepReductionPerMinute" per minute (the defaults outpace the
 --   vanilla stat gains -- the character never feels hungry or tired),
---   and ENDURANCE keeps recovering at "AmphEnduranceRestorePerMinute";
--- * at severe withdrawal or worse the crash sets in: the DRUNK stat
---   (0..1) creeps up by "AmphDrunkPerMinute", and HUNGER and THIRST
+--   and ENDURANCE keeps recovering at "AmphEnduranceRestorePerMinute"
+--   (default 0.1 -- tuned to survive sustained sprinting);
+-- * at severe withdrawal or worse the crash sets in: HUNGER and THIRST
 --   climb by "AmphCrashAppetitePerDay" of the full stat scale per game
---   day (default 1.0 = starved and parched within one day);
+--   day (default 1.0 = starved and parched within one day), and the
+--   drug headache + drug fever statuses ACCUMULATE at
+--   "AmphWithdrawalHeadachePerHour" / "AmphWithdrawalFeverPerHour"
+--   progress per game hour (one add per hour per status, on top of
+--   their natural decay);
 -- * while opioid AND amphetamine withdrawal are BOTH active, overall
 --   health takes "CrossWithdrawalHealthLoss" percent per game hour
 --   (÷60 per minute) until death.
@@ -65,6 +68,7 @@ local function minuteTick(player)
     if player == nil then
         return
     end
+    local now = player:getHoursSurvived()
     tickMethHigh(player)
     EM_Dependence_TickCore(player,
         ADDICTION_KEY,
@@ -87,33 +91,40 @@ local function minuteTick(player)
         if unhappiness > 0 then
             stats:set(CharacterStat.UNHAPPINESS, math.min(EM_CONST.STAT_SCALE_MAX_100, stats:get(CharacterStat.UNHAPPINESS) + unhappiness * EM_CONST.STAT_SCALE_MAX_100))
         end
-        -- severe withdrawal or worse: the crash -- drunkenness plus a
-        -- ravenous appetite (hunger and thirst climb a full stat scale
-        -- per game day at the default rate)
+        -- severe withdrawal or worse: the crash -- a ravenous appetite
+        -- (hunger and thirst climb a full stat scale per game day at the
+        -- default rate) plus the body accumulating the drug headache and
+        -- drug fever statuses (one progress add per status per game
+        -- hour, self-clocked off the record's applied time)
         if withdrawal >= EM_AmphWithdrawal_GetSevereLevel() then
-            local drunk = EM_Sandbox_Get("AmphDrunkPerMinute")
-            if drunk > 0 then
-                stats:set(CharacterStat.DRUNK, math.min(EM_CONST.STAT_SCALE_MAX, stats:get(CharacterStat.DRUNK) + drunk))
-            end
             local appetite = EM_Sandbox_Get("AmphCrashAppetitePerDay")
             if appetite > 0 then
                 local bump = appetite / EM_CONST.MINUTES_PER_GAME_DAY
                 stats:set(CharacterStat.HUNGER, math.min(EM_CONST.STAT_SCALE_MAX, stats:get(CharacterStat.HUNGER) + bump))
                 stats:set(CharacterStat.THIRST, math.min(EM_CONST.STAT_SCALE_MAX, stats:get(CharacterStat.THIRST) + bump))
             end
+            local headache = EM_TimedStatus.Get(player, EM_DrugFx_DATA_KEY, nil, "DrugHeadache")
+            if headache == nil or now - headache.applied >= 1.0 then
+                EM_DrugFx_Add(player, "DrugHeadache", { painFloor = EM_DRUG_HEADACHE_PAIN_FLOOR }, EM_Sandbox_Get("AmphWithdrawalHeadachePerHour"))
+            end
+            local fever = EM_TimedStatus.Get(player, EM_DrugFx_DATA_KEY, nil, "DrugFever")
+            if fever == nil or now - fever.applied >= 1.0 then
+                EM_DrugFx_Add(player, "DrugFever", { tempFloor = EM_DRUG_FEVER_TEMPERATURE }, EM_Sandbox_Get("AmphWithdrawalFeverPerHour"))
+            end
         end
     end
 
-    -- mild/moderate withdrawal: the stimulant keeps the body running --
-    -- hunger and sleepiness are suppressed (the defaults outpace the
-    -- vanilla gains: never hungry, never tired) and endurance keeps
-    -- recovering
-    local level = EM_AmphWithdrawal_GetLevel(player)
-    if level == 1 or level == 2 then
+    -- stimulant benefits: ANY withdrawal counts, at least level 1 -- no
+    -- waiting for the level-1 threshold -- and only until it turns
+    -- severe: hunger AND thirst are suppressed, sleepiness suppressed,
+    -- endurance keeps recovering (the default is tuned to survive
+    -- sustained sprinting)
+    if withdrawal > 0 and withdrawal < EM_AmphWithdrawal_GetSevereLevel() then
         local stats = player:getStats()
-        local hungerSuppression = EM_Sandbox_Get("AmphHungerSuppressionPerMinute")
-        if hungerSuppression > 0 then
-            stats:set(CharacterStat.HUNGER, math.max(0.0, stats:get(CharacterStat.HUNGER) - hungerSuppression))
+        local hungerThirst = EM_Sandbox_Get("AmphHungerThirstSuppressionPerMinute")
+        if hungerThirst > 0 then
+            stats:set(CharacterStat.HUNGER, math.max(0.0, stats:get(CharacterStat.HUNGER) - hungerThirst))
+            stats:set(CharacterStat.THIRST, math.max(0.0, stats:get(CharacterStat.THIRST) - hungerThirst))
         end
         local sleepReduction = EM_Sandbox_Get("AmphSleepReductionPerMinute")
         if sleepReduction > 0 then

@@ -22,8 +22,10 @@
 -- status icon and the debuff always agree.
 --
 -- API:
---   EM_DrugFx_Add(player, id, params)  -- add a dose to a status;
+--   EM_DrugFx_Add(player, id, params, gain) -- add a dose to a status;
 --       params: optional plain table copied onto the record
+--       gain: optional per-dose progress override (nil = the
+--       DrugStatusDoseGain sandbox value)
 --   EM_DrugFx_Get(player, id)          -- record or nil (prunes decayed out)
 --   EM_DrugFx_Progress(record, now)    -- effective progress 0..1
 --   EM_DrugFx_GetLevel(player, id)     -- 0 = none, else 1..4
@@ -39,7 +41,7 @@ function EM_DrugFx_Progress(record, now)
 	return EM_TimedStatus.EffectiveProgress(record, now, EM_Sandbox_Get("DrugStatusDecayPerHour"))
 end
 
-function EM_DrugFx_Add(player, id, params)
+function EM_DrugFx_Add(player, id, params, gain)
 	local statuses = EM_TimedStatus.Table(player, DATA_KEY, nil)
 	if statuses == nil then
 		return nil
@@ -48,9 +50,15 @@ function EM_DrugFx_Add(player, id, params)
 	-- decay whatever the previous doses left, then stack this dose on top
 	local previous = statuses[id]
 	local carried = previous ~= nil and EM_DrugFx_Progress(previous, now) or 0.0
+	-- sandbox read at call time (never cached at load); an explicit gain
+	-- overrides it (continuous accumulators like the amphetamine
+	-- withdrawal pass their own per-hour rate)
+	if gain == nil then
+		gain = EM_Sandbox_Get("DrugStatusDoseGain")
+	end
 	local record = {
 		applied = now,
-		progress = math.min(EM_CONST.STAT_SCALE_MAX, carried + EM_Sandbox_Get("DrugStatusDoseGain")),
+		progress = math.min(EM_CONST.STAT_SCALE_MAX, carried + gain),
 	}
 	if params ~= nil then
 		for k, v in pairs(params) do

@@ -8,7 +8,6 @@
 local HEAD_PAIN = 70.0
 local CLEAR_RATIO = 0.65        -- share of woundInfectionLevel cleared per dose
 local TRANSFER_FACTOR = 0.5     -- cleared infection -> wound severity, at half weight
-local FEVER_TEMPERATURE = 38.5  -- DrugFever temperature peak at full progress
 local KIDNEY_HEALTH = 4.0       -- general health taxed per dose
 local NAUSEA = 12.0             -- FOOD_SICKNESS bump (0..100, self-decays)
 
@@ -17,8 +16,8 @@ function TakeSulfadimidine(player)
     EMDrug_HeadPain(player, HEAD_PAIN)
     -- course fever status: DrugEffectSimulation pins the temperature
     -- between 37 and the peak by status level (instant set so it starts)
-    player:getStats():set(CharacterStat.TEMPERATURE, FEVER_TEMPERATURE)
-    EM_DrugFx_Add(player, "DrugFever", { tempFloor = FEVER_TEMPERATURE })
+    player:getStats():set(CharacterStat.TEMPERATURE, EM_DRUG_FEVER_TEMPERATURE)
+    EM_DrugFx_Add(player, "DrugFever", { tempFloor = EM_DRUG_FEVER_TEMPERATURE })
     player:getBodyDamage():ReduceGeneralHealth(KIDNEY_HEALTH)
     EMDrug_AddFoodSickness(player, NAUSEA)
 end
