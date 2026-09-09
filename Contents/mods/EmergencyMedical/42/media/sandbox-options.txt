@@ -6,7 +6,7 @@ option EmergencyMedical.CauterizePain
     default = 35,
     min = 0,
     max = 100,
-    page = EmergencyMedical,
+    page = EmergencyMedicalGeneral,
     translation = EmergencyMedical_CauterizePain,
 }
 
@@ -16,7 +16,7 @@ option EmergencyMedical.CauterizeDamage
     default = 5,
     min = 0,
     max = 50,
-    page = EmergencyMedical,
+    page = EmergencyMedicalGeneral,
     translation = EmergencyMedical_CauterizeDamage,
 }
 
@@ -26,7 +26,7 @@ option EmergencyMedical.ScabDurationDays
     default = 90,
     min = 1,
     max = 3650,
-    page = EmergencyMedical,
+    page = EmergencyMedicalGeneral,
     translation = EmergencyMedical_ScabDurationDays,
 }
 
@@ -36,7 +36,7 @@ option EmergencyMedical.ScabPainFloor
     default = 15,
     min = 0,
     max = 100,
-    page = EmergencyMedical,
+    page = EmergencyMedicalGeneral,
     translation = EmergencyMedical_ScabPainFloor,
 }
 
@@ -46,7 +46,7 @@ option EmergencyMedical.RemoveScabPain
     default = 10,
     min = 0,
     max = 100,
-    page = EmergencyMedical,
+    page = EmergencyMedicalGeneral,
     translation = EmergencyMedical_RemoveScabPain,
 }
 
@@ -56,7 +56,7 @@ option EmergencyMedical.ScabScratchSevere
     default = 18,
     min = 10,
     max = 30,
-    page = EmergencyMedical,
+    page = EmergencyMedicalGeneral,
     translation = EmergencyMedical_ScabScratchSevere,
 }
 
@@ -66,7 +66,7 @@ option EmergencyMedical.ScabScratchModerate
     default = 15,
     min = 10,
     max = 30,
-    page = EmergencyMedical,
+    page = EmergencyMedicalGeneral,
     translation = EmergencyMedical_ScabScratchModerate,
 }
 
@@ -76,7 +76,7 @@ option EmergencyMedical.ScabScratchLight
     default = 8,
     min = 1,
     max = 20,
-    page = EmergencyMedical,
+    page = EmergencyMedicalGeneral,
     translation = EmergencyMedical_ScabScratchLight,
 }
 
@@ -86,7 +86,7 @@ option EmergencyMedical.ScabScratchOld
     default = 3,
     min = 0,
     max = 15,
-    page = EmergencyMedical,
+    page = EmergencyMedicalGeneral,
     translation = EmergencyMedical_ScabScratchOld,
 }
 
@@ -96,7 +96,7 @@ option EmergencyMedical.DigBulletPain
     default = 20,
     min = 0,
     max = 100,
-    page = EmergencyMedical,
+    page = EmergencyMedicalGeneral,
     translation = EmergencyMedical_DigBulletPain,
 }
 
@@ -106,7 +106,7 @@ option EmergencyMedical.DigBulletSeverity
     default = 10,
     min = 0,
     max = 50,
-    page = EmergencyMedical,
+    page = EmergencyMedicalGeneral,
     translation = EmergencyMedical_DigBulletSeverity,
 }
 
@@ -116,7 +116,7 @@ option EmergencyMedical.DigBulletBleeding
     default = 5,
     min = 0,
     max = 50,
-    page = EmergencyMedical,
+    page = EmergencyMedicalGeneral,
     translation = EmergencyMedical_DigBulletBleeding,
 }
 
@@ -126,7 +126,7 @@ option EmergencyMedical.DigBulletInfection
     default = 3,
     min = 0,
     max = 10,
-    page = EmergencyMedical,
+    page = EmergencyMedicalGeneral,
     translation = EmergencyMedical_DigBulletInfection,
 }
 
@@ -136,7 +136,7 @@ option EmergencyMedical.CrudeStitchedDurationDays
     default = 120,
     min = 1,
     max = 3650,
-    page = EmergencyMedical,
+    page = EmergencyMedicalGeneral,
     translation = EmergencyMedical_CrudeStitchedDurationDays,
 }
 
@@ -146,7 +146,7 @@ option EmergencyMedical.CrudeStitchPainBoost
     default = 0.2,
     min = 0.0,
     max = 2.0,
-    page = EmergencyMedical,
+    page = EmergencyMedicalGeneral,
     translation = EmergencyMedical_CrudeStitchPainBoost,
 }
 
@@ -156,7 +156,7 @@ option EmergencyMedical.RemoveCrudeStitchPain
     default = 100,
     min = 0,
     max = 100,
-    page = EmergencyMedical,
+    page = EmergencyMedicalGeneral,
     translation = EmergencyMedical_RemoveCrudeStitchPain,
 }
 
@@ -166,7 +166,7 @@ option EmergencyMedical.CrudeStitchReopenSevere
     default = 18,
     min = 5,
     max = 30,
-    page = EmergencyMedical,
+    page = EmergencyMedicalGeneral,
     translation = EmergencyMedical_CrudeStitchReopenSevere,
 }
 
@@ -176,7 +176,7 @@ option EmergencyMedical.CrudeStitchReopenModerate
     default = 15,
     min = 5,
     max = 30,
-    page = EmergencyMedical,
+    page = EmergencyMedicalGeneral,
     translation = EmergencyMedical_CrudeStitchReopenModerate,
 }
 
@@ -186,7 +186,7 @@ option EmergencyMedical.CrudeStitchReopenLight
     default = 8,
     min = 1,
     max = 20,
-    page = EmergencyMedical,
+    page = EmergencyMedicalGeneral,
     translation = EmergencyMedical_CrudeStitchReopenLight,
 }
 
@@ -196,7 +196,7 @@ option EmergencyMedical.CrudeStitchReopenOld
     default = 3,
     min = 0,
     max = 15,
-    page = EmergencyMedical,
+    page = EmergencyMedicalGeneral,
     translation = EmergencyMedical_CrudeStitchReopenOld,
 }
 
@@ -206,7 +206,7 @@ option EmergencyMedical.EmergencyFixDurationDays
     default = 365,
     min = 1,
     max = 3650,
-    page = EmergencyMedical,
+    page = EmergencyMedicalGeneral,
     translation = EmergencyMedical_EmergencyFixDurationDays,
 }
 
@@ -216,7 +216,7 @@ option EmergencyMedical.EmergencyFixPainBoost
     default = 0.45,
     min = 0.0,
     max = 2.0,
-    page = EmergencyMedical,
+    page = EmergencyMedicalGeneral,
     translation = EmergencyMedical_EmergencyFixPainBoost,
 }
 
@@ -226,8 +226,18 @@ option EmergencyMedical.EmergencyFixWorsenPerDay
     default = 0.01,
     min = 0.0,
     max = 1.0,
-    page = EmergencyMedical,
+    page = EmergencyMedicalGeneral,
     translation = EmergencyMedical_EmergencyFixWorsenPerDay,
+}
+
+option EmergencyMedical.HazeMaxAlpha
+{
+    type = double,
+    default = 0.87,
+    min = 0.0,
+    max = 1.0,
+    page = EmergencyMedicalGeneral,
+    translation = EmergencyMedical_HazeMaxAlpha,
 }
 
 option EmergencyMedical.MorphineAddictionGain
@@ -236,7 +246,7 @@ option EmergencyMedical.MorphineAddictionGain
     default = 0.5,
     min = 0.0,
     max = 1.0,
-    page = EmergencyMedical,
+    page = EmergencyMedicalDrugs,
     translation = EmergencyMedical_MorphineAddictionGain,
 }
 
@@ -246,7 +256,7 @@ option EmergencyMedical.InjectionRelief
     default = 0.35,
     min = 0.0,
     max = 1.0,
-    page = EmergencyMedical,
+    page = EmergencyMedicalDrugs,
     translation = EmergencyMedical_InjectionRelief,
 }
 
@@ -256,7 +266,7 @@ option EmergencyMedical.FentanylAddiction
     default = 1.0,
     min = 0.0,
     max = 1.0,
-    page = EmergencyMedical,
+    page = EmergencyMedicalDrugs,
     translation = EmergencyMedical_FentanylAddiction,
 }
 
@@ -266,7 +276,7 @@ option EmergencyMedical.FentanylRelief
     default = 1.0,
     min = 0.0,
     max = 1.0,
-    page = EmergencyMedical,
+    page = EmergencyMedicalDrugs,
     translation = EmergencyMedical_FentanylRelief,
 }
 
@@ -276,7 +286,7 @@ option EmergencyMedical.OxycontinAddiction
     default = 0.15,
     min = 0.0,
     max = 1.0,
-    page = EmergencyMedical,
+    page = EmergencyMedicalDrugs,
     translation = EmergencyMedical_OxycontinAddiction,
 }
 
@@ -286,7 +296,7 @@ option EmergencyMedical.OxycontinRelief
     default = 0.2,
     min = 0.0,
     max = 1.0,
-    page = EmergencyMedical,
+    page = EmergencyMedicalDrugs,
     translation = EmergencyMedical_OxycontinRelief,
 }
 
@@ -296,7 +306,7 @@ option EmergencyMedical.NaloxoneAddictionReduce
     default = 0.25,
     min = 0.0,
     max = 1.0,
-    page = EmergencyMedical,
+    page = EmergencyMedicalDrugs,
     translation = EmergencyMedical_NaloxoneAddictionReduce,
 }
 
@@ -306,7 +316,7 @@ option EmergencyMedical.NaloxoneHungerThirst
     default = 0.25,
     min = 0.0,
     max = 1.0,
-    page = EmergencyMedical,
+    page = EmergencyMedicalDrugs,
     translation = EmergencyMedical_NaloxoneHungerThirst,
 }
 
@@ -316,7 +326,7 @@ option EmergencyMedical.DrugStatusDoseGain
     default = 0.2,
     min = 0.0,
     max = 1.0,
-    page = EmergencyMedical,
+    page = EmergencyMedicalDrugs,
     translation = EmergencyMedical_DrugStatusDoseGain,
 }
 
@@ -326,7 +336,7 @@ option EmergencyMedical.DrugStatusDecayPerHour
     default = 0.05,
     min = 0.0,
     max = 1.0,
-    page = EmergencyMedical,
+    page = EmergencyMedicalDrugs,
     translation = EmergencyMedical_DrugStatusDecayPerHour,
 }
 
@@ -336,7 +346,7 @@ option EmergencyMedical.DrugStatusDebuffRate
     default = 1.0,
     min = 0.0,
     max = 1.0,
-    page = EmergencyMedical,
+    page = EmergencyMedicalDrugs,
     translation = EmergencyMedical_DrugStatusDebuffRate,
 }
 
@@ -346,7 +356,7 @@ option EmergencyMedical.SomnolenceFatigueFloor
     default = 0.8,
     min = 0.0,
     max = 1.0,
-    page = EmergencyMedical,
+    page = EmergencyMedicalDrugs,
     translation = EmergencyMedical_SomnolenceFatigueFloor,
 }
 
@@ -356,7 +366,7 @@ option EmergencyMedical.WithdrawalClimbMinutes
     default = 180,
     min = 30,
     max = 720,
-    page = EmergencyMedical,
+    page = EmergencyMedicalDrugs,
     translation = EmergencyMedical_WithdrawalClimbMinutes,
 }
 
@@ -366,7 +376,7 @@ option EmergencyMedical.WithdrawalFallRate
     default = 0.288,
     min = 0.0,
     max = 1.0,
-    page = EmergencyMedical,
+    page = EmergencyMedicalDrugs,
     translation = EmergencyMedical_WithdrawalFallRate,
 }
 
@@ -376,7 +386,7 @@ option EmergencyMedical.AddictionDecayRate
     default = 0.72,
     min = 0.0,
     max = 1.0,
-    page = EmergencyMedical,
+    page = EmergencyMedicalDrugs,
     translation = EmergencyMedical_AddictionDecayRate,
 }
 
@@ -386,7 +396,7 @@ option EmergencyMedical.OpioidWithdrawalSomnolencePerHour
     default = 0.15,
     min = 0.0,
     max = 1.0,
-    page = EmergencyMedical,
+    page = EmergencyMedicalDrugs,
     translation = EmergencyMedical_OpioidWithdrawalSomnolencePerHour,
 }
 
@@ -396,7 +406,7 @@ option EmergencyMedical.AmphWithdrawalClimbMinutes
     default = 1440,
     min = 60,
     max = 2880,
-    page = EmergencyMedical,
+    page = EmergencyMedicalDrugs,
     translation = EmergencyMedical_AmphWithdrawalClimbMinutes,
 }
 
@@ -406,7 +416,7 @@ option EmergencyMedical.AmphDecayRate
     default = 0.36,
     min = 0.0,
     max = 1.0,
-    page = EmergencyMedical,
+    page = EmergencyMedicalDrugs,
     translation = EmergencyMedical_AmphDecayRate,
 }
 
@@ -416,7 +426,7 @@ option EmergencyMedical.AmphPanicPerMinute
     default = 0.01,
     min = 0.0,
     max = 1.0,
-    page = EmergencyMedical,
+    page = EmergencyMedicalDrugs,
     translation = EmergencyMedical_AmphPanicPerMinute,
 }
 
@@ -426,7 +436,7 @@ option EmergencyMedical.AmphUnhappinessPerMinute
     default = 0.01,
     min = 0.0,
     max = 1.0,
-    page = EmergencyMedical,
+    page = EmergencyMedicalDrugs,
     translation = EmergencyMedical_AmphUnhappinessPerMinute,
 }
 
@@ -436,7 +446,7 @@ option EmergencyMedical.AmphSleepReductionPerMinute
     default = 0.01,
     min = 0.0,
     max = 1.0,
-    page = EmergencyMedical,
+    page = EmergencyMedicalDrugs,
     translation = EmergencyMedical_AmphSleepReductionPerMinute,
 }
 
@@ -446,7 +456,7 @@ option EmergencyMedical.AmphHungerThirstSuppressionPerMinute
     default = 0.01,
     min = 0.0,
     max = 1.0,
-    page = EmergencyMedical,
+    page = EmergencyMedicalDrugs,
     translation = EmergencyMedical_AmphHungerThirstSuppressionPerMinute,
 }
 
@@ -456,7 +466,7 @@ option EmergencyMedical.AmphEnduranceRestorePerMinute
     default = 0.1,
     min = 0.0,
     max = 1.0,
-    page = EmergencyMedical,
+    page = EmergencyMedicalDrugs,
     translation = EmergencyMedical_AmphEnduranceRestorePerMinute,
 }
 
@@ -466,7 +476,7 @@ option EmergencyMedical.AmphCrashAppetitePerDay
     default = 1.0,
     min = 0.0,
     max = 1.0,
-    page = EmergencyMedical,
+    page = EmergencyMedicalDrugs,
     translation = EmergencyMedical_AmphCrashAppetitePerDay,
 }
 
@@ -476,7 +486,7 @@ option EmergencyMedical.AmphWithdrawalHeadachePerHour
     default = 0.3,
     min = 0.0,
     max = 1.0,
-    page = EmergencyMedical,
+    page = EmergencyMedicalDrugs,
     translation = EmergencyMedical_AmphWithdrawalHeadachePerHour,
 }
 
@@ -486,7 +496,7 @@ option EmergencyMedical.AmphWithdrawalFeverPerHour
     default = 0.3,
     min = 0.0,
     max = 1.0,
-    page = EmergencyMedical,
+    page = EmergencyMedicalDrugs,
     translation = EmergencyMedical_AmphWithdrawalFeverPerHour,
 }
 
@@ -496,7 +506,7 @@ option EmergencyMedical.CrossWithdrawalHealthLoss
     default = 0.1,
     min = 0.0,
     max = 1.0,
-    page = EmergencyMedical,
+    page = EmergencyMedicalDrugs,
     translation = EmergencyMedical_CrossWithdrawalHealthLoss,
 }
 
@@ -506,7 +516,7 @@ option EmergencyMedical.SufentanilPatchDays
     default = 3,
     min = 1,
     max = 30,
-    page = EmergencyMedical,
+    page = EmergencyMedicalDrugs,
     translation = EmergencyMedical_SufentanilPatchDays,
 }
 
@@ -516,7 +526,7 @@ option EmergencyMedical.SufentanilPainkillerPerMinute
     default = 0.05,
     min = 0.0,
     max = 1.0,
-    page = EmergencyMedical,
+    page = EmergencyMedicalDrugs,
     translation = EmergencyMedical_SufentanilPainkillerPerMinute,
 }
 
@@ -526,7 +536,7 @@ option EmergencyMedical.SufentanilWithdrawalRelief
     default = 0.05,
     min = 0.0,
     max = 1.0,
-    page = EmergencyMedical,
+    page = EmergencyMedicalDrugs,
     translation = EmergencyMedical_SufentanilWithdrawalRelief,
 }
 
@@ -536,7 +546,7 @@ option EmergencyMedical.SufentanilAddictionPerMinute
     default = 0.01,
     min = 0.0,
     max = 1.0,
-    page = EmergencyMedical,
+    page = EmergencyMedicalDrugs,
     translation = EmergencyMedical_SufentanilAddictionPerMinute,
 }
 
@@ -544,16 +554,106 @@ option EmergencyMedical.SufentanilClearMind
 {
     type = boolean,
     default = true,
-    page = EmergencyMedical,
+    page = EmergencyMedicalDrugs,
     translation = EmergencyMedical_SufentanilClearMind,
 }
 
-option EmergencyMedical.HazeMaxAlpha
+option EmergencyMedical.MorphineSpawnWeight
 {
-    type = double,
-    default = 0.87,
-    min = 0.0,
-    max = 1.0,
-    page = EmergencyMedical,
-    translation = EmergencyMedical_HazeMaxAlpha,
+    type = integer,
+    default = 8,
+    min = 0,
+    max = 50,
+    page = EmergencyMedicalLoot,
+    translation = EmergencyMedical_MorphineSpawnWeight,
+}
+
+option EmergencyMedical.NaloxoneSpawnWeight
+{
+    type = integer,
+    default = 12,
+    min = 0,
+    max = 50,
+    page = EmergencyMedicalLoot,
+    translation = EmergencyMedical_NaloxoneSpawnWeight,
+}
+
+option EmergencyMedical.FentanylSpawnWeight
+{
+    type = integer,
+    default = 8,
+    min = 0,
+    max = 50,
+    page = EmergencyMedicalLoot,
+    translation = EmergencyMedical_FentanylSpawnWeight,
+}
+
+option EmergencyMedical.OxycontinSpawnWeight
+{
+    type = integer,
+    default = 15,
+    min = 0,
+    max = 50,
+    page = EmergencyMedicalLoot,
+    translation = EmergencyMedical_OxycontinSpawnWeight,
+}
+
+option EmergencyMedical.SufentanilSpawnWeight
+{
+    type = integer,
+    default = 8,
+    min = 0,
+    max = 50,
+    page = EmergencyMedicalLoot,
+    translation = EmergencyMedical_SufentanilSpawnWeight,
+}
+
+option EmergencyMedical.MethamphetamineSpawnWeight
+{
+    type = integer,
+    default = 8,
+    min = 0,
+    max = 50,
+    page = EmergencyMedicalLoot,
+    translation = EmergencyMedical_MethamphetamineSpawnWeight,
+}
+
+option EmergencyMedical.TranexamicAcidSpawnWeight
+{
+    type = integer,
+    default = 10,
+    min = 0,
+    max = 50,
+    page = EmergencyMedicalLoot,
+    translation = EmergencyMedical_TranexamicAcidSpawnWeight,
+}
+
+option EmergencyMedical.SulfadimidineSpawnWeight
+{
+    type = integer,
+    default = 8,
+    min = 0,
+    max = 50,
+    page = EmergencyMedicalLoot,
+    translation = EmergencyMedical_SulfadimidineSpawnWeight,
+}
+
+option EmergencyMedical.DexmedetomidineSpawnWeight
+{
+    type = integer,
+    default = 8,
+    min = 0,
+    max = 50,
+    page = EmergencyMedicalLoot,
+    translation = EmergencyMedical_DexmedetomidineSpawnWeight,
+}
+
+option EmergencyMedical.DextromethorphanSpawnWeight
+{
+    type = integer,
+    default = 12,
+    min = 0,
+    max = 50,
+    page = EmergencyMedicalLoot,
+    translation = EmergencyMedical_DextromethorphanSpawnWeight,
 }

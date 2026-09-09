@@ -1,8 +1,9 @@
 -- EmergencyMedical: runtime access to the mod's sandbox options
--- (defined in media/sandbox-options.txt, shown on the "急诊医疗" page of
--- the sandbox settings). Consumers read values AT RUNTIME through
--- EM_Sandbox_Get -- never cache them at file load time, the sandbox
--- values are only final once a game is loaded.
+-- (defined in media/sandbox-options.txt, three tabs: 应急医疗-通用
+-- EmergencyMedicalGeneral / 应急医疗-药物 EmergencyMedicalDrugs /
+-- 应急医疗-刷新 EmergencyMedicalLoot). Consumers read values AT RUNTIME
+-- through EM_Sandbox_Get -- never cache them at file load time, the
+-- sandbox values are only final once a game is loaded.
 --
 -- The mirrored defaults below MUST match sandbox-options.txt; they kick
 -- in whenever the option table is absent (main menu lua, or a save made
@@ -70,6 +71,16 @@ local DEFAULTS = {
 	DrugStatusDecayPerHour = 0.05,
 	DrugStatusDebuffRate = 1.0,
 	SomnolenceFatigueFloor = 0.8,
+	MorphineSpawnWeight = 8,
+	NaloxoneSpawnWeight = 12,
+	FentanylSpawnWeight = 8,
+	OxycontinSpawnWeight = 15,
+	SufentanilSpawnWeight = 8,
+	MethamphetamineSpawnWeight = 8,
+	TranexamicAcidSpawnWeight = 10,
+	SulfadimidineSpawnWeight = 8,
+	DexmedetomidineSpawnWeight = 8,
+	DextromethorphanSpawnWeight = 12,
 }
 
 function EM_Sandbox_Get(name)
