@@ -1,8 +1,8 @@
-# Emergency Medical
+# Emergency Medicine
 
 A medical and drug expansion for Project Zomboid (Build 42). It adds field-expedient trauma care, nine real-world drugs, and a full addiction and withdrawal simulation on top of the vanilla health system.
 
-Every gameplay value is configurable through the sandbox settings (page: Emergency Medical).
+Every gameplay value is configurable through the sandbox settings (tabs: Emergency Medicine - General / Drugs / Spawns).
 
 ## New items
 

@@ -1,2 +1,2 @@
-name=Emergency Medical
+name=Emergency Medicine
 preview=preview.png

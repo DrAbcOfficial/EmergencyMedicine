@@ -1,0 +1,23 @@
+{
+    "EmergencyMedicine.morphine": "吗啡",
+    "EmergencyMedicine.naloxone": "盐酸纳洛酮",
+    "EmergencyMedicine.fentanyl": "芬太尼",
+    "EmergencyMedicine.oxycontin": "奥施康定",
+    "EmergencyMedicine.sufentanil": "舒芬太尼",
+    "EmergencyMedicine.methamphetamine": "甲基苯丙胺",
+    "EmergencyMedicine.tranexamicacid": "氨甲环酸",
+    "EmergencyMedicine.sulfadimidine": "磺胺二甲嘧啶",
+    "EmergencyMedicine.dexmedetomidine": "盐酸右美托咪定",
+    "EmergencyMedicine.dextromethorphan": "右美沙芬",
+    "EmergencyMedicine.GrassBandage": "草绷带",
+    "EmergencyMedicine.BookSplint": "书本夹板",
+    "EmergencyMedicine.TemporarySplint": "应急夹板",
+    "EmergencyMedicine.AutoInjectorWatchBlack": "自动注射手表（黑）",
+    "EmergencyMedicine.AutoInjectorWatchRed": "自动注射手表（红）",
+    "EmergencyMedicine.AutoInjectorWatchMetal": "自动注射手表（金属风）",
+    "EmergencyMedicine.AutoInjectorWatchLuxury": "自动注射手表（豪华）",
+    "EmergencyMedicine.AutoInjectorWatchBlackLeft": "自动注射手表（黑）",
+    "EmergencyMedicine.AutoInjectorWatchRedLeft": "自动注射手表（红）",
+    "EmergencyMedicine.AutoInjectorWatchMetalLeft": "自动注射手表（金属风）",
+    "EmergencyMedicine.AutoInjectorWatchLuxuryLeft": "自动注射手表（豪华）"
+}

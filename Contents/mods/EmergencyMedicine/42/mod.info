@@ -1,0 +1,8 @@
+name=应急医疗
+id=EmergencyMedicine
+author=Dr.Abc
+modversion=1.0.0
+versionMin=42.20
+description=emergency medicine: drugs with addiction and withdrawal, crude wound treatments, and an auto-injector watch! \n应急医疗：十种药物与成瘾戒断模拟，灼烧/抠弹/粗糙缝合/书本夹板等伤口处置，还有自动注射手表！
+poster=poster.png
+icon=icon.png

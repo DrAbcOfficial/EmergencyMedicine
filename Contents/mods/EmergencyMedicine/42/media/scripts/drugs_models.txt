@@ -1,0 +1,62 @@
+	module EmergencyMedicine
+	{
+	    model MorphineAmpoule
+	    {
+	        mesh = WorldItems/Ampoule,
+	        texture = WorldItems/MorphineAmpoule,
+	    }
+	    model NaloxoneAmpoule
+	    {
+	        mesh = WorldItems/Ampoule,
+	        texture = WorldItems/NaloxoneAmpoule,
+	    }
+	    model FentanylAmpoule
+	    {
+	        mesh = WorldItems/Ampoule,
+	        texture = WorldItems/FentanylAmpoule,
+	    }
+	    model OxyContinBottle
+	    {
+	        mesh = WorldItems/PillsBottle,
+	        texture = WorldItems/OxyContinBottle,
+	        scale = 0.01,
+	    }
+	    model SufentanilBox
+	    {
+	        mesh = WorldItems/MedicineBox,
+	        texture = WorldItems/SufentanilBox,
+	    }
+	    model MethamphetamineBottle
+	    {
+	        mesh = WorldItems/PillsBottle,
+	        texture = WorldItems/MethamphetamineBottle,
+	        scale = 0.01,
+	    }
+	    model TranexamicAcidBox
+	    {
+	        mesh = WorldItems/MedicineBox,
+	        texture = WorldItems/TranexamicAcidBox,
+	    }
+	    model SulfadimidineBox
+	    {
+	        mesh = WorldItems/MedicineBox,
+	        texture = WorldItems/SulfadimidineBox,
+	    }
+	    model DexmedetomidineAmpoule
+	    {
+	        mesh = WorldItems/Ampoule,
+	        texture = WorldItems/DexmedetomidineAmpoule,
+	    }
+	    model DextromethorphanBottle
+	    {
+	        mesh = WorldItems/PillsBottle,
+	        texture = WorldItems/DextromethorphanBottle,
+	        scale = 0.01,
+	    }
+	    model GrassBandage
+	    {
+	        mesh = WorldItems/Bandage,
+	        texture = WorldItems/GrassBandages,
+	        scale = 0.15,
+	    }
+	}

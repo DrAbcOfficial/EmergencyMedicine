@@ -1,0 +1,659 @@
+VERSION = 1,
+
+option EmergencyMedicine.CauterizePain
+{
+    type = integer,
+    default = 35,
+    min = 0,
+    max = 100,
+    page = EmergencyMedicineGeneral,
+    translation = EmergencyMedicine_CauterizePain,
+}
+
+option EmergencyMedicine.CauterizeDamage
+{
+    type = integer,
+    default = 5,
+    min = 0,
+    max = 50,
+    page = EmergencyMedicineGeneral,
+    translation = EmergencyMedicine_CauterizeDamage,
+}
+
+option EmergencyMedicine.ScabDurationDays
+{
+    type = integer,
+    default = 90,
+    min = 1,
+    max = 3650,
+    page = EmergencyMedicineGeneral,
+    translation = EmergencyMedicine_ScabDurationDays,
+}
+
+option EmergencyMedicine.ScabPainFloor
+{
+    type = integer,
+    default = 15,
+    min = 0,
+    max = 100,
+    page = EmergencyMedicineGeneral,
+    translation = EmergencyMedicine_ScabPainFloor,
+}
+
+option EmergencyMedicine.RemoveScabPain
+{
+    type = integer,
+    default = 10,
+    min = 0,
+    max = 100,
+    page = EmergencyMedicineGeneral,
+    translation = EmergencyMedicine_RemoveScabPain,
+}
+
+option EmergencyMedicine.ScabScratchSevere
+{
+    type = integer,
+    default = 18,
+    min = 10,
+    max = 30,
+    page = EmergencyMedicineGeneral,
+    translation = EmergencyMedicine_ScabScratchSevere,
+}
+
+option EmergencyMedicine.ScabScratchModerate
+{
+    type = integer,
+    default = 15,
+    min = 10,
+    max = 30,
+    page = EmergencyMedicineGeneral,
+    translation = EmergencyMedicine_ScabScratchModerate,
+}
+
+option EmergencyMedicine.ScabScratchLight
+{
+    type = integer,
+    default = 8,
+    min = 1,
+    max = 20,
+    page = EmergencyMedicineGeneral,
+    translation = EmergencyMedicine_ScabScratchLight,
+}
+
+option EmergencyMedicine.ScabScratchOld
+{
+    type = integer,
+    default = 3,
+    min = 0,
+    max = 15,
+    page = EmergencyMedicineGeneral,
+    translation = EmergencyMedicine_ScabScratchOld,
+}
+
+option EmergencyMedicine.DigBulletPain
+{
+    type = integer,
+    default = 20,
+    min = 0,
+    max = 100,
+    page = EmergencyMedicineGeneral,
+    translation = EmergencyMedicine_DigBulletPain,
+}
+
+option EmergencyMedicine.DigBulletSeverity
+{
+    type = integer,
+    default = 10,
+    min = 0,
+    max = 50,
+    page = EmergencyMedicineGeneral,
+    translation = EmergencyMedicine_DigBulletSeverity,
+}
+
+option EmergencyMedicine.DigBulletBleeding
+{
+    type = integer,
+    default = 5,
+    min = 0,
+    max = 50,
+    page = EmergencyMedicineGeneral,
+    translation = EmergencyMedicine_DigBulletBleeding,
+}
+
+option EmergencyMedicine.DigBulletInfection
+{
+    type = integer,
+    default = 3,
+    min = 0,
+    max = 10,
+    page = EmergencyMedicineGeneral,
+    translation = EmergencyMedicine_DigBulletInfection,
+}
+
+option EmergencyMedicine.CrudeStitchedDurationDays
+{
+    type = integer,
+    default = 120,
+    min = 1,
+    max = 3650,
+    page = EmergencyMedicineGeneral,
+    translation = EmergencyMedicine_CrudeStitchedDurationDays,
+}
+
+option EmergencyMedicine.CrudeStitchPainBoost
+{
+    type = double,
+    default = 0.2,
+    min = 0.0,
+    max = 2.0,
+    page = EmergencyMedicineGeneral,
+    translation = EmergencyMedicine_CrudeStitchPainBoost,
+}
+
+option EmergencyMedicine.RemoveCrudeStitchPain
+{
+    type = integer,
+    default = 100,
+    min = 0,
+    max = 100,
+    page = EmergencyMedicineGeneral,
+    translation = EmergencyMedicine_RemoveCrudeStitchPain,
+}
+
+option EmergencyMedicine.CrudeStitchReopenSevere
+{
+    type = integer,
+    default = 18,
+    min = 5,
+    max = 30,
+    page = EmergencyMedicineGeneral,
+    translation = EmergencyMedicine_CrudeStitchReopenSevere,
+}
+
+option EmergencyMedicine.CrudeStitchReopenModerate
+{
+    type = integer,
+    default = 15,
+    min = 5,
+    max = 30,
+    page = EmergencyMedicineGeneral,
+    translation = EmergencyMedicine_CrudeStitchReopenModerate,
+}
+
+option EmergencyMedicine.CrudeStitchReopenLight
+{
+    type = integer,
+    default = 8,
+    min = 1,
+    max = 20,
+    page = EmergencyMedicineGeneral,
+    translation = EmergencyMedicine_CrudeStitchReopenLight,
+}
+
+option EmergencyMedicine.CrudeStitchReopenOld
+{
+    type = integer,
+    default = 3,
+    min = 0,
+    max = 15,
+    page = EmergencyMedicineGeneral,
+    translation = EmergencyMedicine_CrudeStitchReopenOld,
+}
+
+option EmergencyMedicine.EmergencyFixDurationDays
+{
+    type = integer,
+    default = 365,
+    min = 1,
+    max = 3650,
+    page = EmergencyMedicineGeneral,
+    translation = EmergencyMedicine_EmergencyFixDurationDays,
+}
+
+option EmergencyMedicine.EmergencyFixPainBoost
+{
+    type = double,
+    default = 0.45,
+    min = 0.0,
+    max = 2.0,
+    page = EmergencyMedicineGeneral,
+    translation = EmergencyMedicine_EmergencyFixPainBoost,
+}
+
+option EmergencyMedicine.EmergencyFixWorsenPerDay
+{
+    type = double,
+    default = 0.01,
+    min = 0.0,
+    max = 1.0,
+    page = EmergencyMedicineGeneral,
+    translation = EmergencyMedicine_EmergencyFixWorsenPerDay,
+}
+
+option EmergencyMedicine.HazeMaxAlpha
+{
+    type = double,
+    default = 0.87,
+    min = 0.0,
+    max = 1.0,
+    page = EmergencyMedicineGeneral,
+    translation = EmergencyMedicine_HazeMaxAlpha,
+}
+
+option EmergencyMedicine.MorphineAddictionGain
+{
+    type = double,
+    default = 0.5,
+    min = 0.0,
+    max = 1.0,
+    page = EmergencyMedicineDrugs,
+    translation = EmergencyMedicine_MorphineAddictionGain,
+}
+
+option EmergencyMedicine.InjectionRelief
+{
+    type = double,
+    default = 0.35,
+    min = 0.0,
+    max = 1.0,
+    page = EmergencyMedicineDrugs,
+    translation = EmergencyMedicine_InjectionRelief,
+}
+
+option EmergencyMedicine.FentanylAddiction
+{
+    type = double,
+    default = 1.0,
+    min = 0.0,
+    max = 1.0,
+    page = EmergencyMedicineDrugs,
+    translation = EmergencyMedicine_FentanylAddiction,
+}
+
+option EmergencyMedicine.FentanylRelief
+{
+    type = double,
+    default = 1.0,
+    min = 0.0,
+    max = 1.0,
+    page = EmergencyMedicineDrugs,
+    translation = EmergencyMedicine_FentanylRelief,
+}
+
+option EmergencyMedicine.OxycontinAddiction
+{
+    type = double,
+    default = 0.15,
+    min = 0.0,
+    max = 1.0,
+    page = EmergencyMedicineDrugs,
+    translation = EmergencyMedicine_OxycontinAddiction,
+}
+
+option EmergencyMedicine.OxycontinRelief
+{
+    type = double,
+    default = 0.2,
+    min = 0.0,
+    max = 1.0,
+    page = EmergencyMedicineDrugs,
+    translation = EmergencyMedicine_OxycontinRelief,
+}
+
+option EmergencyMedicine.NaloxoneAddictionReduce
+{
+    type = double,
+    default = 0.25,
+    min = 0.0,
+    max = 1.0,
+    page = EmergencyMedicineDrugs,
+    translation = EmergencyMedicine_NaloxoneAddictionReduce,
+}
+
+option EmergencyMedicine.NaloxoneHungerThirst
+{
+    type = double,
+    default = 0.25,
+    min = 0.0,
+    max = 1.0,
+    page = EmergencyMedicineDrugs,
+    translation = EmergencyMedicine_NaloxoneHungerThirst,
+}
+
+option EmergencyMedicine.DrugStatusDoseGain
+{
+    type = double,
+    default = 0.2,
+    min = 0.0,
+    max = 1.0,
+    page = EmergencyMedicineDrugs,
+    translation = EmergencyMedicine_DrugStatusDoseGain,
+}
+
+option EmergencyMedicine.DrugStatusDecayPerHour
+{
+    type = double,
+    default = 0.05,
+    min = 0.0,
+    max = 1.0,
+    page = EmergencyMedicineDrugs,
+    translation = EmergencyMedicine_DrugStatusDecayPerHour,
+}
+
+option EmergencyMedicine.DrugStatusDebuffRate
+{
+    type = double,
+    default = 1.0,
+    min = 0.0,
+    max = 1.0,
+    page = EmergencyMedicineDrugs,
+    translation = EmergencyMedicine_DrugStatusDebuffRate,
+}
+
+option EmergencyMedicine.SomnolenceFatigueFloor
+{
+    type = double,
+    default = 0.8,
+    min = 0.0,
+    max = 1.0,
+    page = EmergencyMedicineDrugs,
+    translation = EmergencyMedicine_SomnolenceFatigueFloor,
+}
+
+option EmergencyMedicine.WithdrawalClimbMinutes
+{
+    type = integer,
+    default = 180,
+    min = 30,
+    max = 720,
+    page = EmergencyMedicineDrugs,
+    translation = EmergencyMedicine_WithdrawalClimbMinutes,
+}
+
+option EmergencyMedicine.WithdrawalFallRate
+{
+    type = double,
+    default = 0.288,
+    min = 0.0,
+    max = 1.0,
+    page = EmergencyMedicineDrugs,
+    translation = EmergencyMedicine_WithdrawalFallRate,
+}
+
+option EmergencyMedicine.AddictionDecayRate
+{
+    type = double,
+    default = 0.72,
+    min = 0.0,
+    max = 1.0,
+    page = EmergencyMedicineDrugs,
+    translation = EmergencyMedicine_AddictionDecayRate,
+}
+
+option EmergencyMedicine.OpioidWithdrawalSomnolencePerHour
+{
+    type = double,
+    default = 0.15,
+    min = 0.0,
+    max = 1.0,
+    page = EmergencyMedicineDrugs,
+    translation = EmergencyMedicine_OpioidWithdrawalSomnolencePerHour,
+}
+
+option EmergencyMedicine.AmphWithdrawalClimbMinutes
+{
+    type = integer,
+    default = 1440,
+    min = 60,
+    max = 2880,
+    page = EmergencyMedicineDrugs,
+    translation = EmergencyMedicine_AmphWithdrawalClimbMinutes,
+}
+
+option EmergencyMedicine.AmphDecayRate
+{
+    type = double,
+    default = 0.36,
+    min = 0.0,
+    max = 1.0,
+    page = EmergencyMedicineDrugs,
+    translation = EmergencyMedicine_AmphDecayRate,
+}
+
+option EmergencyMedicine.AmphPanicPerMinute
+{
+    type = double,
+    default = 0.01,
+    min = 0.0,
+    max = 1.0,
+    page = EmergencyMedicineDrugs,
+    translation = EmergencyMedicine_AmphPanicPerMinute,
+}
+
+option EmergencyMedicine.AmphUnhappinessPerMinute
+{
+    type = double,
+    default = 0.01,
+    min = 0.0,
+    max = 1.0,
+    page = EmergencyMedicineDrugs,
+    translation = EmergencyMedicine_AmphUnhappinessPerMinute,
+}
+
+option EmergencyMedicine.AmphSleepReductionPerMinute
+{
+    type = double,
+    default = 0.01,
+    min = 0.0,
+    max = 1.0,
+    page = EmergencyMedicineDrugs,
+    translation = EmergencyMedicine_AmphSleepReductionPerMinute,
+}
+
+option EmergencyMedicine.AmphHungerThirstSuppressionPerMinute
+{
+    type = double,
+    default = 0.01,
+    min = 0.0,
+    max = 1.0,
+    page = EmergencyMedicineDrugs,
+    translation = EmergencyMedicine_AmphHungerThirstSuppressionPerMinute,
+}
+
+option EmergencyMedicine.AmphEnduranceRestorePerMinute
+{
+    type = double,
+    default = 0.1,
+    min = 0.0,
+    max = 1.0,
+    page = EmergencyMedicineDrugs,
+    translation = EmergencyMedicine_AmphEnduranceRestorePerMinute,
+}
+
+option EmergencyMedicine.AmphCrashAppetitePerDay
+{
+    type = double,
+    default = 1.0,
+    min = 0.0,
+    max = 1.0,
+    page = EmergencyMedicineDrugs,
+    translation = EmergencyMedicine_AmphCrashAppetitePerDay,
+}
+
+option EmergencyMedicine.AmphWithdrawalHeadachePerHour
+{
+    type = double,
+    default = 0.3,
+    min = 0.0,
+    max = 1.0,
+    page = EmergencyMedicineDrugs,
+    translation = EmergencyMedicine_AmphWithdrawalHeadachePerHour,
+}
+
+option EmergencyMedicine.AmphWithdrawalFeverPerHour
+{
+    type = double,
+    default = 0.3,
+    min = 0.0,
+    max = 1.0,
+    page = EmergencyMedicineDrugs,
+    translation = EmergencyMedicine_AmphWithdrawalFeverPerHour,
+}
+
+option EmergencyMedicine.CrossWithdrawalHealthLoss
+{
+    type = double,
+    default = 0.1,
+    min = 0.0,
+    max = 1.0,
+    page = EmergencyMedicineDrugs,
+    translation = EmergencyMedicine_CrossWithdrawalHealthLoss,
+}
+
+option EmergencyMedicine.SufentanilPatchDays
+{
+    type = integer,
+    default = 3,
+    min = 1,
+    max = 30,
+    page = EmergencyMedicineDrugs,
+    translation = EmergencyMedicine_SufentanilPatchDays,
+}
+
+option EmergencyMedicine.SufentanilPainkillerPerMinute
+{
+    type = double,
+    default = 0.05,
+    min = 0.0,
+    max = 1.0,
+    page = EmergencyMedicineDrugs,
+    translation = EmergencyMedicine_SufentanilPainkillerPerMinute,
+}
+
+option EmergencyMedicine.SufentanilWithdrawalRelief
+{
+    type = double,
+    default = 0.05,
+    min = 0.0,
+    max = 1.0,
+    page = EmergencyMedicineDrugs,
+    translation = EmergencyMedicine_SufentanilWithdrawalRelief,
+}
+
+option EmergencyMedicine.SufentanilAddictionPerMinute
+{
+    type = double,
+    default = 0.01,
+    min = 0.0,
+    max = 1.0,
+    page = EmergencyMedicineDrugs,
+    translation = EmergencyMedicine_SufentanilAddictionPerMinute,
+}
+
+option EmergencyMedicine.SufentanilClearMind
+{
+    type = boolean,
+    default = true,
+    page = EmergencyMedicineDrugs,
+    translation = EmergencyMedicine_SufentanilClearMind,
+}
+
+option EmergencyMedicine.MorphineSpawnWeight
+{
+    type = integer,
+    default = 8,
+    min = 0,
+    max = 50,
+    page = EmergencyMedicineLoot,
+    translation = EmergencyMedicine_MorphineSpawnWeight,
+}
+
+option EmergencyMedicine.NaloxoneSpawnWeight
+{
+    type = integer,
+    default = 12,
+    min = 0,
+    max = 50,
+    page = EmergencyMedicineLoot,
+    translation = EmergencyMedicine_NaloxoneSpawnWeight,
+}
+
+option EmergencyMedicine.FentanylSpawnWeight
+{
+    type = integer,
+    default = 8,
+    min = 0,
+    max = 50,
+    page = EmergencyMedicineLoot,
+    translation = EmergencyMedicine_FentanylSpawnWeight,
+}
+
+option EmergencyMedicine.OxycontinSpawnWeight
+{
+    type = integer,
+    default = 15,
+    min = 0,
+    max = 50,
+    page = EmergencyMedicineLoot,
+    translation = EmergencyMedicine_OxycontinSpawnWeight,
+}
+
+option EmergencyMedicine.SufentanilSpawnWeight
+{
+    type = integer,
+    default = 8,
+    min = 0,
+    max = 50,
+    page = EmergencyMedicineLoot,
+    translation = EmergencyMedicine_SufentanilSpawnWeight,
+}
+
+option EmergencyMedicine.MethamphetamineSpawnWeight
+{
+    type = integer,
+    default = 8,
+    min = 0,
+    max = 50,
+    page = EmergencyMedicineLoot,
+    translation = EmergencyMedicine_MethamphetamineSpawnWeight,
+}
+
+option EmergencyMedicine.TranexamicAcidSpawnWeight
+{
+    type = integer,
+    default = 10,
+    min = 0,
+    max = 50,
+    page = EmergencyMedicineLoot,
+    translation = EmergencyMedicine_TranexamicAcidSpawnWeight,
+}
+
+option EmergencyMedicine.SulfadimidineSpawnWeight
+{
+    type = integer,
+    default = 8,
+    min = 0,
+    max = 50,
+    page = EmergencyMedicineLoot,
+    translation = EmergencyMedicine_SulfadimidineSpawnWeight,
+}
+
+option EmergencyMedicine.DexmedetomidineSpawnWeight
+{
+    type = integer,
+    default = 8,
+    min = 0,
+    max = 50,
+    page = EmergencyMedicineLoot,
+    translation = EmergencyMedicine_DexmedetomidineSpawnWeight,
+}
+
+option EmergencyMedicine.DextromethorphanSpawnWeight
+{
+    type = integer,
+    default = 12,
+    min = 0,
+    max = 50,
+    page = EmergencyMedicineLoot,
+    translation = EmergencyMedicine_DextromethorphanSpawnWeight,
+}

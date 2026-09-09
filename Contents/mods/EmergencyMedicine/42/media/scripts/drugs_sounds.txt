@@ -1,0 +1,11 @@
+module EmergencyMedicine
+{
+    sound EM_Inject
+    {
+        category = Player,
+        clip
+        {
+            file = media/sound/EmergencyMedicine/inject.ogg,
+        }
+    }
+}

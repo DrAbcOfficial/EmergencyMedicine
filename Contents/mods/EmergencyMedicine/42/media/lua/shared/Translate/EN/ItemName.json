@@ -1,0 +1,23 @@
+{
+    "EmergencyMedicine.morphine": "Morphine",
+    "EmergencyMedicine.naloxone": "Naloxone Hydrochloride",
+    "EmergencyMedicine.fentanyl": "Fentanyl",
+    "EmergencyMedicine.oxycontin": "OxyContin",
+    "EmergencyMedicine.sufentanil": "Sufentanil",
+    "EmergencyMedicine.methamphetamine": "Methamphetamine",
+    "EmergencyMedicine.tranexamicacid": "Tranexamic Acid",
+    "EmergencyMedicine.sulfadimidine": "Sulfadimidine",
+    "EmergencyMedicine.dexmedetomidine": "Dexmedetomidine Hydrochloride",
+    "EmergencyMedicine.dextromethorphan": "Dextromethorphan",
+    "EmergencyMedicine.GrassBandage": "Grass Bandage",
+    "EmergencyMedicine.BookSplint": "Book Splint",
+    "EmergencyMedicine.TemporarySplint": "Improvised Splint",
+    "EmergencyMedicine.AutoInjectorWatchBlack": "Auto-Injector Watch (Black)",
+    "EmergencyMedicine.AutoInjectorWatchRed": "Auto-Injector Watch (Red)",
+    "EmergencyMedicine.AutoInjectorWatchMetal": "Auto-Injector Watch (Metal)",
+    "EmergencyMedicine.AutoInjectorWatchLuxury": "Auto-Injector Watch (Luxury)",
+    "EmergencyMedicine.AutoInjectorWatchBlackLeft": "Auto-Injector Watch (Black)",
+    "EmergencyMedicine.AutoInjectorWatchRedLeft": "Auto-Injector Watch (Red)",
+    "EmergencyMedicine.AutoInjectorWatchMetalLeft": "Auto-Injector Watch (Metal)",
+    "EmergencyMedicine.AutoInjectorWatchLuxuryLeft": "Auto-Injector Watch (Luxury)"
+}
