@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<fileGuidTable>
+	<files>
+		<path>media/clothing/clothingItems/EM_AutoInjectorWatch_Left_DigitalBlack.xml</path>
+		<guid>e1eba6ba-3fdb-4218-9fef-1ca8dbc9fd97</guid>
+	</files>
+	<files>
+		<path>media/clothing/clothingItems/EM_AutoInjectorWatch_Left_DigitalRed.xml</path>
+		<guid>4bd6fd36-6aa9-4c66-bddf-872c1dc52962</guid>
+	</files>
+	<files>
+		<path>media/clothing/clothingItems/EM_AutoInjectorWatch_Left_DigitalDress.xml</path>
+		<guid>6870bcf5-f065-4e76-9b67-11849b00d260</guid>
+	</files>
+	<files>
+		<path>media/clothing/clothingItems/EM_AutoInjectorWatch_Left_Expensive.xml</path>
+		<guid>9c9ef6a5-5aba-474c-957f-96fec9a0c398</guid>
+	</files>
+	<files>
+		<path>media/clothing/clothingItems/EM_AutoInjectorWatch_Right_DigitalBlack.xml</path>
+		<guid>1caaee2c-ddcc-49f4-a45e-fb6ed41cf923</guid>
+	</files>
+	<files>
+		<path>media/clothing/clothingItems/EM_AutoInjectorWatch_Right_DigitalRed.xml</path>
+		<guid>1e2ea62b-8ab4-4d28-9689-e2e78531b2de</guid>
+	</files>
+	<files>
+		<path>media/clothing/clothingItems/EM_AutoInjectorWatch_Right_DigitalDress.xml</path>
+		<guid>561ba778-fd35-4761-b435-215867a22016</guid>
+	</files>
+	<files>
+		<path>media/clothing/clothingItems/EM_AutoInjectorWatch_Right_Expensive.xml</path>
+		<guid>40f15840-f599-4031-860f-061e1b2af85d</guid>
+	</files>
+</fileGuidTable>
