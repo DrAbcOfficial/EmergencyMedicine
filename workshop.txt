@@ -1,6 +1,6 @@
 version=1
 id=3798498792
-title=Emergency Medical
+title=Emergency Medicine
 description=[h1]Emergency Medicine[/h1]
 description=An emergency-medicine mod: ten drugs, addiction and withdrawal simulation, wound care, and an auto-injector watch that fires the needle for you before you go down.
 description=[hr]
