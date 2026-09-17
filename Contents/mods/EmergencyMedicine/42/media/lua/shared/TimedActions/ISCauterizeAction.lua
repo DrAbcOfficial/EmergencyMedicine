@@ -4,15 +4,15 @@
 -- burn damage (EMTreatment_Cauterize, which also stores the burned-out
 -- wounds onto the state). Consumes one use of the drainable tool.
 --
--- MP: server-authoritative -- applyTreatment sends the client command
--- and the server applies the shared op; singleplayer calls it directly.
+-- MP: complete() runs on the server (see EMBodyPartAction.lua), which
+-- applies the shared op directly; singleplayer runs the same code on
+-- the local process.
 ISCauterizeAction = EMBodyPartAction:derive("ISCauterizeAction")
 
 function ISCauterizeAction:new(character, patient, tool, bodyPart)
     return EMBodyPartAction.new(self, character, patient, bodyPart, tool, {
         duration = 150,
         jobKey = "IGUI_health_Cauterize",
-        treatmentCommand = "Cauterize",
         consumeTool = "drainable",
     })
 end
@@ -22,9 +22,5 @@ function ISCauterizeAction:isEligible()
 end
 
 function ISCauterizeAction:applyTreatment()
-    if isClient() then
-        self:sendTreatmentCommand()
-    else
-        EMTreatment_Cauterize(self.patient, self.bodyPart)
-    end
+    EMTreatment_Cauterize(self.patient, self.bodyPart)
 end

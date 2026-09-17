@@ -4,14 +4,14 @@
 -- immediately; the accumulated painkiller wears off like any big dose
 -- would.
 --
--- MP: server-authoritative -- applyTreatment sends the client command
--- and the server applies the shared op; singleplayer calls it directly.
+-- MP: complete() runs on the server (see EMBodyPartAction.lua), which
+-- applies the shared op directly; singleplayer runs the same code on
+-- the local process.
 ISRemovePatchAction = EMBodyPartAction:derive("ISRemovePatchAction")
 
 function ISRemovePatchAction:new(character, patient, bodyPart)
     return EMBodyPartAction.new(self, character, patient, bodyPart, nil, {
         duration = 60,
-        treatmentCommand = "RemovePatch",
     })
 end
 
@@ -20,9 +20,5 @@ function ISRemovePatchAction:isEligible()
 end
 
 function ISRemovePatchAction:applyTreatment()
-    if isClient() then
-        self:sendTreatmentCommand()
-    else
-        EMTreatment_RemovePatch(self.patient, self.bodyPart)
-    end
+    EMTreatment_RemovePatch(self.patient, self.bodyPart)
 end

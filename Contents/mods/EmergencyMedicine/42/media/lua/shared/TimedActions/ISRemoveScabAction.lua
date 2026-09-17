@@ -5,15 +5,15 @@
 -- 1 = 3). setScratched(true, true) forces NO zombie-infection roll; the
 -- cleared IsCauterized flag re-enables cauterization on the part.
 --
--- MP: server-authoritative -- applyTreatment sends the client command
--- and the server applies the shared op; singleplayer calls it directly.
+-- MP: complete() runs on the server (see EMBodyPartAction.lua), which
+-- applies the shared op directly; singleplayer runs the same code on
+-- the local process.
 ISRemoveScabAction = EMBodyPartAction:derive("ISRemoveScabAction")
 
 function ISRemoveScabAction:new(character, patient, tool, bodyPart)
     return EMBodyPartAction.new(self, character, patient, bodyPart, tool, {
         duration = 120,
         jobKey = "IGUI_health_RemoveScab",
-        treatmentCommand = "RemoveScab",
     })
 end
 
@@ -22,9 +22,5 @@ function ISRemoveScabAction:isEligible()
 end
 
 function ISRemoveScabAction:applyTreatment()
-    if isClient() then
-        self:sendTreatmentCommand()
-    else
-        EMTreatment_RemoveScab(self.patient, self.bodyPart)
-    end
+    EMTreatment_RemoveScab(self.patient, self.bodyPart)
 end

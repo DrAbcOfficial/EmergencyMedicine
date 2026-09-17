@@ -6,16 +6,17 @@
 -- EMCutBite_IsEligiblePart: fresh bite (EM_CUTBITE_FRESH_BITETIME), not
 -- bandaged, no other deep wound on the part. The blade is reusable.
 --
--- MP: server-authoritative -- applyTreatment sends the client command
--- (with the glass payload) and the server applies the shared op;
--- singleplayer calls it directly.
+-- MP: complete() runs on the server (see EMBodyPartAction.lua), which
+-- applies the shared op directly; singleplayer runs the same code on
+-- the local process. The glass decision rides the useGlass constructor
+-- parameter, which the net timed action serializes to the server by
+-- parameter name.
 ISCutBiteAction = EMBodyPartAction:derive("ISCutBiteAction")
 
 function ISCutBiteAction:new(character, patient, tool, bodyPart, useGlass)
     local o = EMBodyPartAction.new(self, character, patient, bodyPart, tool, {
         duration = 200,
         jobKey = "IGUI_health_CutBite",
-        treatmentCommand = "CutBite",
     })
     o.useGlass = useGlass
     return o
@@ -26,9 +27,5 @@ function ISCutBiteAction:isEligible()
 end
 
 function ISCutBiteAction:applyTreatment()
-    if isClient() then
-        self:sendTreatmentCommand({ glass = self.useGlass == true })
-    else
-        EMTreatment_CutBite(self.patient, self.bodyPart, self.useGlass == true)
-    end
+    EMTreatment_CutBite(self.patient, self.bodyPart, self.useGlass == true)
 end

@@ -5,15 +5,15 @@
 -- moderate bleeding and a painful sting. Eligibility lives in
 -- EMRemoveCrudeStitch_IsEligiblePart.
 --
--- MP: server-authoritative -- applyTreatment sends the client command
--- and the server applies the shared op; singleplayer calls it directly.
+-- MP: complete() runs on the server (see EMBodyPartAction.lua), which
+-- applies the shared op directly; singleplayer runs the same code on
+-- the local process.
 ISRemoveCrudeStitchAction = EMBodyPartAction:derive("ISRemoveCrudeStitchAction")
 
 function ISRemoveCrudeStitchAction:new(character, patient, tool, bodyPart)
     return EMBodyPartAction.new(self, character, patient, bodyPart, tool, {
         duration = 120,
         jobKey = "IGUI_health_RemoveCrudeStitch",
-        treatmentCommand = "RemoveCrudeStitch",
     })
 end
 
@@ -22,9 +22,5 @@ function ISRemoveCrudeStitchAction:isEligible()
 end
 
 function ISRemoveCrudeStitchAction:applyTreatment()
-    if isClient() then
-        self:sendTreatmentCommand()
-    else
-        EMTreatment_RemoveCrudeStitch(self.patient, self.bodyPart)
-    end
+    EMTreatment_RemoveCrudeStitch(self.patient, self.bodyPart)
 end

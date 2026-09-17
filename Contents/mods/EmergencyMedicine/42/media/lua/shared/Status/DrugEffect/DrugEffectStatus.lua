@@ -4,7 +4,8 @@
 -- (EM_TimedStatus.lua): player-level family (no scope), records are
 -- { applied, progress, ...custom params }, transmitted on change.
 -- These are NOT body-wound states -- no body part is involved. In MP
--- the effects run on the server (TakeDrug), so the authoritative copy
+-- the effects run on the server (the pill action's complete is
+-- server-executed, see DrugPillHook), so the authoritative copy
 -- is the saved one and the broadcast carries it to clients for the
 -- status icons.
 --

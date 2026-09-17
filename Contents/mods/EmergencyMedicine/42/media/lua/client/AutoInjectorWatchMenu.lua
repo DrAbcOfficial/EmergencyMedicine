@@ -143,7 +143,13 @@ Events.OnPlayerUpdate.Add(onPlayerUpdate)
 -- handler runs on the owning client only, and EM_Inject_PlaySound stays
 -- local to this client: nobody else hears it.
 local function onServerCommand(module, command, args)
-	if module == "EmergencyMedicine" and command == "AutoInjectSound" then
+	if module ~= "EmergencyMedicine" then
+		return
+	end
+	-- AutoInjectSound: the watch injection; InjectSound: an ampoule-pill
+	-- injection (server-executed ISTakePillAction complete echoes it) --
+	-- both play the user-only sound on the owning client only
+	if command == "AutoInjectSound" or command == "InjectSound" then
 		EM_Inject_PlaySound(getSpecificPlayer(0))
 	end
 end

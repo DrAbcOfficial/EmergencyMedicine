@@ -2,8 +2,8 @@
 -- treatment action shares the same body: patient-move guard, the part
 -- eligibility hook, the bandage (self-treatment) / loot (treating
 -- someone else) animation pair, the tool job bar, the instant-check
--- duration and the server-authoritative treatment dispatch. Subclasses
--- only declare what differs:
+-- duration and the authoritative treatment execution. Subclasses only
+-- declare what differs:
 --
 --   local Action = EMBodyPartAction:derive("ISMyAction")
 --
@@ -12,24 +12,40 @@
 --           tool, {
 --               duration = 150,                      -- ticks (or override getDuration)
 --               jobKey = "IGUI_health_MyAction",     -- tool job bar text
---               treatmentCommand = "MyAction",       -- MP client command
 --               consumeTool = "drainable",           -- or "remove" / nil
 --           })
 --   end
 --
 --   function Action:isEligible() ... end       -- part predicate (shared op)
---   function Action:applyTreatment() ... end   -- MP: sendTreatmentCommand()
---                                              -- SP: the shared op directly
+--   function Action:applyTreatment() ... end   -- the shared EMTreatment_* op
 --
 -- tool: nil for the bare-hand actions -- skips the inventory guard, the
 -- hand model override and the job bar. consumeTool: "drainable" burns
 -- one use (UseAndSync), "remove" consumes a plain item outright (vanilla
 -- ISApplyBandage pattern), nil = reusable tool.
 --
--- MP: body damage is server-authoritative -- applyTreatment sends the
--- client command and the server applies the shared op
--- (server/EmergencyMedicine_ClientCommands.lua); singleplayer calls the
--- shared op directly.
+-- B42 MP timed actions are SERVER-EXECUTED (decompiled LuaTimedActionNew /
+-- NetTimedAction / IsoGameCharacter.update): the client only animates --
+-- start/update/isValid/perform run there, but the game never calls the
+-- Lua complete() on a multiplayer client. Instead the action is sent to
+-- the server as a "net timed action" (global class name + the new()
+-- constructor arguments, matched by parameter name), REBUILT in the
+-- server's Lua, and its complete() runs there once the action time
+-- elapsed; only then is the owning client released and its queue
+-- advanced. Consequences this file is built around:
+--   * the action classes MUST live in shared Lua (a client-only class
+--     cannot be rebuilt server-side: the client bar hangs forever and
+--     the treatment never happens -- the bug this file's location
+--     fixed);
+--   * complete() runs on the server in MP, on the local process in SP --
+--     always where body damage is authoritative, so applyTreatment()
+--     calls the shared EMTreatment_* op directly, no client commands;
+--   * every per-instance value complete() needs must be a new()
+--     parameter (serialized by name) or recomputable from those --
+--     config tables are rebuilt inside new(), not transmitted;
+--   * isEligible() is re-checked inside complete() server-side: the
+--     client checked its own copy for the whole action, the server
+--     re-validates against its authoritative copy.
 require "TimedActions/ISBaseTimedAction"
 
 EMBodyPartAction = ISBaseTimedAction:derive("EMBodyPartAction")
@@ -42,7 +58,6 @@ function EMBodyPartAction:new(character, patient, bodyPart, tool, config)
     o.tool = tool
     o.duration = config.duration or 150
     o.jobKey = config.jobKey
-    o.treatmentCommand = config.treatmentCommand
     o.consumeTool = config.consumeTool
     o.stopOnWalk = bodyPart:getIndex() > BodyPartType.ToIndex(BodyPartType.Groin)
     o.stopOnRun = true
@@ -133,27 +148,6 @@ function EMBodyPartAction:getDuration()
     return self.duration
 end
 
--- the wire format of every body-part treatment: patient onlineID +
--- part index, plus any action-specific payload
-function EMBodyPartAction:sendTreatmentCommand(extra)
-    local args = { id = self.patient:getOnlineID(), part = self.bodyPart:getIndex() }
-    if extra ~= nil then
-        for key, value in pairs(extra) do
-            args[key] = value
-        end
-    end
-    sendClientCommand(self.character, "EmergencyMedicine", self.treatmentCommand, args)
-end
-
--- default: dispatch the treatment command with no extra payload. The
--- SP branch (the shared op in shared/Wound/TreatmentOps.lua) and any
--- extra payload (CutBite's glass) are per-subclass.
-function EMBodyPartAction:applyTreatment()
-    if isClient() then
-        self:sendTreatmentCommand()
-    end
-end
-
 function EMBodyPartAction:consumeTool()
     if self.tool == nil then
         return
@@ -171,8 +165,19 @@ function EMBodyPartAction:consumeTool()
     end
 end
 
+-- the treatment itself; runs after the eligibility re-check, always on
+-- the authoritative side (the server in MP, the local process in SP).
+-- Subclasses call their shared EMTreatment_* op here.
+function EMBodyPartAction:applyTreatment()
+end
+
 function EMBodyPartAction:complete()
-    self:consumeTool()
-    self:applyTreatment()
+    -- server-side (MP) / local (SP) treatment: the client's isValid held
+    -- for the whole cast, this is the authoritative re-validation -- an
+    -- ineligible part (latency desync) is left alone, tool included
+    if self:isEligible() then
+        self:consumeTool()
+        self:applyTreatment()
+    end
     return true
 end

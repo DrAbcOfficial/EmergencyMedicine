@@ -7,7 +7,8 @@
 -- management in OpioidWithdrawal.lua.
 --
 -- Multiplayer: values live in player modData; the drug effects run on
--- the server (TakeDrug command) and broadcast with transmitModData(), a
+-- the server (the pill action's complete is server-executed, see
+-- DrugPillHook) and broadcast with transmitModData(), a
 -- client may only push its own player's table up.
 
 local ADDICTION_KEY = "EM_OpioidAddiction"
@@ -33,8 +34,8 @@ end
 -- One opioid injection happened: the baseline dependence rises by half,
 -- the withdrawal sickness is relieved, and the new values are synced
 -- (the server broadcasts; a client pushes its own table up). Called from
--- the morphine drug effect -- which runs on the server in MP (TakeDrug
--- command), directly in SP.
+-- the morphine drug effect -- which runs on the server in MP (the pill
+-- action's complete is server-executed, see DrugPillHook), directly in SP.
 function EM_Addiction_UseInjection(player)
     EM_Addiction_Set(player, EM_Addiction_Get(player) + EM_Sandbox_Get("MorphineAddictionGain"))
     EM_Withdrawal_Relieve(player)

@@ -55,7 +55,8 @@ end
 -- The morphine path goes through EM_Addiction_UseInjection instead.
 function EMDrug_ChangeAddiction(player, amount)
     EM_Addiction_Set(player, EM_Addiction_Get(player) + amount)
-    -- MP: effects run on the server (TakeDrug command) -> broadcast;
+    -- MP: effects run on the server (the ISTakePillAction complete is
+    -- server-executed, see DrugPillHook) -> broadcast;
     -- a client may only push its own player's table up (SP needs none)
     EM_Dependence_Transmit(player)
 end

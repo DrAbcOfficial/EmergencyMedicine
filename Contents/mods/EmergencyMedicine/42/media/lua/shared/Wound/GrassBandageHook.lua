@@ -4,8 +4,10 @@
 -- bandage instead of returning it (vanilla ISApplyBandage.complete
 -- re-creates the stored bandage type into the inventory on removal --
 -- the grass bandage is consumed like the Bandaid, so it is deleted
--- again). Infection: on the server in MP via a client command (body
--- damage is server-authoritative), directly in SP.
+-- again). Infection: EMTreatment_InfectWound runs wherever complete()
+-- runs -- in MP that is the SERVER (B42 rebuilds the shared
+-- ISApplyBandage class there and executes its complete()), in SP the
+-- local process; body damage is authoritative on both.
 --
 -- ISApplyBandage fields used: item (the bandage; nil when removing),
 -- doIt (true = apply, false = remove), otherPlayer (the patient; same
@@ -22,14 +24,7 @@ if ISApplyBandage then
         if item ~= nil and item:getFullType() == "EmergencyMedicine.GrassBandage" then
             -- application: guaranteed wound infection
             local patient = self.otherPlayer or self.character
-            if isClient() then
-                sendClientCommand(self.character, "EmergencyMedicine", "InfectWound", {
-                    id = patient:getOnlineID(),
-                    part = self.bodyPart:getIndex(),
-                })
-            else
-                EMTreatment_InfectWound(patient, self.bodyPart)
-            end
+            EMTreatment_InfectWound(patient, self.bodyPart)
         elseif removingGrassBandage then
             -- removal: vanilla returned a fresh GrassBandage into the
             -- inventory -- delete it again

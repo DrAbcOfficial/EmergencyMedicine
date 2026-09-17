@@ -3,19 +3,20 @@
 -- the "EmergencyFixed" state as a custom param (shared/Wound/
 -- TreatmentOps.lua); no vanilla splint flags are set. Eligibility lives
 -- in EMTemporarySplint_IsEligiblePart (vanilla splint rules + fixation
--- not present yet), re-validated server-side. Duration scales with the
--- doctor perk like the vanilla splint. The splint item itself is
--- consumed on the acting side (vanilla ISApplyBandage consumption
+-- not present yet), re-validated inside complete(). Duration scales
+-- with the doctor perk like the vanilla splint. The splint item itself
+-- is consumed on the acting side (vanilla ISApplyBandage consumption
 -- pattern).
 --
--- MP: server-authoritative -- applyTreatment sends the client command
--- and the server applies the shared op; singleplayer calls it directly.
+-- MP: complete() runs on the server (see EMBodyPartAction.lua), which
+-- applies the shared op directly; singleplayer runs the same code on
+-- the local process. getDuration is computed from the doctor perk where
+-- the instance lives, so both sides cast for the same time.
 ISTemporarySplintAction = EMBodyPartAction:derive("ISTemporarySplintAction")
 
 function ISTemporarySplintAction:new(character, patient, tool, bodyPart)
     return EMBodyPartAction.new(self, character, patient, bodyPart, tool, {
         jobKey = "IGUI_health_TemporarySplint",
-        treatmentCommand = "TemporarySplint",
         consumeTool = "remove",
     })
 end
@@ -32,9 +33,5 @@ function ISTemporarySplintAction:isEligible()
 end
 
 function ISTemporarySplintAction:applyTreatment()
-    if isClient() then
-        self:sendTreatmentCommand()
-    else
-        EMTreatment_TemporarySplint(self.patient, self.bodyPart)
-    end
+    EMTreatment_TemporarySplint(self.patient, self.bodyPart)
 end

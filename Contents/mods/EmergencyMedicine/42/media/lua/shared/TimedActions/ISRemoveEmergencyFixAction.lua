@@ -4,14 +4,14 @@
 -- the time spent in the bad splint is added to its severity
 -- (EMTreatment_RemoveEmergencyFix).
 --
--- MP: server-authoritative -- applyTreatment sends the client command
--- and the server applies the shared op; singleplayer calls it directly.
+-- MP: complete() runs on the server (see EMBodyPartAction.lua), which
+-- applies the shared op directly; singleplayer runs the same code on
+-- the local process.
 ISRemoveEmergencyFixAction = EMBodyPartAction:derive("ISRemoveEmergencyFixAction")
 
 function ISRemoveEmergencyFixAction:new(character, patient, bodyPart)
     return EMBodyPartAction.new(self, character, patient, bodyPart, nil, {
         duration = 100,
-        treatmentCommand = "RemoveEmergencyFix",
     })
 end
 
@@ -20,9 +20,5 @@ function ISRemoveEmergencyFixAction:isEligible()
 end
 
 function ISRemoveEmergencyFixAction:applyTreatment()
-    if isClient() then
-        self:sendTreatmentCommand()
-    else
-        EMTreatment_RemoveEmergencyFix(self.patient, self.bodyPart)
-    end
+    EMTreatment_RemoveEmergencyFix(self.patient, self.bodyPart)
 end

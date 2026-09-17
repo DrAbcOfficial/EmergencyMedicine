@@ -8,14 +8,14 @@
 --   ("DigBulletInfection" level bump -- NOT the Knox virus)
 --   - "DigBulletPain" extra pain
 --
--- MP: server-authoritative -- applyTreatment sends the client command
--- and the server applies the shared op; singleplayer calls it directly.
+-- MP: complete() runs on the server (see EMBodyPartAction.lua), which
+-- applies the shared op directly; singleplayer runs the same code on
+-- the local process.
 ISDigBulletAction = EMBodyPartAction:derive("ISDigBulletAction")
 
 function ISDigBulletAction:new(character, patient, bodyPart)
     return EMBodyPartAction.new(self, character, patient, bodyPart, nil, {
         duration = 150,
-        treatmentCommand = "DigBullet",
     })
 end
 
@@ -24,9 +24,5 @@ function ISDigBulletAction:isEligible()
 end
 
 function ISDigBulletAction:applyTreatment()
-    if isClient() then
-        self:sendTreatmentCommand()
-    else
-        EMTreatment_DigBullet(self.patient, self.bodyPart)
-    end
+    EMTreatment_DigBullet(self.patient, self.bodyPart)
 end

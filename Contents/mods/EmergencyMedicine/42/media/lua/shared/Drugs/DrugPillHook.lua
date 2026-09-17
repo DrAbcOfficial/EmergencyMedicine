@@ -9,13 +9,16 @@
 -- load before this one (alphabetical file order), so the globals are
 -- defined by the time this file runs.
 --
--- MP: body damage / stats / modData are server-authoritative, so the
--- effect runs ON THE SERVER via a client command ("TakeDrug"); the
--- vanilla syncDamage/syncStats pushes carry the results back to the
--- taker, and the modData transmits inside the effects broadcast from the
--- server. Singleplayer applies directly. The dispatch table doubles as
--- the whitelist on both sides: EMDrug_ApplyEffect only knows this mod's
--- own ten fullTypes.
+-- MP: B42 executes Lua timed actions on the SERVER (the net timed
+-- action rebuilds ISTakePillAction there; the client's own Lua
+-- complete() is skipped entirely) -- this hook therefore runs on the
+-- server and EMDrug_ApplyEffect applies directly where body damage /
+-- stats / modData are authoritative; the vanilla syncDamage/syncStats
+-- pushes carry the results back to the taker, and the modData transmits
+-- inside the effects broadcast from the server. Singleplayer runs the
+-- same code on the local process. The dispatch table doubles as the
+-- whitelist on both sides: EMDrug_ApplyEffect only knows this mod's own
+-- ten fullTypes.
 local DRUG_EFFECTS = {
     ["EmergencyMedicine.morphine"] = InjectMorphine,
     ["EmergencyMedicine.naloxone"] = InjectNaloxone,
@@ -31,8 +34,9 @@ local DRUG_EFFECTS = {
     ["EmergencyMedicine.tranexamicacid"] = function(player) return TakeTranexamicAcid(player) end,
 }
 
--- One dispatch entry point so SP (direct call) and MP (server command
--- handler) run exactly this table.
+-- One dispatch entry point for every path (pill hook here, the
+-- auto-injector watch on the server, debug) so all of them run exactly
+-- this table.
 function EMDrug_ApplyEffect(player, fullType)
     local handler = DRUG_EFFECTS[fullType]
     if handler ~= nil then
@@ -48,19 +52,20 @@ if ISTakePillAction then
         if item then
             local fullType = item:getFullType()
             if DRUG_EFFECTS[fullType] ~= nil then
+                EMDrug_ApplyEffect(self.character, fullType)
                 -- ampoule drugs play the injection sound at the moment the
-                -- needle goes in; complete() runs on the acting player's
-                -- own client (timed actions are client-side), so the
-                -- local-only playSound reaches exactly the user
+                -- needle goes in. In SP complete() runs on the taker's own
+                -- process and the local-only playSound reaches exactly the
+                -- user; in MP complete() runs on the SERVER, whose
+                -- playSound is a silent dummy emitter -- echo a server
+                -- command so the taker's client plays it locally
+                -- (AutoInjectSound pattern)
                 if EM_INJECT_AMPOULE_DRUGS[fullType] then
-                    EM_Inject_PlaySound(self.character)
-                end
-                if isClient() then
-                    sendClientCommand(self.character, "EmergencyMedicine", "TakeDrug", {
-                        drug = fullType,
-                    })
-                else
-                    EMDrug_ApplyEffect(self.character, fullType)
+                    if isServer() then
+                        sendServerCommand(self.character, "EmergencyMedicine", "InjectSound", {})
+                    else
+                        EM_Inject_PlaySound(self.character)
+                    end
                 end
             end
         end

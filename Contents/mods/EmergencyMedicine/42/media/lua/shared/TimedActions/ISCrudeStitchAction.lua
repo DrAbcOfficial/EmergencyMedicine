@@ -5,15 +5,15 @@
 -- (one use per repair), the stapler is reusable. Eligibility lives in
 -- EMCrudeStitch_IsEligiblePart.
 --
--- MP: server-authoritative -- applyTreatment sends the client command
--- and the server applies the shared op; singleplayer calls it directly.
+-- MP: complete() runs on the server (see EMBodyPartAction.lua), which
+-- applies the shared op directly; singleplayer runs the same code on
+-- the local process.
 ISCrudeStitchAction = EMBodyPartAction:derive("ISCrudeStitchAction")
 
 function ISCrudeStitchAction:new(character, patient, tool, bodyPart)
     return EMBodyPartAction.new(self, character, patient, bodyPart, tool, {
         duration = 150,
         jobKey = "IGUI_health_CrudeStitch",
-        treatmentCommand = "CrudeStitch",
         consumeTool = "drainable",
     })
 end
@@ -23,9 +23,5 @@ function ISCrudeStitchAction:isEligible()
 end
 
 function ISCrudeStitchAction:applyTreatment()
-    if isClient() then
-        self:sendTreatmentCommand()
-    else
-        EMTreatment_CrudeStitch(self.patient, self.bodyPart)
-    end
+    EMTreatment_CrudeStitch(self.patient, self.bodyPart)
 end
