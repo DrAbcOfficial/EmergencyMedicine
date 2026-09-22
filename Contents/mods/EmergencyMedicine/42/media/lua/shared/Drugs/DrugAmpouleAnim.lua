@@ -25,9 +25,11 @@ local PILL_BANDAGE_ANIM = {
 -- and the ampoule set that plays it when taken / auto-injected. B42 plays
 -- file clips through GameSound script blocks (the old .snd scripts are
 -- gone); the name GameSounds registers is the bare sound name, no module
--- prefix. player:playSound is a purely local call (the client-side
--- CharacterSoundEmitter sends no network packet), so only the acting
--- player ever hears it -- that IS the "user only" guarantee, MP included.
+-- prefix. playSoundLocal is the "user only" guarantee: it routes through
+-- playSoundImpl, which is pure local FMOD with no network path (vanilla
+-- map UI uses it the same way). Plain playSound is NOT local on a client --
+-- FMODSoundEmitter.playSound sends a PlaySound packet under GameClient.client
+-- and the server relays it to every nearby player (PlaySoundPacket.processServer).
 EM_INJECT_SOUND = "EM_Inject"
 
 EM_INJECT_AMPOULE_DRUGS = {
@@ -39,7 +41,7 @@ EM_INJECT_AMPOULE_DRUGS = {
 
 function EM_Inject_PlaySound(player)
     if player ~= nil and not isServer() then
-        player:playSound(EM_INJECT_SOUND)
+        player:playSoundLocal(EM_INJECT_SOUND)
     end
 end
 

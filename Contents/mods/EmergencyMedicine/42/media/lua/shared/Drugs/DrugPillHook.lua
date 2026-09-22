@@ -55,11 +55,11 @@ if ISTakePillAction then
                 EMDrug_ApplyEffect(self.character, fullType)
                 -- ampoule drugs play the injection sound at the moment the
                 -- needle goes in. In SP complete() runs on the taker's own
-                -- process and the local-only playSound reaches exactly the
-                -- user; in MP complete() runs on the SERVER, whose
-                -- playSound is a silent dummy emitter -- echo a server
-                -- command so the taker's client plays it locally
-                -- (AutoInjectSound pattern)
+                -- process and EM_Inject_PlaySound (playSoundLocal, no
+                -- network path) reaches exactly the user; in MP complete()
+                -- runs on the SERVER, whose playSound is a silent dummy
+                -- emitter -- echo a server command so the taker's client
+                -- plays it locally (AutoInjectSound pattern)
                 if EM_INJECT_AMPOULE_DRUGS[fullType] then
                     if isServer() then
                         sendServerCommand(self.character, "EmergencyMedicine", "InjectSound", {})
