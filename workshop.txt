@@ -16,4 +16,4 @@ description=Hospitals and clinics, pharmacy counters and shelves, bathroom cabin
 description=[h2]Configurable[/h2]
 description=Three sandbox tabs: "Emergency Medicine - General" (wound treatment numbers), "Emergency Medicine - Drugs" (drug effects and addiction/withdrawal dynamics) and "Emergency Medicine - Spawns" (per-item loot rates) — tune the survival to your taste.
 tags=Build 42;Items;Multiplayer
-visibility=friendsOnly
+visibility=public
