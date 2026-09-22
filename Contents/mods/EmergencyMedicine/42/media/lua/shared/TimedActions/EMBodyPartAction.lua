@@ -58,7 +58,10 @@ function EMBodyPartAction:new(character, patient, bodyPart, tool, config)
     o.tool = tool
     o.duration = config.duration or 150
     o.jobKey = config.jobKey
-    o.consumeTool = config.consumeTool
+    -- must NOT be named consumeTool: an instance field by that name
+    -- would shadow the consumeTool() method below and self:consumeTool()
+    -- in complete() would try to call this string (runtime __call error)
+    o.consumeMode = config.consumeTool
     o.stopOnWalk = bodyPart:getIndex() > BodyPartType.ToIndex(BodyPartType.Groin)
     o.stopOnRun = true
     o.patientX = patient:getX()
@@ -152,12 +155,12 @@ function EMBodyPartAction:consumeTool()
     if self.tool == nil then
         return
     end
-    if self.consumeTool == "drainable" then
+    if self.consumeMode == "drainable" then
         -- one use of a drainable tool (lighter, glue ...)
         if self.tool:IsDrainable() then
             self.tool:UseAndSync()
         end
-    elseif self.consumeTool == "remove" then
+    elseif self.consumeMode == "remove" then
         self.character:getInventory():Remove(self.tool)
         if isServer() then
             sendRemoveItemFromContainer(self.character:getInventory(), self.tool)
